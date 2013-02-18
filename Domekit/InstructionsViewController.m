@@ -69,6 +69,8 @@
     }
     //NSLog(@"LengthOrder Count: %d",lengthOrder.count);
     //for(i = 0; i < lengthOrder.count; i++) NSLog(@"%d",[lengthOrder[i] intValue]);
+    
+    /* STRUT LENGTHS
     for(i = 0; i < speciesCount.count; i++)
     {
         index = [lengthOrder[i] integerValue];
@@ -90,7 +92,7 @@
         [(UILabel*)lengthLabels[i] setBackgroundColor:[UIColor clearColor]];
         [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.02f ft",[diagramView.dome.lineClassLengths_[i] doubleValue] * StrutScale]];
         [self.view addSubview:lengthLabels[i]];
-    }
+    }*/
 }
 
 - (void)didReceiveMemoryWarning
