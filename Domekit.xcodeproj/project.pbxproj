@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D501870C16BFD6C400322E31 /* grid.png in Resources */ = {isa = PBXBuildFile; fileRef = D501870B16BFD6C400322E31 /* grid.png */; };
+		D50ECF2B16C646A6004221B9 /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = D50ECF2A16C646A6004221B9 /* icon72.png */; };
+		D50ECF2E16C646EA004221B9 /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = D50ECF2D16C646EA004221B9 /* icon144.png */; };
 		D514EDFA16B748A5000D9264 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDF916B748A5000D9264 /* UIKit.framework */; };
 		D514EDFC16B748A5000D9264 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFB16B748A5000D9264 /* Foundation.framework */; };
 		D514EDFE16B748A5000D9264 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFD16B748A5000D9264 /* CoreGraphics.framework */; };
@@ -24,6 +27,23 @@
 		D514EE2316B748A6000D9264 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFB16B748A5000D9264 /* Foundation.framework */; };
 		D514EE2B16B748A6000D9264 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D514EE2916B748A6000D9264 /* InfoPlist.strings */; };
 		D514EE2E16B748A6000D9264 /* DomekitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D514EE2D16B748A6000D9264 /* DomekitTests.m */; };
+		D514EE3916B74A13000D9264 /* DomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D514EE3816B74A13000D9264 /* DomeView.m */; };
+		D514EE4016B74F82000D9264 /* Dome.m in Sources */ = {isa = PBXBuildFile; fileRef = D514EE3F16B74F81000D9264 /* Dome.m */; };
+		D514EE4316B7E35A000D9264 /* Point3D.m in Sources */ = {isa = PBXBuildFile; fileRef = D514EE4216B7E35A000D9264 /* Point3D.m */; };
+		D514EE4916B8A0B5000D9264 /* icon114.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D514EE4816B8A0B5000D9264 /* icon114.PNG */; };
+		D514EE4B16B8A0BB000D9264 /* photo copy.PNG in Resources */ = {isa = PBXBuildFile; fileRef = D514EE4A16B8A0BB000D9264 /* photo copy.PNG */; };
+		D5217ED316C860F800E98F34 /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = D5217ED216C860F800E98F34 /* transparent.png */; };
+		D5217ED616C8616700E98F34 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D5217ED516C8616700E98F34 /* white.png */; };
+		D5217ED816C862E500E98F34 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5217ED716C862E500E98F34 /* QuartzCore.framework */; };
+		D5217EDA16C863BB00E98F34 /* foggy.png in Resources */ = {isa = PBXBuildFile; fileRef = D5217ED916C863BA00E98F34 /* foggy.png */; };
+		D53FF3B916CB00C2009F3C6F /* blackboard_320.png in Resources */ = {isa = PBXBuildFile; fileRef = D53FF3B816CB00C2009F3C6F /* blackboard_320.png */; };
+		D55A031116CC63FA00884E16 /* domecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031016CC63FA00884E16 /* domecircle.png */; };
+		D55A031816CC856B00884E16 /* voyagerman.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031716CC856B00884E16 /* voyagerman.png */; };
+		D564799216D010E800FCBDE0 /* HeightMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D564799116D010E800FCBDE0 /* HeightMarker.m */; };
+		D5C81DB316C9F03D002557EB /* foggydark.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C81DB216C9F03D002557EB /* foggydark.png */; };
+		D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9596C16C72411003A6941 /* InstructionsViewController.m */; };
+		D5CB23A416CE3CD9005DF916 /* voyagercat.png in Resources */ = {isa = PBXBuildFile; fileRef = D5CB23A316CE3CD9005DF916 /* voyagercat.png */; };
+		D5CCFF8216C08FE400E27EE0 /* DiagramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CCFF8116C08FE400E27EE0 /* DiagramView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +57,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D501870B16BFD6C400322E31 /* grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grid.png; sourceTree = "<group>"; };
+		D50ECF2A16C646A6004221B9 /* icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon72.png; path = ../icon72.png; sourceTree = "<group>"; };
+		D50ECF2D16C646EA004221B9 /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon144.png; path = ../icon144.png; sourceTree = "<group>"; };
 		D514EDF516B748A5000D9264 /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D514EDF916B748A5000D9264 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D514EDFB16B748A5000D9264 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,6 +83,29 @@
 		D514EE2A16B748A6000D9264 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D514EE2C16B748A6000D9264 /* DomekitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DomekitTests.h; sourceTree = "<group>"; };
 		D514EE2D16B748A6000D9264 /* DomekitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DomekitTests.m; sourceTree = "<group>"; };
+		D514EE3716B74A13000D9264 /* DomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomeView.h; sourceTree = "<group>"; };
+		D514EE3816B74A13000D9264 /* DomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomeView.m; sourceTree = "<group>"; };
+		D514EE3E16B74F81000D9264 /* Dome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dome.h; sourceTree = "<group>"; };
+		D514EE3F16B74F81000D9264 /* Dome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dome.m; sourceTree = "<group>"; };
+		D514EE4116B7E35A000D9264 /* Point3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point3D.h; sourceTree = "<group>"; };
+		D514EE4216B7E35A000D9264 /* Point3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Point3D.m; sourceTree = "<group>"; };
+		D514EE4816B8A0B5000D9264 /* icon114.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon114.PNG; path = ../icon114.PNG; sourceTree = "<group>"; };
+		D514EE4A16B8A0BB000D9264 /* photo copy.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "photo copy.PNG"; path = "../photo copy.PNG"; sourceTree = "<group>"; };
+		D5217ED216C860F800E98F34 /* transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparent.png; sourceTree = "<group>"; };
+		D5217ED516C8616700E98F34 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
+		D5217ED716C862E500E98F34 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D5217ED916C863BA00E98F34 /* foggy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggy.png; sourceTree = "<group>"; };
+		D53FF3B816CB00C2009F3C6F /* blackboard_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackboard_320.png; sourceTree = "<group>"; };
+		D55A031016CC63FA00884E16 /* domecircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle.png; sourceTree = "<group>"; };
+		D55A031716CC856B00884E16 /* voyagerman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagerman.png; sourceTree = "<group>"; };
+		D564799016D010E800FCBDE0 /* HeightMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightMarker.h; sourceTree = "<group>"; };
+		D564799116D010E800FCBDE0 /* HeightMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightMarker.m; sourceTree = "<group>"; };
+		D5C81DB216C9F03D002557EB /* foggydark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggydark.png; sourceTree = "<group>"; };
+		D5C9596B16C72411003A6941 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
+		D5C9596C16C72411003A6941 /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsViewController.m; sourceTree = "<group>"; };
+		D5CB23A316CE3CD9005DF916 /* voyagercat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagercat.png; sourceTree = "<group>"; };
+		D5CCFF8016C08FE400E27EE0 /* DiagramView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramView.h; sourceTree = "<group>"; };
+		D5CCFF8116C08FE400E27EE0 /* DiagramView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiagramView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5217ED816C862E500E98F34 /* QuartzCore.framework in Frameworks */,
 				D514EDFA16B748A5000D9264 /* UIKit.framework in Frameworks */,
 				D514EDFC16B748A5000D9264 /* Foundation.framework in Frameworks */,
 				D514EDFE16B748A5000D9264 /* CoreGraphics.framework in Frameworks */,
@@ -89,6 +136,7 @@
 		D514EDEA16B748A5000D9264 = {
 			isa = PBXGroup;
 			children = (
+				D5217ED716C862E500E98F34 /* QuartzCore.framework */,
 				D514EDFF16B748A5000D9264 /* Domekit */,
 				D514EE2616B748A6000D9264 /* DomekitTests */,
 				D514EDF816B748A5000D9264 /* Frameworks */,
@@ -119,12 +167,33 @@
 		D514EDFF16B748A5000D9264 /* Domekit */ = {
 			isa = PBXGroup;
 			children = (
+				D501870B16BFD6C400322E31 /* grid.png */,
+				D53FF3B816CB00C2009F3C6F /* blackboard_320.png */,
+				D5CB23A316CE3CD9005DF916 /* voyagercat.png */,
+				D5217ED916C863BA00E98F34 /* foggy.png */,
+				D55A031716CC856B00884E16 /* voyagerman.png */,
+				D5217ED516C8616700E98F34 /* white.png */,
+				D5C81DB216C9F03D002557EB /* foggydark.png */,
+				D55A031016CC63FA00884E16 /* domecircle.png */,
+				D5217ED216C860F800E98F34 /* transparent.png */,
 				D514EE0816B748A5000D9264 /* AppDelegate.h */,
 				D514EE0916B748A5000D9264 /* AppDelegate.m */,
 				D514EE1116B748A5000D9264 /* MainStoryboard_iPhone.storyboard */,
 				D514EE1416B748A5000D9264 /* MainStoryboard_iPad.storyboard */,
 				D514EE1716B748A5000D9264 /* ViewController.h */,
 				D514EE1816B748A5000D9264 /* ViewController.m */,
+				D5C9596B16C72411003A6941 /* InstructionsViewController.h */,
+				D5C9596C16C72411003A6941 /* InstructionsViewController.m */,
+				D5CCFF8016C08FE400E27EE0 /* DiagramView.h */,
+				D5CCFF8116C08FE400E27EE0 /* DiagramView.m */,
+				D514EE3716B74A13000D9264 /* DomeView.h */,
+				D514EE3816B74A13000D9264 /* DomeView.m */,
+				D514EE3E16B74F81000D9264 /* Dome.h */,
+				D514EE3F16B74F81000D9264 /* Dome.m */,
+				D514EE4116B7E35A000D9264 /* Point3D.h */,
+				D514EE4216B7E35A000D9264 /* Point3D.m */,
+				D564799016D010E800FCBDE0 /* HeightMarker.h */,
+				D564799116D010E800FCBDE0 /* HeightMarker.m */,
 				D514EE0016B748A5000D9264 /* Supporting Files */,
 			);
 			path = Domekit;
@@ -133,6 +202,10 @@
 		D514EE0016B748A5000D9264 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D50ECF2D16C646EA004221B9 /* icon144.png */,
+				D50ECF2A16C646A6004221B9 /* icon72.png */,
+				D514EE4A16B8A0BB000D9264 /* photo copy.PNG */,
+				D514EE4816B8A0B5000D9264 /* icon114.PNG */,
 				D514EE0116B748A5000D9264 /* Domekit-Info.plist */,
 				D514EE0216B748A5000D9264 /* InfoPlist.strings */,
 				D514EE0516B748A5000D9264 /* main.m */,
@@ -240,6 +313,19 @@
 				D514EE1016B748A5000D9264 /* Default-568h@2x.png in Resources */,
 				D514EE1316B748A5000D9264 /* MainStoryboard_iPhone.storyboard in Resources */,
 				D514EE1616B748A5000D9264 /* MainStoryboard_iPad.storyboard in Resources */,
+				D514EE4916B8A0B5000D9264 /* icon114.PNG in Resources */,
+				D514EE4B16B8A0BB000D9264 /* photo copy.PNG in Resources */,
+				D501870C16BFD6C400322E31 /* grid.png in Resources */,
+				D50ECF2B16C646A6004221B9 /* icon72.png in Resources */,
+				D50ECF2E16C646EA004221B9 /* icon144.png in Resources */,
+				D5217ED316C860F800E98F34 /* transparent.png in Resources */,
+				D5217ED616C8616700E98F34 /* white.png in Resources */,
+				D5217EDA16C863BB00E98F34 /* foggy.png in Resources */,
+				D5C81DB316C9F03D002557EB /* foggydark.png in Resources */,
+				D53FF3B916CB00C2009F3C6F /* blackboard_320.png in Resources */,
+				D55A031116CC63FA00884E16 /* domecircle.png in Resources */,
+				D55A031816CC856B00884E16 /* voyagerman.png in Resources */,
+				D5CB23A416CE3CD9005DF916 /* voyagercat.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +363,12 @@
 				D514EE0616B748A5000D9264 /* main.m in Sources */,
 				D514EE0A16B748A5000D9264 /* AppDelegate.m in Sources */,
 				D514EE1916B748A5000D9264 /* ViewController.m in Sources */,
+				D514EE3916B74A13000D9264 /* DomeView.m in Sources */,
+				D514EE4016B74F82000D9264 /* Dome.m in Sources */,
+				D514EE4316B7E35A000D9264 /* Point3D.m in Sources */,
+				D5CCFF8216C08FE400E27EE0 /* DiagramView.m in Sources */,
+				D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */,
+				D564799216D010E800FCBDE0 /* HeightMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +435,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -358,6 +451,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -372,7 +467,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -380,6 +476,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -461,6 +559,7 @@
 				D514EE3316B748A6000D9264 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D514EE3416B748A6000D9264 /* Build configuration list for PBXNativeTarget "DomekitTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +568,7 @@
 				D514EE3616B748A6000D9264 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
