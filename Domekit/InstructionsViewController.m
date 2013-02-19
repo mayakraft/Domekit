@@ -33,6 +33,7 @@
     [diagramView setFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.height-50)];
     [diagramView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:diagramView];
+    [self.view sendSubviewToBack:diagramView];
     [diagramView setScale:130];
     [diagramView setLineWidth:4.0];
     [diagramView setNeedsDisplay];
@@ -42,12 +43,12 @@
     //StrutScale = 30;
     StrutScale /= 2*sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
 
-    UILabel *lineCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, [[UIScreen mainScreen] bounds].size.height-140, 200, 30)];
+    /*UILabel *lineCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, [[UIScreen mainScreen] bounds].size.height-140, 200, 30)];
     [lineCountLabel setBackgroundColor:[UIColor clearColor]];
     [lineCountLabel setTextColor:[UIColor blackColor]];
     lineCountLabel.text = [NSString stringWithFormat:@"STRUTS (x%d)",[diagramView getLineCount]];
     [self.view addSubview:lineCountLabel];
-
+*/
     /*UILabel *pointCountLabel = [[UILabel alloc] initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width/5.0*3.0, [[UIScreen mainScreen] bounds].size.height-140, 200, 30)];
     [pointCountLabel setBackgroundColor:[UIColor clearColor]];
     [pointCountLabel setTextColor:[UIColor blackColor]];
@@ -93,6 +94,47 @@
         [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.02f ft",[diagramView.dome.lineClassLengths_[i] doubleValue] * StrutScale]];
         [self.view addSubview:lengthLabels[i]];
     }*/
+    
+    UIView *sizeCalculatorView = [[UIView alloc] initWithFrame:CGRectMake(0, [self.view bounds].size.height-120, [self.view bounds].size.width, 120)];
+    [self.view addSubview:sizeCalculatorView];
+    domeCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle.png"]];
+    domeCircle.frame = CGRectMake(20, sizeCalculatorView.bounds.size.height/2-43, 86, 86);
+    domeCircle.contentMode = UIViewContentModeTopLeft; // This determines position of image
+    domeCircle.clipsToBounds = YES;
+    [sizeCalculatorView addSubview:domeCircle];
+    [sizeCalculatorView sendSubviewToBack:domeCircle];
+    
+    heightMarker = [[HeightMarker alloc] initWithFrame:CGRectMake(5, sizeCalculatorView.bounds.size.height/2-43, 15, 86)];
+    [heightMarker setBackgroundColor:[UIColor clearColor]];
+    [sizeCalculatorView addSubview:heightMarker];
+    [sizeCalculatorView bringSubviewToFront:heightMarker];
+
+    voyagerman = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagermandark.png"]];
+    voyagerman.frame = CGRectMake(0,0,domeCircle.bounds.size.height*.4,domeCircle.bounds.size.height);
+    voyagerman.alpha = .4;
+    voyagercat = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercatdark.png"]];
+    voyagercat.frame = CGRectMake(0,0,domeCircle.bounds.size.height*.3,domeCircle.bounds.size.height*.3*.75);
+    voyagercat.alpha = 0;
+    scaleFigureView = [[UIView alloc] initWithFrame:CGRectMake(20+domeCircle.bounds.size.width, sizeCalculatorView.bounds.size.height/2-43, 86, 86)];
+    scaleFigureView.backgroundColor = [UIColor clearColor];
+    scaleFigureView.hidden = FALSE;
+    scaleFigureView.clipsToBounds = YES;
+    [scaleFigureView addSubview:voyagerman];
+    [scaleFigureView addSubview:voyagercat];
+    [sizeCalculatorView addSubview:scaleFigureView];
+    
+    UIButton *makeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [makeButton setFrame:CGRectMake(sizeCalculatorView.bounds.size.width-120,sizeCalculatorView.bounds.size.height/2-20,100,40)];
+    [makeButton setTitle:[NSString stringWithFormat:@"make ▸"] forState:UIControlStateNormal];
+    [makeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    makeButton.titleLabel.font = [UIFont systemFontOfSize:20.0];
+    [sizeCalculatorView addSubview:makeButton];
+    
+    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeCalculatorView.bounds.size.width-120,sizeCalculatorView.bounds.size.height/2+30,100,40)];
+    heightLabel.text = [NSString stringWithFormat:@"Height: "];
+    heightLabel.font = [UIFont systemFontOfSize:20.0];
+    heightLabel.textColor = [UIColor blackColor];
+
 }
 
 - (void)didReceiveMemoryWarning

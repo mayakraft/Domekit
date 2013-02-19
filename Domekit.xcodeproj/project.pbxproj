@@ -40,6 +40,8 @@
 		D55A031116CC63FA00884E16 /* domecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031016CC63FA00884E16 /* domecircle.png */; };
 		D55A031816CC856B00884E16 /* voyagerman.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031716CC856B00884E16 /* voyagerman.png */; };
 		D564799216D010E800FCBDE0 /* HeightMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D564799116D010E800FCBDE0 /* HeightMarker.m */; };
+		D59B413E16D3025F00A90C52 /* voyagermandark.png in Resources */ = {isa = PBXBuildFile; fileRef = D59B413C16D3025F00A90C52 /* voyagermandark.png */; };
+		D59B413F16D3025F00A90C52 /* voyagercatdark.png in Resources */ = {isa = PBXBuildFile; fileRef = D59B413D16D3025F00A90C52 /* voyagercatdark.png */; };
 		D5C81DB316C9F03D002557EB /* foggydark.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C81DB216C9F03D002557EB /* foggydark.png */; };
 		D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9596C16C72411003A6941 /* InstructionsViewController.m */; };
 		D5CB23A416CE3CD9005DF916 /* voyagercat.png in Resources */ = {isa = PBXBuildFile; fileRef = D5CB23A316CE3CD9005DF916 /* voyagercat.png */; };
@@ -100,6 +102,8 @@
 		D55A031716CC856B00884E16 /* voyagerman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagerman.png; sourceTree = "<group>"; };
 		D564799016D010E800FCBDE0 /* HeightMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightMarker.h; sourceTree = "<group>"; };
 		D564799116D010E800FCBDE0 /* HeightMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightMarker.m; sourceTree = "<group>"; };
+		D59B413C16D3025F00A90C52 /* voyagermandark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagermandark.png; sourceTree = "<group>"; };
+		D59B413D16D3025F00A90C52 /* voyagercatdark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagercatdark.png; sourceTree = "<group>"; };
 		D5C81DB216C9F03D002557EB /* foggydark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggydark.png; sourceTree = "<group>"; };
 		D5C9596B16C72411003A6941 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
 		D5C9596C16C72411003A6941 /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsViewController.m; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				D501870B16BFD6C400322E31 /* grid.png */,
 				D53FF3B816CB00C2009F3C6F /* blackboard_320.png */,
 				D5CB23A316CE3CD9005DF916 /* voyagercat.png */,
+				D59B413C16D3025F00A90C52 /* voyagermandark.png */,
+				D59B413D16D3025F00A90C52 /* voyagercatdark.png */,
 				D5217ED916C863BA00E98F34 /* foggy.png */,
 				D55A031716CC856B00884E16 /* voyagerman.png */,
 				D5217ED516C8616700E98F34 /* white.png */,
@@ -326,6 +332,8 @@
 				D55A031116CC63FA00884E16 /* domecircle.png in Resources */,
 				D55A031816CC856B00884E16 /* voyagerman.png in Resources */,
 				D5CB23A416CE3CD9005DF916 /* voyagercat.png in Resources */,
+				D59B413E16D3025F00A90C52 /* voyagermandark.png in Resources */,
+				D59B413F16D3025F00A90C52 /* voyagercatdark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

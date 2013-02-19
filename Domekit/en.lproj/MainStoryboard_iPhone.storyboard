@@ -96,70 +96,10 @@
                                 <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDN-rw-HZB">
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Yr-kG-i7n">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="66" id="vgp-aS-LnX"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="50"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Sw-5z-es4">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="15" id="GSN-fa-1NK"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ER-Lt-mXf">
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="5cB-Fg-O7J"/>
-                                            <constraint firstAttribute="width" constant="8" id="lfr-1o-VVL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="1ER-Lt-mXf" secondAttribute="trailing" constant="9" id="117-vm-ein"/>
-                                    <constraint firstItem="2Sw-5z-es4" firstAttribute="leading" secondItem="YDN-rw-HZB" secondAttribute="leading" priority="1" constant="84" type="user" id="8IN-en-gbW"/>
-                                    <constraint firstItem="6Yr-kG-i7n" firstAttribute="top" secondItem="YDN-rw-HZB" secondAttribute="top" constant="5" id="A6R-b0-4Vx"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1ER-Lt-mXf" secondAttribute="trailing" constant="2" type="user" id="Coo-wD-nUa"/>
-                                    <constraint firstAttribute="height" constant="63" type="user" id="GK5-78-snd"/>
-                                    <constraint firstItem="6Yr-kG-i7n" firstAttribute="leading" secondItem="YDN-rw-HZB" secondAttribute="leading" constant="13" id="aYu-pR-Zli"/>
-                                    <constraint firstItem="2Sw-5z-es4" firstAttribute="top" secondItem="YDN-rw-HZB" secondAttribute="top" priority="1" constant="38" type="user" id="bDO-u9-R6J"/>
-                                    <constraint firstItem="1ER-Lt-mXf" firstAttribute="top" secondItem="2Sw-5z-es4" secondAttribute="top" type="default" id="hbR-Va-Kyt"/>
-                                    <constraint firstItem="1ER-Lt-mXf" firstAttribute="baseline" secondItem="2Sw-5z-es4" secondAttribute="baseline" type="default" id="jaR-um-rVn"/>
-                                    <constraint firstAttribute="width" constant="95" type="user" id="xep-so-SGl"/>
-                                </constraints>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wJ-QM-a1p">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="126" id="KWt-LI-cYD"/>
-                                    <constraint firstAttribute="height" constant="39" id="Vdd-Ge-Gg0"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
-                                <state key="normal" title="generate">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3wJ-QM-a1p" secondAttribute="trailing" constant="14" id="CJl-N7-SD1"/>
-                            <constraint firstAttribute="bottom" secondItem="YDN-rw-HZB" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="OAB-6t-eUb"/>
                             <constraint firstItem="bU7-cx-ZwM" firstAttribute="leading" secondItem="63X-1r-BWh" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="OmR-he-m7C"/>
-                            <constraint firstItem="YDN-rw-HZB" firstAttribute="leading" secondItem="63X-1r-BWh" secondAttribute="leading" type="default" id="Rmc-0y-XXk"/>
-                            <constraint firstItem="3wJ-QM-a1p" firstAttribute="centerY" secondItem="YDN-rw-HZB" secondAttribute="centerY" type="default" id="TIb-i5-E5M"/>
                             <constraint firstItem="bU7-cx-ZwM" firstAttribute="top" secondItem="63X-1r-BWh" secondAttribute="top" type="default" id="d2Z-fX-hhe"/>
                         </constraints>
                     </view>

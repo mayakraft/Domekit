@@ -57,27 +57,6 @@
     instructionButton.layer.borderWidth = 1;
     //[instructionButton.layer setClipToBounds:YES];
     
-    /*voyagerman = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagerman.png"]];
-    voyagerman.frame = CGRectMake(0,0,domeView.bounds.size.height*.4,domeView.bounds.size.height);
-    voyagerman.alpha = .4;
-    voyagercat = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercat.png"]];
-    voyagercat.frame = CGRectMake(0,0,domeView.bounds.size.height*.3,domeView.bounds.size.height*.3*.75);
-    voyagercat.alpha = 0;
-    scaleFigureView = [[UIView alloc] initWithFrame:domeView.frame];
-    scaleFigureView.backgroundColor = [UIColor clearColor];
-    scaleFigureView.hidden = TRUE;
-    scaleFigureView.clipsToBounds = YES;
-    [scaleFigureView addSubview:voyagerman];
-    [scaleFigureView addSubview:voyagercat];
-    [self.view addSubview:scaleFigureView];
-    
-    domeCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle.png"]];
-    domeCircle.frame = CGRectMake(12, [self.view bounds].size.height-98, 86, 86);
-    domeCircle.contentMode = UIViewContentModeTopLeft; // This determines position of image
-    domeCircle.clipsToBounds = YES;
-    [self.view addSubview:domeCircle];
-    [self.view sendSubviewToBack:domeCircle];*/
-    
     cropButton.adjustsImageWhenHighlighted = false;
     [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     cropButton.layer.masksToBounds = TRUE;
@@ -97,11 +76,7 @@
     //[self adjustSizeView];
     //[sizeView setFrame:CGRectMake(200, 100, sizeView.frame.size.width, sizeView.frame.size.height)];
     
-    /*heightMarker = [[HeightMarker alloc] initWithFrame:CGRectMake(95, [self.view bounds].size.height-98, 15, 86)];
-    [heightMarker setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:heightMarker];
-    [self.view bringSubviewToFront:heightMarker];
-*/
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     [tapGesture setNumberOfTapsRequired:2];
     [tapGesture addTarget:self action:@selector(tapListener:)];

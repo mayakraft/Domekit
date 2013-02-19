@@ -11,13 +11,11 @@
 #import "DiagramView.h"
 #import "Point3D.h"
 #import "InstructionsViewController.h"
-#import "HeightMarker.h"
 
 @interface ViewController : UIViewController
 {
     DiagramView *diagramView;
     DomeView *domeView;
-    HeightMarker *heightMarker;
     
     Point3D *touchPanRotate;  // last position in pan during rotate mode
     CGFloat touchPanEdit;     // last position in pan during splice mode
@@ -27,11 +25,6 @@
     //BOOL sizeToggle;
     //CGFloat domeSize;
     //CGFloat touchDomeSize;     // last position of domeSize during size mode
-    
-    //UIView *scaleFigureView;
-    //UIImageView *voyagerman;
-    //UIImageView *voyagercat;
-    //UIImageView *domeCircle;
 }
 
 @property IBOutlet UIButton *instructionButton;

@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "DiagramView.h"
 #import "Dome.h"
+#import "HeightMarker.h"
 
 @interface InstructionsViewController : UIViewController
 {
     Dome *domeImport;
     DiagramView *diagramView;
     int StrutScale;
+    UIView *scaleFigureView;
+    UIImageView *voyagerman;
+    UIImageView *voyagercat;
+    UIImageView *domeCircle;
+    HeightMarker *heightMarker;
+
 }
 
 @property (nonatomic,strong) IBOutlet DiagramView *diagramView;

@@ -29,7 +29,7 @@
 
 //    rect.size.width
     
-    [[UIColor colorWithWhite:0.0 alpha:1.0] setStroke];
+    [[UIColor colorWithWhite:0.7 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, 2.0);
     CGContextSetLineCap(context, kCGLineCapSquare);
     
