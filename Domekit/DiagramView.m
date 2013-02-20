@@ -162,6 +162,7 @@
     int count, countByOne;
     double angle, yOffset, scale;
     double lowest = 0;
+    double fisheye; /* close-to-sphere domes are further extended at their edges to prevent overlapping lines */
 
     CGFloat dashedLine[2] = {0.5,1.5};
     
@@ -179,7 +180,8 @@
             if(yOffset > lowest) lowest = yOffset;
         }
     }
-    scale = size/(lowest);
+    if(lowest > 1.63) scale = size/(lowest*1.25);
+    else scale = size/(lowest);
 
     [[UIColor colorWithWhite:1.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, lineWidth);
@@ -213,25 +215,31 @@
                 angle = atan2([point1 getZ],
                               [point1 getX]);
                 yOffset = asin([point1 getY]/1.9022) / (M_PI/2) + 1;
-
+                
+                if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
+                else fisheye = 1;
+                if(yOffset>1.63) NSLog(@"%f",fisheye);
                 /*if(index1 != polaris){
                     if(yOffset < smallestY) smallestY = yOffset;
                     if(yOffset > largestY) largestY = yOffset;
                 }*/
 
                 CGContextBeginPath(context);
-                CGContextMoveToPoint(context, yOffset*sin(angle)*scale+halfWidth,
-                                     yOffset*cos(angle)*scale+halfHeight);
+                CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
+                                     fisheye*yOffset*cos(angle)*scale+halfHeight);
                 angle = atan2([point2 getZ],
                               [point2 getX]);
                 yOffset = asin([point2 getY]/1.9022) / (M_PI/2) + 1;
+
+                if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
+                else fisheye = 1;
                 
                 /*if(index2 != polaris){
                     if(yOffset < smallestY) smallestY = yOffset;
                     if(yOffset > largestY) largestY = yOffset;
                 }*/
-                CGContextAddLineToPoint(context, yOffset*sin(angle)*scale+halfWidth,
-                                        yOffset*cos(angle)*scale+halfHeight);
+                CGContextAddLineToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
+                                        fisheye*yOffset*cos(angle)*scale+halfHeight);
                 CGContextClosePath(context);
                 CGContextDrawPath(context, kCGPathFillStroke);
             }

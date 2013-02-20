@@ -168,7 +168,7 @@
                                 <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1Nb-ND-LxM">
+                            <segmentedControl opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1Nb-ND-LxM">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="73" type="user" id="5BZ-0c-gFq"/>
                                     <constraint firstAttribute="height" constant="27" type="user" id="iD5-Dr-E5K"/>
@@ -181,10 +181,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1Nb-ND-LxM" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="Cpt-Qh-8En"/>
                             <constraint firstItem="bU7-cx-ZwM" firstAttribute="leading" secondItem="63X-1r-BWh" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="OmR-he-m7C"/>
                             <constraint firstItem="1Nb-ND-LxM" firstAttribute="centerX" secondItem="63X-1r-BWh" secondAttribute="centerX" type="default" id="RJS-s5-c0y"/>
                             <constraint firstItem="bU7-cx-ZwM" firstAttribute="top" secondItem="63X-1r-BWh" secondAttribute="top" type="default" id="d2Z-fX-hhe"/>
-                            <constraint firstAttribute="bottom" secondItem="1Nb-ND-LxM" secondAttribute="bottom" constant="60" id="xDY-76-cah"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -197,6 +197,35 @@
         <image name="icosahedron_icon.png" width="100" height="100"/>
         <image name="textlogo.png" width="383" height="83"/>
     </resources>
+    <classes>
+        <class className="DiagramView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiagramView.h"/>
+        </class>
+        <class className="InstructionsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InstructionsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="diagramView" candidateClass="DiagramView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="solidChange:"/>
+                <relationship kind="action" name="valueChanged:" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="cropButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="domeVLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="solidButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="solidView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

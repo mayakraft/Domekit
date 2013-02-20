@@ -122,7 +122,7 @@
     else [self loadOctahedron];
     [self divideFaces:vNum];
     [self spherize];
-    [self connectTheDots];
+    if(vNum!=1)[self connectTheDots];
     [self classifyLines];
 }
 

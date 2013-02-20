@@ -23,6 +23,7 @@
     //HeightMarker *heightMarker;
     UIView *scaleWindow;
     CGFloat domeSize;
+    UIView *polarizingFilter;
 }
 
 @property (nonatomic,strong) IBOutlet DiagramView *diagramView;

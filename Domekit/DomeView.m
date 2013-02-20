@@ -77,8 +77,6 @@
     [self capturePoles];
     [self calculateInvisibles];
     [self setNeedsDisplay];
-    //if(dome.invisiblePoints_[octantis]) NSLog(@"Showable");
-    //else NSLog(@"Hidden");
 }
 
 -(void) refresh
