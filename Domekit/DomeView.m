@@ -49,6 +49,7 @@
 -(void) setScale:(double) s { scale = s; }
 -(Point3D*) getRotation{ return r; }
 -(void) setRotationX:(double)rX Y:(double)rY Z:(double)rZ { r = [[Point3D alloc] initWithCoordinatesX:rX Y:rY Z:rZ]; }
+-(BOOL) isSphere{return sphere;}
 
 -(void) capturePoles
 {
@@ -76,6 +77,8 @@
     [self capturePoles];
     [self calculateInvisibles];
     [self setNeedsDisplay];
+    //if(dome.invisiblePoints_[octantis]) NSLog(@"Showable");
+    //else NSLog(@"Hidden");
 }
 
 -(void) refresh
@@ -106,8 +109,12 @@
     {
         if([projectedPoints_[count] getY] > spliceLine.y){
             [invisiblePoints addObject:[[NSNumber alloc] initWithBool:TRUE]];
+            if(count == octantis) sphere = false;
         }
-        else [invisiblePoints addObject:[[NSNumber alloc] initWithBool:FALSE]];
+        else{
+            [invisiblePoints addObject:[[NSNumber alloc] initWithBool:FALSE]];
+            if(count == octantis) sphere = true;
+        }
     }
     dome.invisibleLines_ = [[NSArray alloc] initWithArray:invisibleLines];
     dome.invisiblePoints_ = [[NSArray alloc] initWithArray:invisiblePoints];

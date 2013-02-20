@@ -19,6 +19,7 @@
     NSArray *projectedPoints_;      // rotated points
     Dome *dome;
     int polaris, octantis;
+    BOOL sphere;  // during calculateInvisibles, updates wether a dome or a sphere
 }
 
 @property Dome *dome;
@@ -39,4 +40,5 @@
 -(void) setSpliceMode:(BOOL) splice;
 -(CGFloat) getSpliceY;
 -(void) setSpliceY:(CGFloat)y;
+-(BOOL) isSphere;
 @end

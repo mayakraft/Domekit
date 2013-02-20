@@ -30,6 +30,7 @@
 -(id) init
 {
     [self loadIcosahedron];
+    icosahedron = true;
     NSMutableArray *lineClass = [[NSMutableArray alloc] init];
     NSMutableArray *lineClassLengths = [[NSMutableArray alloc] init];
     NSMutableArray *invisiblePoints = [[NSMutableArray alloc] init];
@@ -61,6 +62,10 @@
     v = input.v;
     return self;
 }
+
+-(void) setIcosahedron {icosahedron = true;}
+
+-(void) setOctahedron {icosahedron = false;}
 
 -(void) classifyLines
 {
@@ -113,7 +118,8 @@
 
 -(void) geodecise:(int)vNum
 {
-    [self loadIcosahedron];
+    if(icosahedron)[self loadIcosahedron];
+    else [self loadOctahedron];
     [self divideFaces:vNum];
     [self spherize];
     [self connectTheDots];
@@ -217,7 +223,8 @@
             }
         }
     }
-    ceiling = shortest * 2.5;  //1.5 if using Distance, not DistanceSquared
+    if(!icosahedron) ceiling = shortest * 3.4;
+    else ceiling = shortest * 2.5;  //1.5 if using Distance, not DistanceSquared
     //all further line segments will be based on this shortest value:
     for(i = 0; i < points_.count; i++)
     {
@@ -302,6 +309,44 @@
         if(!found) [points addObject:points_[i]];
     }
     points_ = [[NSArray alloc] initWithArray:points];
+}
+
+-(void) loadOctahedron
+{
+    points_ = [[NSArray alloc] initWithObjects:
+               [[Point3D alloc] initWithCoordinatesX:0 Y:1.9 Z:0],
+               [[Point3D alloc] initWithCoordinatesX:1.9 Y:0 Z:0],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:-1.9],
+               
+               [[Point3D alloc] initWithCoordinatesX:-1.9 Y:0 Z:0],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:1.9],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:-1.9 Z:0], nil];
+    
+    lines_ = [[NSArray alloc] initWithObjects:
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:1],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:4],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:3],
+              [[NSNumber alloc] initWithInt:3],[[NSNumber alloc] initWithInt:4],
+              [[NSNumber alloc] initWithInt:4],[[NSNumber alloc] initWithInt:1],
+              [[NSNumber alloc] initWithInt:1],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:2],[[NSNumber alloc] initWithInt:3],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:4],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:3],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:1],
+              nil];
+    
+    faces_ = [[NSArray alloc] initWithObjects:
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:4],[[NSNumber alloc] initWithInt:1],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:1],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:2],[[NSNumber alloc] initWithInt:3],
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:3],[[NSNumber alloc] initWithInt:4],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:1],[[NSNumber alloc] initWithInt:4],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:4],[[NSNumber alloc] initWithInt:3],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:3],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:5],[[NSNumber alloc] initWithInt:2],[[NSNumber alloc] initWithInt:1],
+              nil];
 }
 
 -(void) loadIcosahedron

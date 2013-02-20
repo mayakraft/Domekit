@@ -29,7 +29,7 @@
 -(int) getPointCount;
 -(double) getDomeHeight;  /* returns value between 0 and 1 */
 -(NSArray*) getLengthOrder;
-
+-(BOOL) isSphere;
 
 -(NSArray*) getVisibleLineSpeciesCount;
 

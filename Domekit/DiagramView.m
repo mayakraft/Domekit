@@ -185,6 +185,9 @@
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
     
+    //double smallestY = 1.9022;
+    //double largestY = 0;
+    
     int index1, index2;
     countByOne = 0;
     for(count = 0; count < dome.lines_.count; count+=2)
@@ -210,7 +213,12 @@
                 angle = atan2([point1 getZ],
                               [point1 getX]);
                 yOffset = asin([point1 getY]/1.9022) / (M_PI/2) + 1;
-                
+
+                /*if(index1 != polaris){
+                    if(yOffset < smallestY) smallestY = yOffset;
+                    if(yOffset > largestY) largestY = yOffset;
+                }*/
+
                 CGContextBeginPath(context);
                 CGContextMoveToPoint(context, yOffset*sin(angle)*scale+halfWidth,
                                      yOffset*cos(angle)*scale+halfHeight);
@@ -218,6 +226,10 @@
                               [point2 getX]);
                 yOffset = asin([point2 getY]/1.9022) / (M_PI/2) + 1;
                 
+                /*if(index2 != polaris){
+                    if(yOffset < smallestY) smallestY = yOffset;
+                    if(yOffset > largestY) largestY = yOffset;
+                }*/
                 CGContextAddLineToPoint(context, yOffset*sin(angle)*scale+halfWidth,
                                         yOffset*cos(angle)*scale+halfHeight);
                 CGContextClosePath(context);
@@ -232,14 +244,12 @@
                     angle = atan2([point2 getZ],
                                   [point2 getX]);
                     yOffset = asin([point2 getY]/1.9022) / (M_PI/2) + 1;
-                    
                 }
                 else if(index2 == octantis)
                 {
                     angle = atan2([point1 getZ],
                                   [point1 getX]);
                     yOffset = asin([point1 getY]/1.9022) / (M_PI/2) + 1;
-                    
                 }
                 CGContextBeginPath(context);
                 CGContextSetLineDash(context, 0.0f, dashedLine, 2);
@@ -256,10 +266,10 @@
         }
         countByOne++;
     }
-    
+    //NSLog(@"Smallest: %.3f, Largest: %.3f",smallestY, largestY);
     //imageForContext = UIGraphicsGetImageFromCurrentImageContext();
     //UIGraphicsEndImageContext();
-
+    
 }
 
 

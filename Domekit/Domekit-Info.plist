@@ -14,8 +14,8 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>icon114.PNG</string>
-				<string>photo copy.PNG</string>
+				<string>domekit-icon.png</string>
+				<string>domekit-icon 57.png</string>
 				<string>icon72.png</string>
 				<string>icon144.png</string>
 			</array>
@@ -52,9 +52,6 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

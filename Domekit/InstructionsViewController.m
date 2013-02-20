@@ -7,6 +7,7 @@
 //
 
 #import "InstructionsViewController.h"
+#import "QuartzCore/QuartzCore.h"
 
 @interface InstructionsViewController ()
 
@@ -30,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    domeSize = 10;
     [diagramView setFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.height-50)];
     [diagramView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:diagramView];
@@ -55,9 +58,9 @@
     pointCountLabel.text = [NSString stringWithFormat:@"HUBS (%d)",[diagramView getPointCount]];
     [self.view addSubview:pointCountLabel];
 */
-    NSArray *speciesCount = [[NSArray alloc] initWithArray:[diagramView getVisibleLineSpeciesCount]];
-    NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
-    NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
+    //NSArray *speciesCount = [[NSArray alloc] initWithArray:[diagramView getVisibleLineSpeciesCount]];
+    //NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
+    //NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
     NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[diagramView getLengthOrder]];
     int i, j, index;
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
@@ -95,19 +98,48 @@
         [self.view addSubview:lengthLabels[i]];
     }*/
     
-    UIView *sizeCalculatorView = [[UIView alloc] initWithFrame:CGRectMake(0, [self.view bounds].size.height-120, [self.view bounds].size.width, 120)];
-    [self.view addSubview:sizeCalculatorView];
+    UIView *polarizingFilter = [[UIView alloc] initWithFrame:[self.view bounds]];
+    [polarizingFilter setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:1.0]];
+    [polarizingFilter setAlpha:0.16];
+    [self.view addSubview:polarizingFilter];
+    
+    scaleWindow = [[UIView alloc] initWithFrame:CGRectMake(0, [self.view bounds].size.height-200, [self.view bounds].size.width, 200)];
+    [scaleWindow setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:scaleWindow];
+    
+    UIButton *scaleTitle = [[UIButton alloc] initWithFrame:CGRectMake([self.view bounds].size.width/2-40, -24, 80, 30)];
+    [scaleTitle setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    scaleTitle.layer.masksToBounds = TRUE;
+    scaleTitle.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    scaleTitle.layer.borderWidth = 3;
+    [scaleTitle setTitle:[NSString stringWithFormat:@"SCALE"] forState:UIControlStateNormal];
+    [scaleTitle setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [scaleTitle.titleLabel setFont:[UIFont boldSystemFontOfSize:17.0]];
+    [scaleTitle.layer setCornerRadius:7.0f];
+    [scaleWindow addSubview:scaleTitle];
+    
+    UIView *scaleBody = [[UIView alloc] initWithFrame:CGRectMake(-3, 0, [self.view bounds].size.width+6, 203)];
+    [scaleBody setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    scaleBody.layer.masksToBounds = TRUE;
+    scaleBody.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    scaleBody.layer.borderWidth = 3;
+    [scaleWindow addSubview:scaleBody];
+
+    UIView *coverup = [[UIView alloc] initWithFrame:CGRectMake([self.view bounds].size.width/2-37, 0, 74, 3)];
+    [coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [scaleWindow addSubview:coverup];
+
+  
     domeCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle.png"]];
-    domeCircle.frame = CGRectMake(20, sizeCalculatorView.bounds.size.height/2-43, 86, 86);
+    domeCircle.frame = CGRectMake(20, scaleWindow.bounds.size.height/2-43, 86, 86);
     domeCircle.contentMode = UIViewContentModeTopLeft; // This determines position of image
     domeCircle.clipsToBounds = YES;
-    [sizeCalculatorView addSubview:domeCircle];
-    [sizeCalculatorView sendSubviewToBack:domeCircle];
+    [scaleWindow addSubview:domeCircle];
     
-    heightMarker = [[HeightMarker alloc] initWithFrame:CGRectMake(5, sizeCalculatorView.bounds.size.height/2-43, 15, 86)];
-    [heightMarker setBackgroundColor:[UIColor clearColor]];
-    [sizeCalculatorView addSubview:heightMarker];
-    [sizeCalculatorView bringSubviewToFront:heightMarker];
+    //heightMarker = [[HeightMarker alloc] initWithFrame:CGRectMake(5, scaleWindow.bounds.size.height/2-43, 15, 86)];
+    //[heightMarker setBackgroundColor:[UIColor clearColor]];
+    //[scaleWindow addSubview:heightMarker];
+    //[scaleWindow bringSubviewToFront:heightMarker];
 
     voyagerman = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagermandark.png"]];
     voyagerman.frame = CGRectMake(0,0,domeCircle.bounds.size.height*.4,domeCircle.bounds.size.height);
@@ -115,26 +147,38 @@
     voyagercat = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercatdark.png"]];
     voyagercat.frame = CGRectMake(0,0,domeCircle.bounds.size.height*.3,domeCircle.bounds.size.height*.3*.75);
     voyagercat.alpha = 0;
-    scaleFigureView = [[UIView alloc] initWithFrame:CGRectMake(20+domeCircle.bounds.size.width, sizeCalculatorView.bounds.size.height/2-43, 86, 86)];
+    scaleFigureView = [[UIView alloc] initWithFrame:CGRectMake(20+domeCircle.bounds.size.width, scaleWindow.bounds.size.height/2-43, 86, 86)];
     scaleFigureView.backgroundColor = [UIColor clearColor];
     scaleFigureView.hidden = FALSE;
     scaleFigureView.clipsToBounds = YES;
     [scaleFigureView addSubview:voyagerman];
     [scaleFigureView addSubview:voyagercat];
-    [sizeCalculatorView addSubview:scaleFigureView];
+    [scaleWindow addSubview:scaleFigureView];
     
     UIButton *makeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [makeButton setFrame:CGRectMake(sizeCalculatorView.bounds.size.width-120,sizeCalculatorView.bounds.size.height/2-20,100,40)];
-    [makeButton setTitle:[NSString stringWithFormat:@"make ▸"] forState:UIControlStateNormal];
+    [makeButton setFrame:CGRectMake(scaleWindow.bounds.size.width-100,scaleWindow.bounds.size.height-40,80,30)];
+    [makeButton setTitle:[NSString stringWithFormat:@"make"] forState:UIControlStateNormal];
     [makeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    makeButton.titleLabel.font = [UIFont systemFontOfSize:20.0];
-    [sizeCalculatorView addSubview:makeButton];
+    makeButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    [scaleWindow addSubview:makeButton];
     
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeCalculatorView.bounds.size.width-120,sizeCalculatorView.bounds.size.height/2+30,100,40)];
-    heightLabel.text = [NSString stringWithFormat:@"Height: "];
-    heightLabel.font = [UIFont systemFontOfSize:20.0];
+    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(scaleWindow.bounds.size.width-120,10,100,40)];
+    heightLabel.text = [NSString stringWithFormat:@"HEIGHT: "];
+    heightLabel.font = [UIFont systemFontOfSize:12.0];
     heightLabel.textColor = [UIColor blackColor];
+    [heightLabel setBackgroundColor:[UIColor clearColor]];
+    [scaleWindow addSubview:heightLabel];
+    
+    [self refreshHeight];
+}
 
+-(void) refreshHeight
+{
+    int height = 86 * [diagramView getDomeHeight];
+    domeCircle.frame = CGRectMake(20, scaleWindow.bounds.size.height/2-43+(86-height), 86, height);
+    //sizeLabel.text = [NSString stringWithFormat:@"%.2f",(domeSize*[diagramView getDomeHeight])];
+    //heightMarker.frame = CGRectMake(5, scaleWindow.bounds.size.height/2-43+(86-height), 15, height);
+    //[heightMarker setNeedsDisplay];
 }
 
 - (void)didReceiveMemoryWarning

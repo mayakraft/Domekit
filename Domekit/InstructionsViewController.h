@@ -20,8 +20,9 @@
     UIImageView *voyagerman;
     UIImageView *voyagercat;
     UIImageView *domeCircle;
-    HeightMarker *heightMarker;
-
+    //HeightMarker *heightMarker;
+    UIView *scaleWindow;
+    CGFloat domeSize;
 }
 
 @property (nonatomic,strong) IBOutlet DiagramView *diagramView;

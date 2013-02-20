@@ -21,6 +21,7 @@
     NSArray *lineClass_;  //   category of lines by class
     NSArray *lineClassLengths_;  //  lengths of each category of lines
     int v;
+    BOOL icosahedron; // 1 = icosa, 0 = octa
 }
 
 @property NSArray *points_;
@@ -36,5 +37,7 @@
 -(id) initWithDome:(Dome*) input;
 -(void) geodecise:(int)v;
 -(void) classifyLines;
+-(void) setIcosahedron;
+-(void) setOctahedron;
 
 @end

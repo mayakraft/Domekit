@@ -17,6 +17,11 @@
 @synthesize instructionButton;
 @synthesize domeVLabel;
 @synthesize cropButton;
+@synthesize VLabel;
+@synthesize FractionLabel;
+@synthesize SolidLabel;
+@synthesize solidButton;
+@synthesize solidView;
 //@synthesize sizeButton;
 //@synthesize sizeLabel;
 //@synthesize sizeFPartLabel;
@@ -28,7 +33,8 @@
     
     //sizeToggle = false;
     //domeSize = 10;
-    
+    VNumber = 1;
+    icosahedron = true;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     domeView = [[DomeView alloc] initWithFrame:CGRectMake([self.view bounds].size.width*.05,
                                                           [self.view bounds].size.height*.1,
@@ -65,6 +71,13 @@
     [cropButton setBackgroundColor:[UIColor whiteColor]];
     [cropButton addTarget:self action:@selector(toggleSpliceMode) forControlEvents:UIControlEventTouchDown];
 
+    [solidButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    [solidButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
+    [solidButton.layer setCornerRadius:7.0f];
+    solidButton.layer.masksToBounds = TRUE;
+    solidButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    solidButton.layer.borderWidth = 1;
+
     /*sizeButton.layer.masksToBounds = TRUE;
     sizeButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
     sizeButton.layer.borderWidth = 3;
@@ -90,17 +103,44 @@
 }
 
 - (IBAction)valueChanged:(UIStepper *)sender {
-    int value = [sender value];
-    if(value > 0){
-        [domeView generate:value];
+    VNumber = [sender value];
+    if(VNumber > 0){
+        [domeView generate:VNumber];
         [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         
         //[self refreshHeight];
         //[self adjustSizeView];
+        if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
+        else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
 
+        VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];
         NSString *string = [[NSString alloc] initWithFormat:@"•"];
-        for(int i = 1; i < value; i++) string = [string stringByAppendingString:@"•"];
+        for(int i = 1; i < VNumber; i++) string = [string stringByAppendingString:@"•"];
         domeVLabel.text = string;
+        
+    }
+}
+
+-(IBAction)solidChange:(id)sender
+{
+    if(icosahedron)
+    {
+        solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
+        SolidLabel.text = [NSString stringWithFormat:@"OCTAHEDRON"];
+        icosahedron = false;
+        [domeView.dome setOctahedron];
+        [diagramView.dome setOctahedron];
+        [domeView generate:VNumber];
+        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+    }
+    else{
+        solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
+        SolidLabel.text = [NSString stringWithFormat:@"ICOSAHEDRON"];
+        icosahedron = true;
+        [domeView.dome setIcosahedron];
+        [diagramView.dome setIcosahedron];
+        [domeView generate:VNumber];
+        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     }
 }
 /*
@@ -230,6 +270,8 @@
         [domeView setSpliceMode:false];
         [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         [cropButton setTitleColor:[UIColor lightGrayColor] forState:UIControlEventTouchDown];
+        if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
+        else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
         //[self refreshHeight];
         //[self adjustSizeView];
     }

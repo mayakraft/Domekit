@@ -21,6 +21,8 @@
     CGFloat touchPanEdit;     // last position in pan during splice mode
     //CGFloat touchPanSize;     // last position in pan during size mode
     CGFloat touchPinch;       // last position in pinch to scale
+    BOOL icosahedron;
+    int VNumber;
     
     //BOOL sizeToggle;
     //CGFloat domeSize;
@@ -30,6 +32,12 @@
 @property IBOutlet UIButton *instructionButton;
 @property IBOutlet UILabel *domeVLabel;
 @property IBOutlet UIButton *cropButton;
+@property IBOutlet UILabel *VLabel;
+@property IBOutlet UILabel *FractionLabel;
+@property IBOutlet UILabel *SolidLabel;
+@property IBOutlet UIButton *solidButton;
+@property IBOutlet UIImageView *solidView;
+
 //@property IBOutlet UIButton *sizeButton;
 //@property IBOutlet UILabel *sizeLabel;
 //@property IBOutlet UILabel *sizeFPartLabel;
