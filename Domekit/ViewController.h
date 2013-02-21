@@ -30,7 +30,6 @@
 }
 
 @property IBOutlet UIButton *instructionButton;
-@property IBOutlet UILabel *domeVLabel;
 @property IBOutlet UIButton *cropButton;
 @property IBOutlet UILabel *VLabel;
 @property IBOutlet UILabel *FractionLabel;

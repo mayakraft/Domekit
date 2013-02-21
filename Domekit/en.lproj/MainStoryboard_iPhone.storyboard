@@ -51,15 +51,6 @@
                                     <segue destination="gv2-rd-QI4" kind="modal" identifier="InstructionSegue" modalTransitionStyle="partialCurl" id="Hlo-1K-cof"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="•" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Ydp-IC-tpa">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="280" type="user" id="Huu-11-nBi"/>
-                                    <constraint firstAttribute="height" constant="29" id="hFw-VN-AD3"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="54"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXr-KM-our">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="dfT-nT-N1r"/>
@@ -82,7 +73,7 @@
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="icosahedron_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="kkj-uw-KFm">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="71" id="IGs-R4-6Eh"/>
+                                    <constraint firstAttribute="height" constant="71" id="Mxv-ci-mKO"/>
                                     <constraint firstAttribute="width" constant="71" id="mav-Gf-mbP"/>
                                 </constraints>
                             </imageView>
@@ -113,30 +104,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="blh-dU-RsC" firstAttribute="top" secondItem="8Y8-qe-EGQ" secondAttribute="top" type="default" id="1xH-9v-duM"/>
+                            <constraint firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" constant="93" id="27V-ay-eTi"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="leading" secondItem="UpT-we-ZEx" secondAttribute="leading" type="default" id="3Mi-qa-pwG"/>
-                            <constraint firstItem="Ydp-IC-tpa" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="3Ne-Hk-PUr"/>
-                            <constraint firstAttribute="bottom" secondItem="Ydp-IC-tpa" secondAttribute="bottom" constant="98" type="user" id="7cP-2U-HuZ"/>
-                            <constraint firstItem="8Y8-qe-EGQ" firstAttribute="bottom" secondItem="Pso-ei-aNV" secondAttribute="bottom" type="default" id="7xc-XA-01i"/>
+                            <constraint firstAttribute="bottom" secondItem="Pso-ei-aNV" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="9Kg-Cz-c3k"/>
+                            <constraint firstItem="sXr-KM-our" firstAttribute="centerX" secondItem="blh-dU-RsC" secondAttribute="centerX" type="default" id="B8W-rD-pLB"/>
                             <constraint firstAttribute="trailing" secondItem="Pso-ei-aNV" secondAttribute="trailing" constant="12" id="Bge-A6-wK4"/>
-                            <constraint firstAttribute="trailing" secondItem="sXr-KM-our" secondAttribute="trailing" constant="27" id="Ggm-kY-AEa"/>
-                            <constraint firstAttribute="bottom" secondItem="ia1-CD-EpV" secondAttribute="bottom" constant="33" id="K9g-hw-7hp"/>
+                            <constraint firstAttribute="bottom" secondItem="ia1-CD-EpV" secondAttribute="bottom" constant="19" id="GYY-AO-MLG"/>
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="24" id="Ljz-he-s2B"/>
                             <constraint firstItem="3Uk-cy-J4t" firstAttribute="centerX" secondItem="blh-dU-RsC" secondAttribute="centerX" type="default" id="NTr-68-Iyz"/>
-                            <constraint firstAttribute="trailing" secondItem="Ydp-IC-tpa" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="QbF-sN-2Y5"/>
-                            <constraint firstItem="Pso-ei-aNV" firstAttribute="top" secondItem="blh-dU-RsC" secondAttribute="top" type="user" id="S4Y-bS-4nn"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="centerY" secondItem="8Y8-qe-EGQ" secondAttribute="centerY" type="default" id="UD8-ay-pfl"/>
-                            <constraint firstAttribute="bottom" secondItem="3Uk-cy-J4t" secondAttribute="bottom" constant="46" id="WMN-fE-PFq"/>
+                            <constraint firstAttribute="bottom" secondItem="blh-dU-RsC" secondAttribute="bottom" constant="57" id="UF3-Ax-7bq"/>
+                            <constraint firstItem="blh-dU-RsC" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="XcU-gi-Dds"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="trailing" secondItem="UpT-we-ZEx" secondAttribute="trailing" type="default" id="Xyh-Xl-rfw"/>
+                            <constraint firstAttribute="bottom" secondItem="8Y8-qe-EGQ" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="bmj-mM-wOo"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="trailing" secondItem="3Uk-cy-J4t" secondAttribute="trailing" type="default" id="dE4-jU-U3B"/>
-                            <constraint firstItem="Ydp-IC-tpa" firstAttribute="centerX" secondItem="blh-dU-RsC" secondAttribute="centerX" type="default" id="nzC-nW-JFo"/>
+                            <constraint firstItem="8Y8-qe-EGQ" firstAttribute="top" secondItem="Pso-ei-aNV" secondAttribute="top" type="default" id="nOw-9g-kDy"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="leading" secondItem="3Uk-cy-J4t" secondAttribute="leading" type="default" id="pCb-tO-Rb8"/>
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="top" secondItem="3" secondAttribute="top" constant="11" id="qvW-ev-mZh"/>
-                            <constraint firstItem="ijo-G8-f5R" firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" type="default" id="rRL-7F-wm6"/>
+                            <constraint firstAttribute="bottom" secondItem="UpT-we-ZEx" secondAttribute="bottom" constant="6" id="sES-4u-Lht"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="19" id="sJr-oi-Fyt"/>
-                            <constraint firstItem="kkj-uw-KFm" firstAttribute="top" secondItem="Ydp-IC-tpa" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="uxo-fZ-tt9"/>
+                            <constraint firstAttribute="bottom" secondItem="3Uk-cy-J4t" secondAttribute="bottom" constant="32" id="x9P-kx-qXk"/>
                             <constraint firstItem="8Y8-qe-EGQ" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="12" id="zFx-Mo-pzc"/>
-                            <constraint firstAttribute="bottom" secondItem="UpT-we-ZEx" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="zpn-43-3yC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="LuC-kt-QaI"/>
@@ -145,7 +133,6 @@
                         <outlet property="SolidLabel" destination="ia1-CD-EpV" id="Okt-C9-nyQ"/>
                         <outlet property="VLabel" destination="3Uk-cy-J4t" id="Qkv-He-wZC"/>
                         <outlet property="cropButton" destination="sXr-KM-our" id="p8K-3l-bS7"/>
-                        <outlet property="domeVLabel" destination="Ydp-IC-tpa" id="cwQ-9n-SYn"/>
                         <outlet property="instructionButton" destination="Pso-ei-aNV" id="4bv-pe-vt5"/>
                         <outlet property="solidButton" destination="8Y8-qe-EGQ" id="Di9-ga-SFO"/>
                         <outlet property="solidView" destination="kkj-uw-KFm" id="upc-7c-58j"/>
@@ -192,10 +179,6 @@
         <class className="InstructionsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/InstructionsViewController.h"/>
             <relationships>
-                <relationship kind="action" name="makePress:"/>
-                <relationship kind="action" name="nodeDetailPress:"/>
-                <relationship kind="action" name="scalePress:"/>
-                <relationship kind="action" name="strutDetailPress:"/>
                 <relationship kind="outlet" name="diagramView" candidateClass="DiagramView"/>
             </relationships>
         </class>
@@ -211,7 +194,6 @@
                 <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="cropButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="domeVLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="solidButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="solidView" candidateClass="UIImageView"/>

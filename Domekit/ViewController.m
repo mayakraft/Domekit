@@ -15,7 +15,6 @@
 
 @implementation ViewController
 @synthesize instructionButton;
-@synthesize domeVLabel;
 @synthesize cropButton;
 @synthesize VLabel;
 @synthesize FractionLabel;
@@ -48,7 +47,7 @@
     [self.view addSubview:domeView];
     [self.view sendSubviewToBack:domeView];
     
-    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake([self.view bounds].size.width-98, [self.view bounds].size.height-98, 86, 86) Dome:domeView.dome];
+    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake([self.view bounds].size.width-98, [self.view bounds].size.height-106, 86, 86) Dome:domeView.dome];
     //[domeView capturePoles];
     [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     [diagramView setBackgroundColor:[UIColor clearColor]];
@@ -114,10 +113,6 @@
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
 
         VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];
-        NSString *string = [[NSString alloc] initWithFormat:@"•"];
-        for(int i = 1; i < VNumber; i++) string = [string stringByAppendingString:@"•"];
-        domeVLabel.text = string;
-        
     }
 }
 
