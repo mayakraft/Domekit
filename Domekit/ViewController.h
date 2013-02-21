@@ -22,6 +22,7 @@
     //CGFloat touchPanSize;     // last position in pan during size mode
     CGFloat touchPinch;       // last position in pinch to scale
     BOOL icosahedron;
+    BOOL alignToSplice;        // auto-aligns dome before splicing
     int VNumber;
     
     //BOOL sizeToggle;
@@ -36,6 +37,7 @@
 @property IBOutlet UILabel *SolidLabel;
 @property IBOutlet UIButton *solidButton;
 @property IBOutlet UIImageView *solidView;
+@property IBOutlet UIStepper *stepper;
 
 //@property IBOutlet UIButton *sizeButton;
 //@property IBOutlet UILabel *sizeLabel;

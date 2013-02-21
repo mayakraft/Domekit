@@ -31,6 +31,7 @@
 -(void) generate:(int)domeV;
 -(void) refresh;
 -(void) report;
+-(void) align;
 
 -(Point3D*) getRotation;
 -(void) setRotationX:(double)rX Y:(double)rY Z:(double)rZ;

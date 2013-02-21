@@ -37,6 +37,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pso-ei-aNV">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="87" id="Cpj-em-rRS"/>
                                     <constraint firstAttribute="width" constant="86" id="aLq-JP-nB4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" size="button"/>
@@ -101,30 +102,48 @@
                                 <color key="textColor" red="0.38775510204081631" green="0.38775510204081631" blue="0.38775510204081631" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" alpha="0.60000000000000009" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4B-OV-egz">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="IDI-lE-jow"/>
+                                    <constraint firstAttribute="width" constant="30" id="n9c-Yv-0Or"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" backgroundImage="aligndome.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="alignDomeButton:" destination="2" eventType="touchUpInside" id="p5B-OI-hmG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" constant="93" id="27V-ay-eTi"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="leading" secondItem="UpT-we-ZEx" secondAttribute="leading" type="default" id="3Mi-qa-pwG"/>
+                            <constraint firstItem="g4B-OV-egz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="10" id="7va-ia-3bI"/>
                             <constraint firstAttribute="bottom" secondItem="Pso-ei-aNV" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="9Kg-Cz-c3k"/>
                             <constraint firstItem="sXr-KM-our" firstAttribute="centerX" secondItem="blh-dU-RsC" secondAttribute="centerX" type="default" id="B8W-rD-pLB"/>
-                            <constraint firstAttribute="trailing" secondItem="Pso-ei-aNV" secondAttribute="trailing" constant="12" id="Bge-A6-wK4"/>
                             <constraint firstAttribute="bottom" secondItem="ia1-CD-EpV" secondAttribute="bottom" constant="19" id="GYY-AO-MLG"/>
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="24" id="Ljz-he-s2B"/>
                             <constraint firstItem="3Uk-cy-J4t" firstAttribute="centerX" secondItem="blh-dU-RsC" secondAttribute="centerX" type="default" id="NTr-68-Iyz"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="centerY" secondItem="8Y8-qe-EGQ" secondAttribute="centerY" type="default" id="UD8-ay-pfl"/>
                             <constraint firstAttribute="bottom" secondItem="blh-dU-RsC" secondAttribute="bottom" constant="57" id="UF3-Ax-7bq"/>
-                            <constraint firstItem="blh-dU-RsC" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="XcU-gi-Dds"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="trailing" secondItem="UpT-we-ZEx" secondAttribute="trailing" type="default" id="Xyh-Xl-rfw"/>
+                            <constraint firstItem="ia1-CD-EpV" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="YCe-I8-YRa"/>
                             <constraint firstAttribute="bottom" secondItem="8Y8-qe-EGQ" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="bmj-mM-wOo"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="trailing" secondItem="3Uk-cy-J4t" secondAttribute="trailing" type="default" id="dE4-jU-U3B"/>
-                            <constraint firstItem="8Y8-qe-EGQ" firstAttribute="top" secondItem="Pso-ei-aNV" secondAttribute="top" type="default" id="nOw-9g-kDy"/>
+                            <constraint firstAttribute="trailing" secondItem="Pso-ei-aNV" secondAttribute="trailing" constant="13" id="g1R-eT-vwG"/>
                             <constraint firstItem="ia1-CD-EpV" firstAttribute="leading" secondItem="3Uk-cy-J4t" secondAttribute="leading" type="default" id="pCb-tO-Rb8"/>
-                            <constraint firstItem="ijo-G8-f5R" firstAttribute="top" secondItem="3" secondAttribute="top" constant="11" id="qvW-ev-mZh"/>
                             <constraint firstAttribute="bottom" secondItem="UpT-we-ZEx" secondAttribute="bottom" constant="6" id="sES-4u-Lht"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="19" id="sJr-oi-Fyt"/>
                             <constraint firstAttribute="bottom" secondItem="3Uk-cy-J4t" secondAttribute="bottom" constant="32" id="x9P-kx-qXk"/>
+                            <constraint firstAttribute="trailing" secondItem="g4B-OV-egz" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="z15-he-PGS"/>
                             <constraint firstItem="8Y8-qe-EGQ" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="12" id="zFx-Mo-pzc"/>
+                            <constraint firstItem="g4B-OV-egz" firstAttribute="centerY" secondItem="ijo-G8-f5R" secondAttribute="centerY" type="default" id="zKT-mE-30z"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="LuC-kt-QaI"/>
@@ -136,6 +155,7 @@
                         <outlet property="instructionButton" destination="Pso-ei-aNV" id="4bv-pe-vt5"/>
                         <outlet property="solidButton" destination="8Y8-qe-EGQ" id="Di9-ga-SFO"/>
                         <outlet property="solidView" destination="kkj-uw-KFm" id="upc-7c-58j"/>
+                        <outlet property="stepper" destination="blh-dU-RsC" id="Uf3-K9-I4t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -169,6 +189,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="aligndome.png" width="60" height="60"/>
         <image name="icosahedron_icon.png" width="100" height="100"/>
         <image name="textlogo.png" width="383" height="83"/>
     </resources>
@@ -179,6 +200,10 @@
         <class className="InstructionsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/InstructionsViewController.h"/>
             <relationships>
+                <relationship kind="action" name="makePress:"/>
+                <relationship kind="action" name="nodeDetailPress:"/>
+                <relationship kind="action" name="scalePress:"/>
+                <relationship kind="action" name="strutDetailPress:"/>
                 <relationship kind="outlet" name="diagramView" candidateClass="DiagramView"/>
             </relationships>
         </class>
@@ -188,6 +213,7 @@
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
+                <relationship kind="action" name="alignDomeButton:"/>
                 <relationship kind="action" name="solidChange:"/>
                 <relationship kind="action" name="valueChanged:" candidateClass="UIStepper"/>
                 <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
@@ -197,6 +223,7 @@
                 <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="solidButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="solidView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="stepper" candidateClass="UIStepper"/>
             </relationships>
         </class>
     </classes>

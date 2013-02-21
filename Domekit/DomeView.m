@@ -70,6 +70,12 @@
     }
 }
 
+-(void) align
+{
+    r = [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:0];
+    projectedPoints_ = [[NSArray alloc] initWithArray:dome.points_];
+}
+
 -(void) generate:(int)domeV
 {
     [dome geodecise:domeV];

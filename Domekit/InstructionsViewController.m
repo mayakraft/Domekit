@@ -43,8 +43,8 @@
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     
-    //StrutScale = 30;
-    StrutScale /= 2*sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
+    StrutScale = 5;
+    //StrutScale /= 2*sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
 
     UILabel *nodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, self.view.bounds.size.height-70, 200, 30)];
     [nodeLabel setBackgroundColor:[UIColor clearColor]];

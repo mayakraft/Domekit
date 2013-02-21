@@ -36,6 +36,7 @@
 		D5217ED616C8616700E98F34 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D5217ED516C8616700E98F34 /* white.png */; };
 		D5217ED816C862E500E98F34 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5217ED716C862E500E98F34 /* QuartzCore.framework */; };
 		D5217EDA16C863BB00E98F34 /* foggy.png in Resources */ = {isa = PBXBuildFile; fileRef = D5217ED916C863BA00E98F34 /* foggy.png */; };
+		D530D05E16D6E8FA00EFDFB9 /* aligndome.png in Resources */ = {isa = PBXBuildFile; fileRef = D530D05D16D6E8FA00EFDFB9 /* aligndome.png */; };
 		D53FF3B916CB00C2009F3C6F /* blackboard_320.png in Resources */ = {isa = PBXBuildFile; fileRef = D53FF3B816CB00C2009F3C6F /* blackboard_320.png */; };
 		D55A031116CC63FA00884E16 /* domecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031016CC63FA00884E16 /* domecircle.png */; };
 		D55A031816CC856B00884E16 /* voyagerman.png in Resources */ = {isa = PBXBuildFile; fileRef = D55A031716CC856B00884E16 /* voyagerman.png */; };
@@ -105,6 +106,7 @@
 		D5217ED516C8616700E98F34 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		D5217ED716C862E500E98F34 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D5217ED916C863BA00E98F34 /* foggy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggy.png; sourceTree = "<group>"; };
+		D530D05D16D6E8FA00EFDFB9 /* aligndome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aligndome.png; sourceTree = "<group>"; };
 		D53FF3B816CB00C2009F3C6F /* blackboard_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackboard_320.png; sourceTree = "<group>"; };
 		D55A031016CC63FA00884E16 /* domecircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle.png; sourceTree = "<group>"; };
 		D55A031716CC856B00884E16 /* voyagerman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagerman.png; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				D514EE0816B748A5000D9264 /* AppDelegate.h */,
 				D59B414B16D38FDC00A90C52 /* textlogo.png */,
 				D58158EF16D6030B0049E0A2 /* icosahedron_icon.png */,
+				D530D05D16D6E8FA00EFDFB9 /* aligndome.png */,
 				D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */,
 				D514EE0916B748A5000D9264 /* AppDelegate.m */,
 				D514EE1116B748A5000D9264 /* MainStoryboard_iPhone.storyboard */,
@@ -202,8 +205,8 @@
 				D5CCFF8116C08FE400E27EE0 /* DiagramView.m */,
 				D514EE3716B74A13000D9264 /* DomeView.h */,
 				D514EE3816B74A13000D9264 /* DomeView.m */,
-				D514EE3E16B74F81000D9264 /* Dome.h */,
 				D514EE3F16B74F81000D9264 /* Dome.m */,
+				D514EE3E16B74F81000D9264 /* Dome.h */,
 				D514EE4116B7E35A000D9264 /* Point3D.h */,
 				D514EE4216B7E35A000D9264 /* Point3D.m */,
 				D564799016D010E800FCBDE0 /* HeightMarker.h */,
@@ -366,6 +369,7 @@
 				D59B414C16D38FDC00A90C52 /* textlogo.png in Resources */,
 				D5C4267E16D4B46800FA1DCD /* octahedron_icon.png in Resources */,
 				D58158F016D6030B0049E0A2 /* icosahedron_icon.png in Resources */,
+				D530D05E16D6E8FA00EFDFB9 /* aligndome.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

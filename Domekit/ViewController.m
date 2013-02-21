@@ -21,6 +21,7 @@
 @synthesize SolidLabel;
 @synthesize solidButton;
 @synthesize solidView;
+@synthesize stepper;
 //@synthesize sizeButton;
 //@synthesize sizeLabel;
 //@synthesize sizeFPartLabel;
@@ -34,6 +35,7 @@
     //domeSize = 10;
     VNumber = 1;
     icosahedron = true;
+    alignToSplice = true;
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     domeView = [[DomeView alloc] initWithFrame:CGRectMake([self.view bounds].size.width*.05,
                                                           [self.view bounds].size.height*.1,
@@ -64,9 +66,11 @@
     
     cropButton.adjustsImageWhenHighlighted = false;
     [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
+    [cropButton.layer setCornerRadius:7.0f];
+    [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     cropButton.layer.masksToBounds = TRUE;
-    cropButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
-    cropButton.layer.borderWidth = 3;
+    cropButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    cropButton.layer.borderWidth = 1;
     [cropButton setBackgroundColor:[UIColor whiteColor]];
     [cropButton addTarget:self action:@selector(toggleSpliceMode) forControlEvents:UIControlEventTouchDown];
 
@@ -104,6 +108,8 @@
 - (IBAction)valueChanged:(UIStepper *)sender {
     VNumber = [sender value];
     if(VNumber > 0){
+        
+        if(alignToSplice) [domeView align];
         [domeView generate:VNumber];
         [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         
@@ -116,13 +122,27 @@
     }
 }
 
+-(IBAction)alignDomeButton:(id)sender
+{
+    if(alignToSplice){
+        alignToSplice = false;
+        [sender setAlpha:.17];
+    }
+    else{
+        alignToSplice = true;
+        [sender setAlpha:.6];
+    }
+}
 -(IBAction)solidChange:(id)sender
 {
+    if(alignToSplice) [domeView align];
     if(icosahedron)
     {
         solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"OCTAHEDRON"];
         icosahedron = false;
+        stepper.maximumValue = 4;
+        if(VNumber > 4) {VNumber = 4; stepper.value = 4;VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];}
         [domeView.dome setOctahedron];
         [diagramView.dome setOctahedron];
         [domeView generate:VNumber];
@@ -132,6 +152,7 @@
         solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"ICOSAHEDRON"];
         icosahedron = true;
+        stepper.maximumValue = 64;
         [domeView.dome setIcosahedron];
         [diagramView.dome setIcosahedron];
         [domeView generate:VNumber];
@@ -199,41 +220,6 @@
     if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
     {
         CGPoint translation = [sender translationInView:self.view];
-        /*if (sizeToggle)
-        {
-            if([sender state] == 1) touchPanSize = domeSize;
-            
-            domeSize = translation.y/400*domeSize + touchPanSize;
-            
-            double sphereHeight = [domeView getScale] * 2 * sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
-            int margin = (scaleFigureView.bounds.size.height - sphereHeight)/2;  // between tip of dome and border
-            int floor = margin+ sphereHeight*[diagramView getDomeHeight];
-            if(domeSize < 4){
-                voyagerman.alpha = 0;
-                voyagercat.alpha = .4;
-            }
-            else if(domeSize > 6) {
-                voyagerman.alpha = .4;
-                voyagercat.alpha = .0;
-            }
-            else {
-                voyagerman.alpha = .4*((domeSize-4)/2);
-                voyagercat.alpha = .4*(1-(domeSize-4)/2);
-            }
-            
-            voyagerman.frame = CGRectMake(scaleFigureView.bounds.size.width/2.0 - (1/(domeSize/6)*scaleFigureView.bounds.size.height*.8*.4)/2,
-                                          floor-1/(domeSize/6)*scaleFigureView.bounds.size.height*.8,
-                                          1/(domeSize/6)*scaleFigureView.bounds.size.height*.8*.4,
-                                          1/(domeSize/6)*scaleFigureView.bounds.size.height*.8);
-            //CGRectMake(0,0,domeView.bounds.size.height*.3,domeView.bounds.size.height*.3*.75)
-            voyagercat.frame = CGRectMake(scaleFigureView.bounds.size.width/2.0 - (1/(domeSize/6)*scaleFigureView.bounds.size.height*.3)/2,
-                                          floor-1/(domeSize/6)*scaleFigureView.bounds.size.height*.3*.75,
-                                          1/(domeSize/6)*scaleFigureView.bounds.size.height*.3,
-                                          1/(domeSize/6)*scaleFigureView.bounds.size.height*.3*.75);
-            sizeLabel.text = [NSString stringWithFormat:@"%d",(int)(domeSize*[diagramView getDomeHeight])];
-            sizeFPartLabel.text = [NSString stringWithFormat:@"%d", (int)floorf( 10*(domeSize*[diagramView getDomeHeight]-(int)(domeSize*[diagramView getDomeHeight])) ) ];
-            //[self adjustSizeView];
-        }*/
         if([domeView getSpliceMode])
         {
             if([sender state] == 1) touchPanEdit = [domeView getSpliceY];
@@ -258,13 +244,15 @@
 {
     //if(sizeToggle) [self toggleSizeMode];
     if([domeView getSpliceMode]){
-        [cropButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        cropButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
+        [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        [cropButton.layer setCornerRadius:7.0f];
+        cropButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        cropButton.layer.borderWidth = 1.0;
         domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
         [domeView capturePoles];
         [domeView setSpliceMode:false];
         [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
-        [cropButton setTitleColor:[UIColor lightGrayColor] forState:UIControlEventTouchDown];
+        [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlEventTouchDown];
         if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
         //[self refreshHeight];
@@ -273,7 +261,13 @@
     else{
         domeView.layer.borderColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0].CGColor;
         cropButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0].CGColor;
+        //[cropButton.layer setCornerRadius:0.0f];
+        cropButton.layer.borderWidth = 3.0;
         [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlStateNormal];
+        if(alignToSplice)
+        {
+            [domeView align];
+        }
         [domeView setSpliceMode:true];
         [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     }
