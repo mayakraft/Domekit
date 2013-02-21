@@ -204,6 +204,8 @@
         <class className="InstructionsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/InstructionsViewController.h"/>
             <relationships>
+                <relationship kind="action" name="makePress:"/>
+                <relationship kind="action" name="scalePress:"/>
                 <relationship kind="outlet" name="diagramView" candidateClass="DiagramView"/>
             </relationships>
         </class>

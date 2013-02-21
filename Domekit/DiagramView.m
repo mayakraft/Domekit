@@ -167,21 +167,23 @@
     CGFloat dashedLine[2] = {0.5,1.5};
     
     NSArray *lengthOrder = [[NSArray alloc] initWithArray:[self getLengthOrder]];
-    //NSLog(@"Length Order Count: %d",lengthOrder.count);
-    //NSLog(@"Line Class Lengths count: %d",dome.lineClassLengths_.count);
-    
-    //for(count = 0; count < lengthOrder.count; count++) NSLog(@"LngthOrd: %@",lengthOrder[count]);
-    // set scale
+
     for(count = 0; count < dome.points_.count; count++)
     {
-        if( [dome.invisiblePoints_[count] boolValue] == FALSE)
+        if( count != octantis &&[dome.invisiblePoints_[count] boolValue] == FALSE)
         {
             yOffset = asin([dome.points_[count] getY]/1.9022) / (M_PI/2) + 1;
             if(yOffset > lowest) lowest = yOffset;
         }
     }
-    if(lowest > 1.63) scale = size/(lowest*1.25);
-    else scale = size/(lowest);
+    if([dome.invisiblePoints_[octantis] boolValue] == TRUE)
+    {
+        if(lowest > 1.63) scale = size/(lowest*1.25);
+        else scale = size/(lowest);
+    }
+    else{
+        scale = size/(2.5);
+    }
 
     [[UIColor colorWithWhite:1.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, lineWidth);
@@ -218,7 +220,6 @@
                 
                 if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
                 else fisheye = 1;
-                if(yOffset>1.63) NSLog(@"%f",fisheye);
                 /*if(index1 != polaris){
                     if(yOffset < smallestY) smallestY = yOffset;
                     if(yOffset > largestY) largestY = yOffset;
@@ -252,20 +253,24 @@
                     angle = atan2([point2 getZ],
                                   [point2 getX]);
                     yOffset = asin([point2 getY]/1.9022) / (M_PI/2) + 1;
+                    if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
+                    else fisheye = 1;
                 }
                 else if(index2 == octantis)
                 {
                     angle = atan2([point1 getZ],
                                   [point1 getX]);
                     yOffset = asin([point1 getY]/1.9022) / (M_PI/2) + 1;
+                    if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
+                    else fisheye = 1;
                 }
                 CGContextBeginPath(context);
                 CGContextSetLineDash(context, 0.0f, dashedLine, 2);
                 CGContextSetLineCap(context, kCGLineCapButt);
-                CGContextMoveToPoint(context, yOffset*sin(angle)*scale+halfWidth,
-                                     yOffset*cos(angle)*scale+halfHeight);
-                CGContextAddLineToPoint(context, 2*sin(angle)*scale+halfWidth,
-                                        2*cos(angle)*scale+halfHeight);
+                CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
+                                     fisheye*yOffset*cos(angle)*scale+halfHeight);
+                CGContextAddLineToPoint(context, fisheye*2*sin(angle)*scale+halfWidth,
+                                        fisheye*2*cos(angle)*scale+halfHeight);
                 CGContextClosePath(context);
                 CGContextDrawPath(context, kCGPathFillStroke);
                 CGContextSetLineDash(context, 0, NULL, 0);

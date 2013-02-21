@@ -269,6 +269,21 @@
         CGContextAddLineToPoint(context, canvas.size.width, spliceLine.y*scale+halfHeight);
         CGContextClosePath(context);
         CGContextDrawPath(context, kCGPathFillStroke);
+        
+        [[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:0.7] setFill];
+        CGContextMoveToPoint(context, halfWidth-5, spliceLine.y*scale+halfHeight-3);
+        CGContextAddLineToPoint(context, halfWidth+5, spliceLine.y*scale+halfHeight-3);
+        CGContextAddLineToPoint(context, halfWidth, spliceLine.y*scale+halfHeight-11);
+        CGContextFillPath(context);
+        //CGContextSetLineWidth(context, 1.0);
+        CGContextStrokePath(context);
+
+        CGContextMoveToPoint(context, halfWidth-5, spliceLine.y*scale+halfHeight+3);
+        CGContextAddLineToPoint(context, halfWidth+5, spliceLine.y*scale+halfHeight+3);
+        CGContextAddLineToPoint(context, halfWidth, spliceLine.y*scale+halfHeight+11);
+        CGContextFillPath(context);
+        //CGContextSetLineWidth(context, 1.0);
+        CGContextStrokePath(context);
     }
     
     /*[[UIColor colorWithRed:0.0 green:0.8 blue:0 alpha:1.0] setStroke];

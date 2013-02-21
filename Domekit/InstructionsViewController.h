@@ -24,6 +24,10 @@
     UIView *scaleWindow;
     CGFloat domeSize;
     UIView *polarizingFilter;
+    UIScrollView *scrollView;
+    UIView *strutData;
+    UIView *nodeData;
+    UIView *faceData;
 }
 
 @property (nonatomic,strong) IBOutlet DiagramView *diagramView;
