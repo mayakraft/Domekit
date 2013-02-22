@@ -38,6 +38,8 @@
 @property IBOutlet UIButton *solidButton;
 @property IBOutlet UIImageView *solidView;
 @property IBOutlet UIStepper *stepper;
+@property IBOutlet UIButton *icosaButton;
+@property IBOutlet UIButton *octaButton;
 
 //@property IBOutlet UIButton *sizeButton;
 //@property IBOutlet UILabel *sizeLabel;

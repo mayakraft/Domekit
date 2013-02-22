@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         lineWidth = 1;
-        size = 40;
+        size = 37;
         dome = [[Dome alloc] initWithDome:domeIn];
         [self alignPoles];
     }
@@ -74,7 +74,7 @@
     //NSLog(@"Imported: %d points", dome.points_.count);
     polaris = north;
     octantis = south;
-    size = 40;
+    size = 37;
     lineWidth = 1;
     [self alignPoles];
     [self setNeedsDisplay];

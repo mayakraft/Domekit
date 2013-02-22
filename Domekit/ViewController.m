@@ -22,6 +22,8 @@
 @synthesize solidButton;
 @synthesize solidView;
 @synthesize stepper;
+@synthesize icosaButton;
+@synthesize octaButton;
 //@synthesize sizeButton;
 //@synthesize sizeLabel;
 //@synthesize sizeFPartLabel;
@@ -36,9 +38,12 @@
     VNumber = 1;
     icosahedron = true;
     alignToSplice = true;
+
+    icosaButton.enabled = false;
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     domeView = [[DomeView alloc] initWithFrame:CGRectMake([self.view bounds].size.width*.05,
-                                                          [self.view bounds].size.height*.1,
+                                                          120/*[self.view bounds].size.height*.1*/,
                                                           [self.view bounds].size.width*.9,
                                                           [self.view bounds].size.width*.9)];
     [domeView.layer setCornerRadius:15.0f];
@@ -49,7 +54,7 @@
     [self.view addSubview:domeView];
     [self.view sendSubviewToBack:domeView];
     
-    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake([self.view bounds].size.width-98, [self.view bounds].size.height-106, 86, 86) Dome:domeView.dome];
+    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake([self.view bounds].size.width-105, 25, 86, 86) Dome:domeView.dome];
     //[domeView capturePoles];
     [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     [diagramView setBackgroundColor:[UIColor clearColor]];
@@ -133,6 +138,7 @@
         [sender setAlpha:.6];
     }
 }
+
 -(IBAction)solidChange:(id)sender
 {
     if(alignToSplice) [domeView align];
@@ -140,6 +146,8 @@
     {
         solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"OCTAHEDRON"];
+        icosaButton.enabled = true;
+        octaButton.enabled = false;
         icosahedron = false;
         stepper.maximumValue = 4;
         if(VNumber > 4) {VNumber = 4; stepper.value = 4;VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];}
@@ -151,6 +159,8 @@
     else{
         solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"ICOSAHEDRON"];
+        icosaButton.enabled = false;
+        octaButton.enabled = true;
         icosahedron = true;
         stepper.maximumValue = 64;
         [domeView.dome setIcosahedron];

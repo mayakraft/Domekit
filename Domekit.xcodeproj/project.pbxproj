@@ -189,11 +189,11 @@
 		D514EDFF16B748A5000D9264 /* Domekit */ = {
 			isa = PBXGroup;
 			children = (
-				D514EE0816B748A5000D9264 /* AppDelegate.h */,
 				D59B414B16D38FDC00A90C52 /* textlogo.png */,
 				D58158EF16D6030B0049E0A2 /* icosahedron_icon.png */,
 				D530D05D16D6E8FA00EFDFB9 /* aligndome.png */,
 				D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */,
+				D514EE0816B748A5000D9264 /* AppDelegate.h */,
 				D514EE0916B748A5000D9264 /* AppDelegate.m */,
 				D514EE1116B748A5000D9264 /* MainStoryboard_iPhone.storyboard */,
 				D514EE1416B748A5000D9264 /* MainStoryboard_iPad.storyboard */,
