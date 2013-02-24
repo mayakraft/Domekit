@@ -10,7 +10,6 @@
 #import "DomeView.h"
 #import "DiagramView.h"
 #import "Point3D.h"
-#import "InstructionsViewController.h"
 
 @interface ViewController : UIViewController
 {
@@ -41,7 +40,8 @@
     UIView *strutData;
     UIView *nodeData;
     UIView *faceData;
-    
+    UILabel *nodeCountLabel;
+    UILabel *strutCountLabel;
 }
 @property IBOutlet UIButton *modelButton;
 @property IBOutlet UIButton *sizeButton;
@@ -56,7 +56,6 @@
 @property IBOutlet UIButton *icosaButton;
 @property IBOutlet UIButton *octaButton;
 @property IBOutlet UIView *modelWindow;
-
 
 -(IBAction)modelButtonPress:(id)sender;
 -(IBAction)sizeButtonPress:(id)sender;

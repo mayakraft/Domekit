@@ -3,9 +3,9 @@
 //
 //  Dome object maintains:
 //   all the geometry of a dome sphere
-//   and all the properties of each point and line
+//   and all the locations of each point and indexes of points which comprise lines
 //   even which ones are hidden and visible after cropping
-//   but does not go as far as to ignore 
+//   but does not go as far as to ignore
 //   - geometry of dome sphere
 //   - which lines are removed to make sphere into dome
 //
@@ -64,7 +64,6 @@
 }
 
 -(void) setIcosahedron {icosahedron = true;}
-
 -(void) setOctahedron {icosahedron = false;}
 
 -(void) classifyLines
