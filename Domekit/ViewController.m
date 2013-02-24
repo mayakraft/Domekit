@@ -14,16 +14,19 @@
 @end
 
 @implementation ViewController
+@synthesize modelButton;
+@synthesize sizeButton;
 @synthesize instructionButton;
+@synthesize pageNumber;
 @synthesize cropButton;
 @synthesize VLabel;
 @synthesize FractionLabel;
 @synthesize SolidLabel;
-@synthesize solidButton;
 @synthesize solidView;
 @synthesize stepper;
 @synthesize icosaButton;
 @synthesize octaButton;
+@synthesize modelWindow;
 //@synthesize sizeButton;
 //@synthesize sizeLabel;
 //@synthesize sizeFPartLabel;
@@ -41,9 +44,27 @@
 
     icosaButton.enabled = false;
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid_17dark.png"]]];
+
+    UIView *titleBar = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                                0,
+                                                                [self.view bounds].size.width,
+                                                                23)];
+    [titleBar setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:titleBar];
+    [self.view sendSubviewToBack:titleBar];
+
+    UIView *gridView = [[UIView alloc] initWithFrame:CGRectMake(-1,
+                                                              105,
+                                                              [self.view bounds].size.width+2,
+                                                              [self.view bounds].size.height+2-105)];
+    [gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    gridView.layer.borderColor = [UIColor grayColor].CGColor;
+    gridView.layer.borderWidth = 1;
+    [self.view addSubview:gridView];
+    
     domeView = [[DomeView alloc] initWithFrame:CGRectMake([self.view bounds].size.width*.05,
-                                                          120/*[self.view bounds].size.height*.1*/,
+                                                          15/*[self.view bounds].size.height*.1*/,
                                                           [self.view bounds].size.width*.9,
                                                           [self.view bounds].size.width*.9)];
     [domeView.layer setCornerRadius:15.0f];
@@ -51,15 +72,19 @@
     domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
     domeView.layer.borderWidth = 3;
     [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_320.png"]]];
-    [self.view addSubview:domeView];
-    [self.view sendSubviewToBack:domeView];
+    [modelWindow addSubview:domeView];
+    [modelWindow sendSubviewToBack:domeView];
+    [self.view sendSubviewToBack:modelButton];
+    [self.view sendSubviewToBack:gridView];
     
-    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake([self.view bounds].size.width-105, 25, 86, 86) Dome:domeView.dome];
+    diagramPreview = [[DiagramView alloc] initWithFrame:CGRectMake(216, 29, 96, 70) Dome:domeView.dome];
     //[domeView capturePoles];
-    [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
-    [diagramView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:diagramView];
-    [self.view sendSubviewToBack:diagramView];
+    [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+    [diagramPreview setBackgroundColor:[UIColor whiteColor]];
+    [diagramPreview.layer setCornerRadius:7.0f];
+    diagramPreview.layer.masksToBounds = TRUE;
+    [self.view addSubview:diagramPreview];
+    [self.view sendSubviewToBack:diagramPreview];
     
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
@@ -79,12 +104,59 @@
     [cropButton setBackgroundColor:[UIColor whiteColor]];
     [cropButton addTarget:self action:@selector(toggleSpliceMode) forControlEvents:UIControlEventTouchDown];
 
-    [solidButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
-    [solidButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
-    [solidButton.layer setCornerRadius:7.0f];
-    solidButton.layer.masksToBounds = TRUE;
-    solidButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    solidButton.layer.borderWidth = 1;
+    [modelButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    [modelButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
+    [modelButton.layer setCornerRadius:7.0f];
+    modelButton.layer.masksToBounds = TRUE;
+    modelButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    modelButton.layer.borderWidth = 1;
+    [modelButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [self.view sendSubviewToBack:modelButton];
+
+    [sizeButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [sizeButton.layer setCornerRadius:7.0f];
+    sizeButton.layer.masksToBounds = TRUE;
+    sizeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    sizeButton.layer.borderWidth = 1;
+    [self.view sendSubviewToBack:sizeButton];
+    [self.view sendSubviewToBack:instructionButton];
+    [self.view sendSubviewToBack:diagramPreview];
+    
+    [modelButton setBounds:CGRectMake(0, 0, 96, 90)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 90)];
+    coverup = [[UIView alloc] initWithFrame:CGRectMake(9, 105, 94, 1)];
+    [coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    //[coverup setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:coverup];
+
+///////////
+// SIZE WINDOW
+///////////
+    
+    sizeWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 320, 375)];
+    sizeWindow.hidden = true;
+    [self.view addSubview:sizeWindow];
+
+///////////
+// INSTRUCTION
+///////////
+    
+    instructionWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 320, 375)];
+    instructionWindow.hidden = true;
+    [self.view addSubview:instructionWindow];
+    
+    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width) Dome:domeView.dome];
+    [diagramView setFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width)];
+    [diagramView setBackgroundColor:[UIColor clearColor]];
+    [instructionWindow addSubview:diagramView];
+    [instructionWindow sendSubviewToBack:diagramView];
+    [diagramView setScale:130];
+    [diagramView setLineWidth:4.0];
+    //[diagramView setNeedsDisplay];
+    
+    //[modelButton setFrame:CGRectMake(21, 29, 80, 80)];
+    //[modelButton setBounds:CGRectMake(0, 0, 80, 80)];
+    //modelButton.layer.anchorPoint = CGPointMake(0, 0);
 
     /*sizeButton.layer.masksToBounds = TRUE;
     sizeButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
@@ -110,13 +182,87 @@
     [self.view addGestureRecognizer:panGesture];
 }
 
+-(IBAction)modelButtonPress:(id)sender
+{
+    //CGRect rect = modelButton.bounds;
+    [modelButton setBounds:CGRectMake(0, 0, 96, 90)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 90)];
+    [sizeButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [sizeButton setFrame:CGRectMake(112, 29, 96, 71)];
+    [instructionButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [instructionButton setFrame:CGRectMake(216, 29, 96, 71)];
+    [coverup setFrame:CGRectMake(9, 105, 94, 1)];
+    modelWindow.hidden = false;
+    sizeWindow.hidden = true;
+    instructionWindow.hidden = true;
+    pageNumber.text = [NSString stringWithFormat:@"MODEL"];
+
+    //[modelButton setImage:[UIImage imageNamed:@"grid.png"] forState:UIControlStateNormal];
+    //UIView *coverup = [[UIView alloc] initWithFrame:CGRectMake(22, 109, 78, 1)];
+    //[coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    //[self.view addSubview:coverup];
+}
+
+-(IBAction)sizeButtonPress:(id)sender
+{
+    //CGRect rect = modelButton.bounds;
+    [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
+    [sizeButton setBounds:CGRectMake(0, 0, 96, 90)];
+    [sizeButton setFrame:CGRectMake(112, 29, 96, 90)];
+    [instructionButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [instructionButton setFrame:CGRectMake(216, 29, 96, 71)];
+    [coverup setFrame:CGRectMake(113, 105, 94, 1)];
+    modelWindow.hidden = true;
+    sizeWindow.hidden = false;
+    instructionWindow.hidden = true;
+    pageNumber.text = [NSString stringWithFormat:@"SIZE"];
+
+    //[modelButton setImage:[UIImage imageNamed:@"grid.png"] forState:UIControlStateNormal];
+    //UIView *coverup = [[UIView alloc] initWithFrame:CGRectMake(22, 109, 78, 1)];
+    //[coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    //[self.view addSubview:coverup];
+}
+
+-(IBAction)instructionButtonPress:(id)sender
+{
+    //CGRect rect = modelButton.bounds;
+    [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
+    [sizeButton setBounds:CGRectMake(0, 0, 96, 71)];
+    [sizeButton setFrame:CGRectMake(112, 29, 96, 71)];
+    [instructionButton setBounds:CGRectMake(0, 0, 96, 90)];
+    [instructionButton setFrame:CGRectMake(216, 29, 96, 90)];
+    [coverup setFrame:CGRectMake(217, 105, 94, 1)];
+    modelWindow.hidden = true;
+    sizeWindow.hidden = true;
+    instructionWindow.hidden = false;
+    pageNumber.text = [NSString stringWithFormat:@"ASSEMBLY DIAGRAM"];
+    
+    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width) Dome:domeView.dome];
+    [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+    [diagramView setFrame:CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width)];
+    [diagramView setBackgroundColor:[UIColor clearColor]];
+    //[instructionWindow addSubview:diagramView];
+    //[instructionWindow sendSubviewToBack:diagramView];
+    [diagramView setScale:130];
+    [diagramView setLineWidth:4.0];
+    [diagramView setNeedsDisplay];
+
+    
+    //[modelButton setImage:[UIImage imageNamed:@"grid.png"] forState:UIControlStateNormal];
+    //UIView *coverup = [[UIView alloc] initWithFrame:CGRectMake(22, 109, 78, 1)];
+    //[coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    //[self.view addSubview:coverup];
+}
+
 - (IBAction)valueChanged:(UIStepper *)sender {
     VNumber = [sender value];
     if(VNumber > 0){
         
         if(alignToSplice) [domeView align];
         [domeView generate:VNumber];
-        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+        [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         
         //[self refreshHeight];
         //[self adjustSizeView];
@@ -152,9 +298,9 @@
         stepper.maximumValue = 4;
         if(VNumber > 4) {VNumber = 4; stepper.value = 4;VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];}
         [domeView.dome setOctahedron];
-        [diagramView.dome setOctahedron];
+        [diagramPreview.dome setOctahedron];
         [domeView generate:VNumber];
-        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+        [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     }
     else{
         solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
@@ -164,9 +310,9 @@
         icosahedron = true;
         stepper.maximumValue = 64;
         [domeView.dome setIcosahedron];
-        [diagramView.dome setIcosahedron];
+        [diagramPreview.dome setIcosahedron];
         [domeView generate:VNumber];
-        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+        [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     }
 }
 /*
@@ -209,7 +355,7 @@
 -(void) tapListener:(UITapGestureRecognizer*)sender
 {
     //NSLog(@"%f %f",domeView.bounds.origin.x, domeView.bounds.origin.y);
-    if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
+    //if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
         [self toggleSpliceMode];
     
 }
@@ -227,8 +373,8 @@
 -(void) panListener:(UIPanGestureRecognizer*)sender
 {
     //CGPoint location = [sender locationInView:self.view];
-    if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
-    {
+    //if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
+    //{
         CGPoint translation = [sender translationInView:self.view];
         if([domeView getSpliceMode])
         {
@@ -247,7 +393,7 @@
             [domeView setRotationX:[touchPanRotate getX]-translation.y/200.0 Y:[touchPanRotate getY]-translation.x/200.0 Z:0];
         }
         [domeView refresh];
-    }
+    //}
 }
 
 -(void) toggleSpliceMode
@@ -261,7 +407,7 @@
         domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
         [domeView capturePoles];
         [domeView setSpliceMode:false];
-        [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+        [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlEventTouchDown];
         if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
@@ -274,10 +420,7 @@
         //[cropButton.layer setCornerRadius:0.0f];
         cropButton.layer.borderWidth = 3.0;
         [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlStateNormal];
-        if(alignToSplice)
-        {
-            [domeView align];
-        }
+        if(alignToSplice) [domeView align];
         [domeView setSpliceMode:true];
         [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     }
