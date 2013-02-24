@@ -21,8 +21,8 @@
 {
     r = [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:0];
     scale = 65;
-    spliceLine.y = 2;
-    spliceMode = false;
+    sliceLine.y = 2;
+    sliceMode = false;
     
     dome = [[Dome alloc] init];
     projectedPoints_ = [[NSArray alloc] initWithArray:dome.points_];
@@ -41,10 +41,10 @@
     return [self init];
 }
 
--(BOOL) getSpliceMode { return spliceMode; }
--(void) setSpliceMode:(BOOL) splice { spliceMode = splice; }
--(CGFloat) getSpliceY { return spliceLine.y; }  //can be float instead of double, little precision involved
--(void) setSpliceY:(CGFloat)y { spliceLine.y = y; }
+-(BOOL) getSliceMode { return sliceMode; }
+-(void) setSliceMode:(BOOL) slice { sliceMode = slice; }
+-(CGFloat) getSliceY { return sliceLine.y; }  //can be float instead of double, little precision involved
+-(void) setSliceY:(CGFloat)y { sliceLine.y = y; }
 -(double) getScale { return scale; }
 -(void) setScale:(double) s { scale = s; }
 -(Point3D*) getRotation{ return r; }
@@ -98,8 +98,8 @@
     int count;
     for(count = 0; count < dome.lines_.count; count+=2)
     {
-        if( ([projectedPoints_[ [dome.lines_[count] integerValue] ] getY] > spliceLine.y) ||
-           ([projectedPoints_[ [dome.lines_[count+1] integerValue] ] getY] > spliceLine.y) )
+        if( ([projectedPoints_[ [dome.lines_[count] integerValue] ] getY] > sliceLine.y) ||
+           ([projectedPoints_[ [dome.lines_[count+1] integerValue] ] getY] > sliceLine.y) )
         {
             [invisibleLines addObject:[[NSNumber alloc] initWithBool:TRUE]];
             [invisibleLines addObject:[[NSNumber alloc] initWithBool:TRUE]];
@@ -111,7 +111,7 @@
     }
     for(count = 0; count < dome.points_.count; count++)
     {
-        if([projectedPoints_[count] getY] > spliceLine.y){
+        if([projectedPoints_[count] getY] > sliceLine.y){
             [invisiblePoints addObject:[[NSNumber alloc] initWithBool:TRUE]];
             if(count == octantis) sphere = false;
         }
@@ -173,9 +173,9 @@
     
     [[UIColor whiteColor] setStroke];
     
-    if(spliceMode) [self calculateInvisibles];
+    if(sliceMode) [self calculateInvisibles];
     
-    if(spliceMode)
+    if(sliceMode)
     {
         for(count = 0; count < dome.lines_.count; count+=2)
         {
@@ -219,7 +219,7 @@
     [[UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:1.0] setStroke];
     [[UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:1.0] setFill];
     
-    if(spliceMode){
+    if(sliceMode){
         count = 0;
         for (Point3D *node in projectedPoints_)
         {
@@ -267,26 +267,26 @@
         
     }*/
     
-    if(spliceMode)
+    if(sliceMode)
     {
         [[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] setStroke];
         CGContextBeginPath(context);
-        CGContextMoveToPoint(context, 0, spliceLine.y*scale+halfHeight);
-        CGContextAddLineToPoint(context, canvas.size.width, spliceLine.y*scale+halfHeight);
+        CGContextMoveToPoint(context, 0, sliceLine.y*scale+halfHeight);
+        CGContextAddLineToPoint(context, canvas.size.width, sliceLine.y*scale+halfHeight);
         CGContextClosePath(context);
         CGContextDrawPath(context, kCGPathFillStroke);
         
         [[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:0.7] setFill];
-        CGContextMoveToPoint(context, halfWidth-5, spliceLine.y*scale+halfHeight-3);
-        CGContextAddLineToPoint(context, halfWidth+5, spliceLine.y*scale+halfHeight-3);
-        CGContextAddLineToPoint(context, halfWidth, spliceLine.y*scale+halfHeight-11);
+        CGContextMoveToPoint(context, halfWidth-5, sliceLine.y*scale+halfHeight-3);
+        CGContextAddLineToPoint(context, halfWidth+5, sliceLine.y*scale+halfHeight-3);
+        CGContextAddLineToPoint(context, halfWidth, sliceLine.y*scale+halfHeight-11);
         CGContextFillPath(context);
         //CGContextSetLineWidth(context, 1.0);
         CGContextStrokePath(context);
 
-        CGContextMoveToPoint(context, halfWidth-5, spliceLine.y*scale+halfHeight+3);
-        CGContextAddLineToPoint(context, halfWidth+5, spliceLine.y*scale+halfHeight+3);
-        CGContextAddLineToPoint(context, halfWidth, spliceLine.y*scale+halfHeight+11);
+        CGContextMoveToPoint(context, halfWidth-5, sliceLine.y*scale+halfHeight+3);
+        CGContextAddLineToPoint(context, halfWidth+5, sliceLine.y*scale+halfHeight+3);
+        CGContextAddLineToPoint(context, halfWidth, sliceLine.y*scale+halfHeight+11);
         CGContextFillPath(context);
         //CGContextSetLineWidth(context, 1.0);
         CGContextStrokePath(context);

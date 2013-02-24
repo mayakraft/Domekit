@@ -13,8 +13,8 @@
 @interface DomeView : UIView
 {
     double scale;    // scale for rendering
-    CGPoint spliceLine;
-    BOOL spliceMode;
+    CGPoint sliceLine;
+    BOOL sliceMode;
     Point3D *r;  // angle of rotation in view from normals
     NSArray *projectedPoints_;      // rotated points
     Dome *dome;
@@ -37,9 +37,9 @@
 -(void) setRotationX:(double)rX Y:(double)rY Z:(double)rZ;
 -(double) getScale;
 -(void) setScale:(double) s;
--(BOOL) getSpliceMode;
--(void) setSpliceMode:(BOOL) splice;
--(CGFloat) getSpliceY;
--(void) setSpliceY:(CGFloat)y;
+-(BOOL) getSliceMode;
+-(void) setSliceMode:(BOOL) splice;
+-(CGFloat) getSliceY;
+-(void) setSliceY:(CGFloat)y;
 -(BOOL) isSphere;
 @end
