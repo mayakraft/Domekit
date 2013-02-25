@@ -49,7 +49,8 @@
 -(Point3D*) getRotation{ return r; }
 -(void) setRotationX:(double)rX Y:(double)rY Z:(double)rZ { r = [[Point3D alloc] initWithCoordinatesX:rX Y:rY Z:rZ]; }
 -(BOOL) isSphere{return sphere;}
--(double) getDomeHeight  /* returns value between 0 and 1 */
+
+-(double) getDomeHeight
 {
     double lowest = -2;
     double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
@@ -60,6 +61,28 @@
     }
     lowest = ( lowest + max ) / (2 * max);
     return lowest;
+}
+
+-(double) getLongestStrutLength  
+{
+    double distance;
+    double longest = 0;
+    //double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
+    for(int i = 0; i < dome.lines_.count; i+=2)
+    {
+        if([dome.invisibleLines_[i] boolValue] == FALSE)
+        {
+            //distance = sqrt( pow([point getY], 2) + pow([point getZ], 2) );
+        
+            distance= sqrt(
+        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getX] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getX], 2) +
+        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getY] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getY], 2) +
+        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getZ] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getZ], 2) );
+            
+            if(longest < distance) longest = distance;
+        }
+    }
+    return longest / (2*sqrt( ((1 + sqrt(5)) / 2 ) + 2 ));  // (2 * 1.90211)
 }
 
 -(void) capturePoles

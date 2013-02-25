@@ -11,12 +11,15 @@
 #import "DomeView.h"
 #import "DiagramView.h"
 #import "Point3D.h"
+#import "HeightMarker.h"
 
 @interface ViewController ()
 {
-    
+    //TAB BAR BUTTONS
     UIView *coverup;
     DiagramView *diagramPreview;
+    UIImageView *domePreview;
+    HeightMarker *heightMarkerPreview;
     //MODEL VIEW
     DomeView *domeView;
     Point3D *touchPanRotate;  // last position in pan during rotate mode
@@ -32,12 +35,17 @@
     UIImageView *voyagercat;
     UIImageView *domeCircle;
     CGFloat domeCircleScale;
-    CGFloat domeSizeGround;
-    UILabel *heightValue;
-    UILabel *longestStrutValue;
+    CGFloat domeSizeGround;   // screen location on which to stand man and cat
+    UILabel *heightValueLabel;
+    UILabel *longestStrutLengthLabel;
     CGFloat touchPanSize;     // last position in pan during size mode
-    CGFloat domeSize;
-    //INSTRUCTION VIEW
+    CGFloat domeSize;          // height of dome in feet
+    CGFloat domeHeightRatio;
+    CGFloat longestStrut;       // length of longest strut in feet
+    CGFloat longestStrutRatio; // longest strut, a ratio 0 to 1, 1 being total height of dome sphere
+    BOOL sizeLockMode;        // lock size to domeHeight (0) or longestStrut (1) when switching between domes
+    UIButton *lockHeight;
+    UIButton *lockStrut;
     UIView *instructionWindow;
     DiagramView *diagramView;
     UIView *strutData;
@@ -69,6 +77,7 @@
     
     domeSize = 10;   // 10 feet tall
     domeCircleScale = 260;
+    sizeLockMode = FALSE;  // lock to domeHeight
     VNumber = 1; 
     icosahedron = true;  //initial polyhedron: icosahedron
     icosaButton.enabled = false;  
@@ -115,7 +124,6 @@
     [cropButton setBackgroundColor:[UIColor whiteColor]];
     [cropButton addTarget:self action:@selector(toggleSliceMode) forControlEvents:UIControlEventTouchDown];
 
-
 ///////////
 // SIZE WINDOW
 ///////////
@@ -133,8 +141,10 @@
     
     [domeCircle setFrame:CGRectMake(sizeWindow.bounds.size.width/2-(domeCircleScale/2), 50, domeCircleScale, domeCircleScale)];
     [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-36, 50, 72, 180)];
+    [voyagercat setAlpha:0.0];
     [sizeWindow addSubview:domeCircle];
     [sizeWindow addSubview:voyagerman];
+    [sizeWindow addSubview:voyagercat];
     
     UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-70, 200, 30)];
     [heightLabel setBackgroundColor:[UIColor clearColor]];
@@ -150,30 +160,34 @@
     longestStrutLabel.text = [NSString stringWithFormat:@"LONGEST STRUT"];
     [sizeWindow addSubview:longestStrutLabel];
 
-    heightValue = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-90, sizeWindow.bounds.size.height-70, 75, 30)];
-    [heightValue setBackgroundColor:[UIColor clearColor]];
-    [heightValue setTextColor:[UIColor blackColor]];
-    [heightValue setFont:[UIFont boldSystemFontOfSize:21.0]];
-    [heightValue setTextAlignment:NSTextAlignmentRight];
-    heightValue.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
-    [sizeWindow addSubview:heightValue];
+    heightValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-70, 125, 30)];
+    [heightValueLabel setBackgroundColor:[UIColor clearColor]];
+    [heightValueLabel setTextColor:[UIColor blackColor]];
+    [heightValueLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [heightValueLabel setTextAlignment:NSTextAlignmentRight];
+    heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+    [sizeWindow addSubview:heightValueLabel];
+    
+    longestStrutRatio = [domeView getLongestStrutLength];
+    longestStrut = domeSize / [diagramPreview getDomeHeight] * longestStrutRatio;
 
-    longestStrutValue = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-90, sizeWindow.bounds.size.height-40, 75, 30)];
-    [longestStrutValue setBackgroundColor:[UIColor clearColor]];
-    [longestStrutValue setTextColor:[UIColor blackColor]];
-    [longestStrutValue setFont:[UIFont boldSystemFontOfSize:21.0]];
-    [longestStrutValue setTextAlignment:NSTextAlignmentRight];
-    longestStrutValue.text = [NSString stringWithFormat:@"%.2f ft",domeSize/4];
-    [sizeWindow addSubview:longestStrutValue];
+    longestStrutLengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-40, 125, 30)];
+    [longestStrutLengthLabel setBackgroundColor:[UIColor clearColor]];
+    [longestStrutLengthLabel setTextColor:[UIColor blackColor]];
+    [longestStrutLengthLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [longestStrutLengthLabel setTextAlignment:NSTextAlignmentRight];
+    longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];
+    [sizeWindow addSubview:longestStrutLengthLabel];
     
-    UIButton *lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(15, sizeWindow.bounds.size.height-60, 16, 8)];
-    [lockHeight setBackgroundImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-70, 35, 30)];
+    [lockHeight setImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    [lockHeight addTarget:self action:@selector(toggleDomeHeightLockOn:) forControlEvents:UIControlEventTouchUpInside];
     [sizeWindow addSubview:lockHeight];
-    UIButton *lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(15, sizeWindow.bounds.size.height-30, 16, 8)];
-    [lockStrut setBackgroundImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-40, 35, 30)];
+    [lockStrut setImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
     [lockStrut setAlpha:0.17];
+    [lockStrut addTarget:self action:@selector(toggleStrutLengthLockOn:) forControlEvents:UIControlEventTouchUpInside];
     [sizeWindow addSubview:lockStrut];
-    
     
     
 ///////////
@@ -259,14 +273,16 @@
     sizeButton.layer.masksToBounds = TRUE;
     sizeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     sizeButton.layer.borderWidth = 1;
-    UIImageView *domePreview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle.png"]];
-    [domePreview setFrame:CGRectMake(5, 8, 54, 54)];
-    [domePreview setAlpha:0.3];
-    UIImageView *voyagermanPreview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagermandark.png"]];
-    [voyagermanPreview setFrame:CGRectMake(62, 5, 24, 60)];
-    [voyagermanPreview setAlpha:0.3];
-    [sizeButton addSubview:voyagermanPreview];
+    domePreview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle_54.png"]];
+    [domePreview setFrame:CGRectMake(25, 8, 54, 54)];
+    domePreview.contentMode = UIViewContentModeTopLeft; // This determines position of image
+    domePreview.clipsToBounds = YES;
+    heightMarkerPreview = [[HeightMarker alloc] initWithFrame:CGRectMake(10, 8, 10, 54)];
+    [heightMarkerPreview setBackgroundColor:[UIColor clearColor]];
+    [domePreview setAlpha:0.5];
+    [heightMarkerPreview setAlpha:0.5];
     [sizeButton addSubview:domePreview];
+    [sizeButton addSubview:heightMarkerPreview];
     
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
@@ -318,18 +334,48 @@
     sizeWindow.hidden = true;
     instructionWindow.hidden = true;
     pageNumber.text = [NSString stringWithFormat:@"MODEL"];
+}
 
+-(void) updateSizeButton
+{
+    [domePreview setFrame:CGRectMake(25, 8+27*(1-[diagramPreview getDomeHeight]), 54, 54*[diagramPreview getDomeHeight])];
+    [heightMarkerPreview setFrame:CGRectMake(10, 8+27*(1-[diagramPreview getDomeHeight]), 10, 54*[diagramPreview getDomeHeight])];
+    [heightMarkerPreview setNeedsDisplay];
 }
 
 -(IBAction)sizeButtonPress:(id)sender
 {
+    longestStrutRatio = [domeView getLongestStrutLength];
+    domeHeightRatio = [diagramPreview getDomeHeight];
+    
+    if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
+    {
+        heightValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+        longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 ft"];
+    }
+    else
+    {
+        if(!sizeLockMode) /* lock to dome height */
+        {
+            longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
+        }
+        else  /*lock to longest strut length */
+        {
+            domeSize = domeHeightRatio * longestStrut / longestStrutRatio;
+            //domeSize = domeHeightRatio / longestStrut;
+        }
+        heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+        longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];        
+    }
     // capture ground of the dome for person to stand on
-    domeSizeGround = 15+(domeCircleScale/2)*(1-[diagramPreview getDomeHeight]) + domeCircleScale*[diagramPreview getDomeHeight];
+    domeSizeGround = 15+(domeCircleScale/2)*(1-domeHeightRatio)+ domeCircleScale*domeHeightRatio;
     // cut dome sphere to mimic dome shape
-    [domeCircle setFrame:CGRectMake(sizeWindow.bounds.size.width/2-(domeCircleScale/2), 15+(domeCircleScale/2)*(1-[diagramPreview getDomeHeight]), domeCircleScale, domeCircleScale*[diagramPreview getDomeHeight])];
+    [domeCircle setFrame:CGRectMake(sizeWindow.bounds.size.width/2-(domeCircleScale/2), 15+(domeCircleScale/2)*(1-domeHeightRatio), domeCircleScale, domeCircleScale*domeHeightRatio)];
     // new height of man relative to dome height
-    CGFloat manHeight = (6/domeSize) * domeCircleScale*[diagramPreview getDomeHeight];
+    CGFloat manHeight = (6/domeSize) * domeCircleScale*domeHeightRatio;
     [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
+    [voyagercat setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.5*.25*manHeight/.75, domeSizeGround-.25*manHeight, .25*manHeight/.75, .25*manHeight)];
+    
     [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
     [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
     [sizeButton setBounds:CGRectMake(0, 0, 96, 90)];
@@ -380,7 +426,20 @@
 
 }
 
-- (IBAction)valueChanged:(UIStepper *)sender {
+-(IBAction)toggleDomeHeightLockOn:(id)sender
+{
+    sizeLockMode = false;
+    lockStrut.alpha = 0.17;
+    lockHeight.alpha = 1.0;
+}
+-(IBAction)toggleStrutLengthLockOn:(id)sender
+{
+    sizeLockMode = true;
+    lockHeight.alpha = 0.17;
+    lockStrut.alpha = 1.0;
+}
+
+- (IBAction)frequencyValueChanged:(UIStepper *)sender {
     VNumber = [sender value];
     if(VNumber > 0){
         
@@ -389,7 +448,7 @@
         [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         
         //[self refreshHeight];
-        //[self adjustSizeView];
+        [self updateSizeButton];
         if([domeView getDomeHeight]==1) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
 
@@ -432,12 +491,13 @@
         icosaButton.enabled = false;
         octaButton.enabled = true;
         icosahedron = true;
-        stepper.maximumValue = 64;
+        stepper.maximumValue = 24;
         [domeView.dome setIcosahedron];
         [diagramPreview.dome setIcosahedron];
         [domeView generate:VNumber];
         [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     }
+    [self updateSizeButton];
 }
 /*
 -(void) adjustSizeView
@@ -523,13 +583,37 @@
         }
         [domeView refresh];
     }
-    else if(sizeWindow.hidden == false)
+    else if(sizeWindow.hidden == false && domeHeightRatio != 0)
     {
         if([sender state] == 1) touchPanSize = domeSize;
         domeSize = touchPanSize * pow(touchPanSize,(-translation.y/2000.0));
-        heightValue.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+        longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
+        if(domeSize > 1000) { /* gotta cut off somewhere */
+            domeSize = 1000;
+            longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
+        }   
+        heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+        longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft", longestStrut];
         CGFloat manHeight = (6/domeSize) * domeCircleScale*[diagramPreview getDomeHeight];
         [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
+        [voyagercat setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.5*.25*manHeight/.75, domeSizeGround-.25*manHeight, .25*manHeight/.75, .25*manHeight)];
+       // NSLog(@"%f",domeSize);
+        if (domeSize > 6)
+        {
+            [voyagercat setAlpha:0.0];
+            [voyagerman setAlpha:1.0];
+        }
+        else if (domeSize > 5 && domeSize < 6)
+        {
+            [voyagercat setAlpha:(6.0-domeSize)];
+            [voyagerman setAlpha:(domeSize-5.0)];
+        }
+        else
+        {
+            [voyagercat setAlpha:1.0];
+            [voyagerman setAlpha:0.0];
+        }
+
     }
 }
 
@@ -549,6 +633,7 @@
         [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlEventTouchDown];
         if([domeView getDomeHeight] == 1) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
+        [self updateSizeButton];
     }
     // slice mode on
     else{

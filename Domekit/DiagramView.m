@@ -8,6 +8,16 @@
 
 #import "DiagramView.h"
 
+@interface DiagramView()
+{
+    Dome *dome;
+    double size;    // scale for rendering
+    int polaris, octantis;
+    CGFloat lineWidth;
+    UIImage *imageForContext;
+}
+@end
+
 @implementation DiagramView
 
 @synthesize dome;
@@ -34,12 +44,6 @@
     return self;
 }
 
--(void) setScale:(double)x { size = x; }
-
--(void) setLineWidth:(CGFloat)x { lineWidth = x; }
-
--(UIImage*)getImage{ return imageForContext; }
-
 -(double) getDomeHeight  /* returns value between 0 and 1 */
 {
     double lowest = -2;
@@ -50,7 +54,46 @@
             lowest = [dome.points_[i] getY];
     }
     lowest = ( lowest + max ) / (2 * max);
+    if(lowest < 0) lowest = 0;
     return lowest;
+}
+
+-(int) getLineCount /* only visible lines */
+{
+    int count = 0;
+    for(int i = 0; i < dome.invisibleLines_.count; i++)
+    {
+        if([dome.invisibleLines_[i] boolValue] == FALSE) count++;
+    }
+    count = count/2.0;  // lines are stored as pairs of points, so divide by 2
+    return count;
+}
+
+-(int) getPointCount  /* only visible points */
+{
+    int count = 0;
+    for(int i = 0; i < dome.invisiblePoints_.count; i++)
+    {
+        if([dome.invisiblePoints_[i] boolValue] == FALSE) count++;
+    }
+    return count;
+}
+
+-(NSArray*) getVisibleLineSpeciesCount  /* how many of each type of strut length do we have? */
+{
+    int i;
+    int speciesCount[dome.lineClass_.count];
+    for(i = 0; i < dome.lineClass_.count; i++) speciesCount[i] = 0;
+    for(i = 0; i < dome.lineClass_.count; i++)
+    {
+        if(![dome.invisibleLines_[i*2] boolValue])speciesCount[[dome.lineClass_[i] integerValue]]++;
+    }
+    NSMutableArray *mutable = [[NSMutableArray alloc] init];
+    for(i = 0; i < dome.lineClass_.count; i++)
+    {
+        if(speciesCount[i] != 0) mutable[i] = [[NSNumber alloc] initWithInt:speciesCount[i]];
+    }
+    return [[NSArray alloc] initWithArray:mutable];
 }
 
 -(NSArray*) getLengthOrder
@@ -71,11 +114,10 @@
 -(void) importDome:(Dome*)domeIn Polaris:(int)north Octantis:(int)south
 {
     dome = [[Dome alloc] initWithDome:domeIn];
-    //NSLog(@"Imported: %d points", dome.points_.count);
     polaris = north;
     octantis = south;
-    size = 33;
-    lineWidth = 1;
+    size = 33;        // calibrated for preview size
+    lineWidth = 1;    //     "
     [self alignPoles];
     [self setNeedsDisplay];
 }
@@ -110,46 +152,11 @@
     dome.points_ = [[NSArray alloc] initWithArray:points];
 }
 
--(int) getLineCount
-{
-    int count = 0;
-    for(int i = 0; i < dome.invisibleLines_.count; i++)
-    {
-        if([dome.invisibleLines_[i] boolValue] == FALSE) count++;
-    }
-    count = count/2.0;
-    return count;
-}
+-(void) setScale:(double)x { size = x; }
+-(void) setLineWidth:(CGFloat)x { lineWidth = x; }
 
--(NSArray*) getVisibleLineSpeciesCount
-{
-    int i;
-    int speciesCount[dome.lineClass_.count];
-    for(i = 0; i < dome.lineClass_.count; i++) speciesCount[i] = 0;
-    for(i = 0; i < dome.lineClass_.count; i++)
-    {
-        if(![dome.invisibleLines_[i*2] boolValue])speciesCount[[dome.lineClass_[i] integerValue]]++;
-    }
-    NSMutableArray *mutable = [[NSMutableArray alloc] init];
-    for(i = 0; i < dome.lineClass_.count; i++)
-    {
-        if(speciesCount[i] != 0) mutable[i] = [[NSNumber alloc] initWithInt:speciesCount[i]];
-    }
-    return [[NSArray alloc] initWithArray:mutable];
-}
 
--(int) getPointCount
-{
-    int count = 0;
-    for(int i = 0; i < dome.invisiblePoints_.count; i++)
-    {
-        if([dome.invisiblePoints_[i] boolValue] == FALSE) count++;
-    }
-    return count;
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
+// draws an assembly diagram with a size and line width as specified in setScale and setLineWidth
 - (void)drawRect:(CGRect)rect
 {
     imageForContext = [[UIImage alloc] init];
@@ -181,10 +188,8 @@
         if(lowest > 1.63) scale = size/(lowest*1.25);
         else scale = size/(lowest);
     }
-    else{
-        scale = size/(2.5);
-    }
-
+    else scale = size/(2.5);
+    
     [[UIColor colorWithWhite:1.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);

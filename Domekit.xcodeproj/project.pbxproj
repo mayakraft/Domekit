@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D501870C16BFD6C400322E31 /* grid.png in Resources */ = {isa = PBXBuildFile; fileRef = D501870B16BFD6C400322E31 /* grid.png */; };
+		D507588916DB1EA1001D958E /* domecircle_54.png in Resources */ = {isa = PBXBuildFile; fileRef = D507588716DB1EA1001D958E /* domecircle_54.png */; };
+		D507588A16DB1EA1001D958E /* domecircle_54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D507588816DB1EA1001D958E /* domecircle_54@2x.png */; };
 		D514EDFA16B748A5000D9264 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDF916B748A5000D9264 /* UIKit.framework */; };
 		D514EDFC16B748A5000D9264 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFB16B748A5000D9264 /* Foundation.framework */; };
 		D514EDFE16B748A5000D9264 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFD16B748A5000D9264 /* CoreGraphics.framework */; };
@@ -73,6 +75,8 @@
 
 /* Begin PBXFileReference section */
 		D501870B16BFD6C400322E31 /* grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grid.png; sourceTree = "<group>"; };
+		D507588716DB1EA1001D958E /* domecircle_54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_54.png; sourceTree = "<group>"; };
+		D507588816DB1EA1001D958E /* domecircle_54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "domecircle_54@2x.png"; sourceTree = "<group>"; };
 		D514EDF516B748A5000D9264 /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D514EDF916B748A5000D9264 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D514EDFB16B748A5000D9264 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -227,13 +231,15 @@
 			isa = PBXGroup;
 			children = (
 				D59B414916D3890300A90C52 /* Default.png */,
-				D5AA90F816DA23AF0077990F /* domecircle.png */,
 				D59B414B16D38FDC00A90C52 /* textlogo.png */,
 				D535D88B16DAFDBA006B21E5 /* lock.png */,
 				D5AA90FA16DA2DAB0077990F /* domecircle_180.png */,
+				D507588716DB1EA1001D958E /* domecircle_54.png */,
+				D507588816DB1EA1001D958E /* domecircle_54@2x.png */,
 				D5AA90FC16DA391C0077990F /* domecircle_280.png */,
 				D5AA90FE16DA395F0077990F /* domecircle_260.png */,
 				D535D88D16DB0048006B21E5 /* domecircle_260@2x.png */,
+				D5AA90F816DA23AF0077990F /* domecircle.png */,
 				D54468A816D84192002721B5 /* textlogo_dark.png */,
 				D54468A516D835BA002721B5 /* grid_17dark.png */,
 				D501870B16BFD6C400322E31 /* grid.png */,
@@ -386,6 +392,8 @@
 				D535D88A16DAFB8F006B21E5 /* blackboard_320@2x.png in Resources */,
 				D535D88C16DAFDBA006B21E5 /* lock.png in Resources */,
 				D535D88E16DB0048006B21E5 /* domecircle_260@2x.png in Resources */,
+				D507588916DB1EA1001D958E /* domecircle_54.png in Resources */,
+				D507588A16DB1EA1001D958E /* domecircle_54@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

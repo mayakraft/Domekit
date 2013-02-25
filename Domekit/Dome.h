@@ -15,8 +15,8 @@
     NSArray *lines_;  // (int) pairs of index locations in points_ which are connected to each other
     NSArray *faces_;  // (int) triplets of indexes in points_ comprising a triangle
     
-    NSArray *invisiblePoints_;  // everywhere points_ grows, so must this
-    NSArray *invisibleLines_;   // everywhere lines_ grows, so must this
+    NSArray *invisiblePoints_;  // not a copy of point data, merely an array of indexes to points, TRUE or FALSE
+    NSArray *invisibleLines_;   // same as above. also, everytime points or lines data increases, increase these too
     
     NSArray *lineClass_;  //   category of lines by class
     NSArray *lineClassLengths_;  //  lengths of each category of lines

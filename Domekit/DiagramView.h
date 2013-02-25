@@ -10,28 +10,19 @@
 #import "Dome.h"
 
 @interface DiagramView : UIView
-{
-    Dome *dome;
-    double size;    // scale for rendering
-    int polaris, octantis;
-    CGFloat lineWidth;
-    UIImage *imageForContext;
-}
 
 @property Dome *dome;
 
 -(id) initWithFrame:(CGRect)frame Dome:(Dome*)domeIn;
 -(void) importDome:(Dome*)domeIn Polaris:(int)north Octantis:(int)south;
 -(void) alignPoles;
--(void) setScale:(double)x;
--(void) setLineWidth:(CGFloat)x;
--(int) getLineCount;
--(int) getPointCount;
+-(int) getLineCount;     /* visible lines only */
+-(int) getPointCount;    /* visible points only */
 -(double) getDomeHeight;  /* returns value between 0 and 1 */
 -(NSArray*) getLengthOrder;
-
 -(NSArray*) getVisibleLineSpeciesCount;
 
--(UIImage*)getImage;
+-(void) setScale:(double)x;  /* roughly corrosponds to radius of diagram in pixels */
+-(void) setLineWidth:(CGFloat)x;
 
 @end

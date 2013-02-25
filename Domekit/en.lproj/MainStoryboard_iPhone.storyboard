@@ -78,13 +78,14 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aqj-bD-GK1">
                                 <subviews>
-                                    <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="64" translatesAutoresizingMaskIntoConstraints="NO" id="blh-dU-RsC">
+                                    <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="blh-dU-RsC">
                                         <connections>
-                                            <action selector="valueChanged:" destination="2" eventType="valueChanged" id="Y9S-XT-Fg9"/>
+                                            <action selector="frequencyValueChanged:" destination="2" eventType="valueChanged" id="DsN-0p-DoS"/>
                                         </connections>
                                     </stepper>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXr-KM-our">
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="TUC-Cz-o3w"/>
                                             <constraint firstAttribute="width" constant="73" id="hBN-aA-Kh4"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -149,18 +150,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="sXr-KM-our" firstAttribute="trailing" secondItem="g4B-OV-egz" secondAttribute="trailing" type="default" id="1WH-v7-aeG"/>
-                                    <constraint firstAttribute="trailing" secondItem="g4B-OV-egz" secondAttribute="trailing" constant="23" id="4bO-y3-m2I"/>
-                                    <constraint firstItem="sXr-KM-our" firstAttribute="bottom" secondItem="blh-dU-RsC" secondAttribute="bottom" type="default" id="6wo-hU-hnT"/>
-                                    <constraint firstAttribute="trailing" secondItem="sjU-MT-xgU" secondAttribute="trailing" constant="107" id="Al0-AX-dvK"/>
+                                    <constraint firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" constant="12" id="0bE-lO-4YN"/>
+                                    <constraint firstItem="blh-dU-RsC" firstAttribute="centerX" secondItem="aqj-bD-GK1" secondAttribute="centerX" type="default" id="2VM-yh-cbx"/>
+                                    <constraint firstItem="sXr-KM-our" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="24" id="8TF-0D-AIT"/>
                                     <constraint firstAttribute="bottom" secondItem="jvu-yS-e7r" secondAttribute="bottom" constant="7" id="GZK-uS-w4T"/>
-                                    <constraint firstAttribute="bottom" secondItem="blh-dU-RsC" secondAttribute="bottom" constant="14" id="KSI-tC-E1z"/>
+                                    <constraint firstAttribute="trailing" secondItem="sjU-MT-xgU" secondAttribute="trailing" constant="19" id="J8z-y0-RTn"/>
+                                    <constraint firstAttribute="trailing" secondItem="jvu-yS-e7r" secondAttribute="trailing" constant="60" id="LGT-7w-dHS"/>
+                                    <constraint firstItem="g4B-OV-egz" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="30" id="SiX-G4-enQ"/>
                                     <constraint firstItem="sjU-MT-xgU" firstAttribute="bottom" secondItem="jvu-yS-e7r" secondAttribute="bottom" type="default" id="Xix-h8-fHM"/>
-                                    <constraint firstItem="blh-dU-RsC" firstAttribute="top" secondItem="sXr-KM-our" secondAttribute="top" type="default" id="a3h-hO-xbg"/>
                                     <constraint firstAttribute="bottom" secondItem="g4B-OV-egz" secondAttribute="bottom" constant="61" id="aPg-qB-lUE"/>
                                     <constraint firstItem="sjU-MT-xgU" firstAttribute="top" secondItem="jvu-yS-e7r" secondAttribute="top" type="default" id="gN1-gs-1gt"/>
-                                    <constraint firstItem="blh-dU-RsC" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="23" id="mEP-qc-D2O"/>
-                                    <constraint firstItem="jvu-yS-e7r" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="131" id="vd0-gq-gUp"/>
+                                    <constraint firstItem="g4B-OV-egz" firstAttribute="top" secondItem="aqj-bD-GK1" secondAttribute="top" constant="264" scoringType="5" id="quB-KS-EnS"/>
+                                    <constraint firstItem="sXr-KM-our" firstAttribute="centerY" secondItem="blh-dU-RsC" secondAttribute="centerY" type="default" id="xjd-T8-IkT"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="MODEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UpT-we-ZEx">
@@ -223,7 +224,6 @@
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="6" id="Xzx-QY-Hx0"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="centerY" secondItem="Pso-ei-aNV" secondAttribute="centerY" type="default" id="ZIi-E5-pbq"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="centerX" secondItem="8Y8-qe-EGQ" secondAttribute="centerX" type="default" id="b4J-AI-99p"/>
-                            <constraint firstItem="aqj-bD-GK1" firstAttribute="top" secondItem="3" secondAttribute="top" constant="105" id="d3m-Qf-oux"/>
                             <constraint firstItem="UpT-we-ZEx" firstAttribute="trailing" secondItem="Pso-ei-aNV" secondAttribute="trailing" type="default" id="eg7-Mu-SVh"/>
                             <constraint firstItem="Pso-ei-aNV" firstAttribute="leading" secondItem="h4y-UN-ewc" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="iTi-g6-LuQ"/>
                             <constraint firstItem="LsN-ed-6r4" firstAttribute="top" secondItem="3" secondAttribute="top" constant="460" id="ilv-zY-f3a"/>
@@ -272,11 +272,13 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="autoAlignPress:"/>
+                <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
                 <relationship kind="action" name="instructionButtonPress:"/>
                 <relationship kind="action" name="modelButtonPress:"/>
                 <relationship kind="action" name="sizeButtonPress:"/>
                 <relationship kind="action" name="solidChange:"/>
-                <relationship kind="action" name="valueChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="toggleDomeHeightLockOn:"/>
+                <relationship kind="action" name="toggleStrutLengthLockOn:"/>
                 <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>

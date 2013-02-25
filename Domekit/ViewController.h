@@ -28,8 +28,10 @@
 -(IBAction)modelButtonPress:(id)sender;
 -(IBAction)sizeButtonPress:(id)sender;
 -(IBAction)instructionButtonPress:(id)sender;
--(IBAction)valueChanged:(UIStepper *)sender;
+-(IBAction)frequencyValueChanged:(UIStepper *)sender;
 -(IBAction)autoAlignPress:(id)sender;
 -(IBAction)solidChange:(id)sender;
+-(IBAction)toggleDomeHeightLockOn:(id)sender;
+-(IBAction)toggleStrutLengthLockOn:(id)sender;
 
 @end

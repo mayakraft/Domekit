@@ -42,5 +42,6 @@
 -(CGFloat) getSliceY;
 -(void) setSliceY:(CGFloat)y;
 -(BOOL) isSphere;
--(double) getDomeHeight;  /* returns value between 0 and 1 */
+-(double) getDomeHeight;  /* height of visible dome, between 0 and 1 */
+-(double) getLongestStrutLength; /* length of longest visible strut, a fraction of the dome diameter, which is 1 */
 @end
