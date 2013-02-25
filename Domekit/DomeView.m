@@ -16,7 +16,6 @@
 @synthesize polaris;
 @synthesize octantis;
 
-
 -(id) init
 {
     r = [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:0];
@@ -50,6 +49,18 @@
 -(Point3D*) getRotation{ return r; }
 -(void) setRotationX:(double)rX Y:(double)rY Z:(double)rZ { r = [[Point3D alloc] initWithCoordinatesX:rX Y:rY Z:rZ]; }
 -(BOOL) isSphere{return sphere;}
+-(double) getDomeHeight  /* returns value between 0 and 1 */
+{
+    double lowest = -2;
+    double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
+    for(int i = 0; i < dome.points_.count; i++)
+    {
+        if([dome.invisiblePoints_[i] boolValue] == FALSE && [dome.points_[i] getY] > lowest)
+            lowest = [dome.points_[i] getY];
+    }
+    lowest = ( lowest + max ) / (2 * max);
+    return lowest;
+}
 
 -(void) capturePoles
 {

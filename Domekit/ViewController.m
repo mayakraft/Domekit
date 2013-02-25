@@ -147,7 +147,7 @@
     [longestStrutLabel setBackgroundColor:[UIColor clearColor]];
     [longestStrutLabel setTextColor:[UIColor blackColor]];
     [longestStrutLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
-    longestStrutLabel.text = [NSString stringWithFormat:@"LONGEST STRUT LENGTH"];
+    longestStrutLabel.text = [NSString stringWithFormat:@"LONGEST STRUT"];
     [sizeWindow addSubview:longestStrutLabel];
 
     heightValue = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-90, sizeWindow.bounds.size.height-70, 75, 30)];
@@ -165,6 +165,15 @@
     [longestStrutValue setTextAlignment:NSTextAlignmentRight];
     longestStrutValue.text = [NSString stringWithFormat:@"%.2f ft",domeSize/4];
     [sizeWindow addSubview:longestStrutValue];
+    
+    UIButton *lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(15, sizeWindow.bounds.size.height-60, 16, 8)];
+    [lockHeight setBackgroundImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    [sizeWindow addSubview:lockHeight];
+    UIButton *lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(15, sizeWindow.bounds.size.height-30, 16, 8)];
+    [lockStrut setBackgroundImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    [lockStrut setAlpha:0.17];
+    [sizeWindow addSubview:lockStrut];
+    
     
     
 ///////////
@@ -375,13 +384,13 @@
     VNumber = [sender value];
     if(VNumber > 0){
         
-        if(alignToSlice) [domeView align];
+        //if(alignToSlice) [domeView align];
         [domeView generate:VNumber];
         [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         
         //[self refreshHeight];
         //[self adjustSizeView];
-        if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
+        if([domeView getDomeHeight]==1) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
 
         VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];
@@ -402,7 +411,7 @@
 
 -(IBAction)solidChange:(id)sender
 {
-    if(alignToSlice) [domeView align];
+    //if(alignToSlice) [domeView align];
     if(icosahedron)
     {
         solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
@@ -538,7 +547,7 @@
         // refresh instruction tab bar button image
         [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
         [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlEventTouchDown];
-        if([domeView isSphere]) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
+        if([domeView getDomeHeight] == 1) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];
         else FractionLabel.text = [NSString stringWithFormat:@"DOME"];
     }
     // slice mode on

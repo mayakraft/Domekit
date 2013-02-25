@@ -42,4 +42,5 @@
 -(CGFloat) getSliceY;
 -(void) setSliceY:(CGFloat)y;
 -(BOOL) isSphere;
+-(double) getDomeHeight;  /* returns value between 0 and 1 */
 @end
