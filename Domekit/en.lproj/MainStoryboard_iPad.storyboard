@@ -221,12 +221,14 @@
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
-                <relationship kind="action" name="alignDomeButton:"/>
+                <relationship kind="action" name="autoAlignPress:"/>
+                <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
                 <relationship kind="action" name="instructionButtonPress:"/>
                 <relationship kind="action" name="modelButtonPress:"/>
                 <relationship kind="action" name="sizeButtonPress:"/>
                 <relationship kind="action" name="solidChange:"/>
-                <relationship kind="action" name="valueChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="toggleDomeHeightLockOn:"/>
+                <relationship kind="action" name="toggleStrutLengthLockOn:"/>
                 <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>
@@ -237,6 +239,7 @@
                 <relationship kind="outlet" name="modelWindow" candidateClass="UIView"/>
                 <relationship kind="outlet" name="octaButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="pageNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="polyButton" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="sizeButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="solidView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="stepper" candidateClass="UIStepper"/>

@@ -13,6 +13,7 @@
 @property IBOutlet UIButton *modelButton;           //|
 @property IBOutlet UIButton *sizeButton;            //| three tab bar buttons
 @property IBOutlet UIButton *instructionButton;     //|
+@property IBOutlet UIButton *aboveInstructionButton;     //|
 @property IBOutlet UILabel *VLabel;             //|
 @property IBOutlet UILabel *FractionLabel;      //| bottom status bar descriptions
 @property IBOutlet UILabel *SolidLabel;         //|
@@ -24,6 +25,8 @@
 @property IBOutlet UIButton *cropButton;
 @property IBOutlet UIButton *icosaButton;
 @property IBOutlet UIButton *octaButton;
+@property IBOutlet UIImageView *polyButton;
+
 
 -(IBAction)modelButtonPress:(id)sender;
 -(IBAction)sizeButtonPress:(id)sender;
@@ -31,6 +34,7 @@
 -(IBAction)frequencyValueChanged:(UIStepper *)sender;
 -(IBAction)autoAlignPress:(id)sender;
 -(IBAction)solidChange:(id)sender;
+-(IBAction)polyButtonTouchDown:(id)sender;
 -(IBAction)toggleDomeHeightLockOn:(id)sender;
 -(IBAction)toggleStrutLengthLockOn:(id)sender;
 

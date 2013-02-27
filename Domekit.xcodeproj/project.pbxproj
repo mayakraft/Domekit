@@ -56,6 +56,14 @@
 		D5AA90FB16DA2DAC0077990F /* domecircle_180.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90FA16DA2DAB0077990F /* domecircle_180.png */; };
 		D5AA90FD16DA391D0077990F /* domecircle_280.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90FC16DA391C0077990F /* domecircle_280.png */; };
 		D5AA90FF16DA395F0077990F /* domecircle_260.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90FE16DA395F0077990F /* domecircle_260.png */; };
+		D5B018EC16DD73A200284478 /* polybutton_state1.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018E816DD73A200284478 /* polybutton_state1.png */; };
+		D5B018ED16DD73A200284478 /* polybutton_state0.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018E916DD73A200284478 /* polybutton_state0.png */; };
+		D5B018EE16DD73A200284478 /* polybutton_state0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018EA16DD73A200284478 /* polybutton_state0@2x.png */; };
+		D5B018EF16DD73A200284478 /* polybutton_state1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018EB16DD73A200284478 /* polybutton_state1@2x.png */; };
+		D5B018FD16DD7DE800284478 /* polybutton_state0_on.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018F916DD7DE800284478 /* polybutton_state0_on.png */; };
+		D5B018FE16DD7DE800284478 /* polybutton_state1_on.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018FA16DD7DE800284478 /* polybutton_state1_on.png */; };
+		D5B018FF16DD7DE800284478 /* polybutton_state1_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018FB16DD7DE800284478 /* polybutton_state1_on@2x.png */; };
+		D5B0190016DD7DE800284478 /* polybutton_state0_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018FC16DD7DE800284478 /* polybutton_state0_on@2x.png */; };
 		D5C4267E16D4B46800FA1DCD /* octahedron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */; };
 		D5C81DB316C9F03D002557EB /* foggydark.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C81DB216C9F03D002557EB /* foggydark.png */; };
 		D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9596C16C72411003A6941 /* InstructionsViewController.m */; };
@@ -133,6 +141,14 @@
 		D5AA90FA16DA2DAB0077990F /* domecircle_180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_180.png; sourceTree = "<group>"; };
 		D5AA90FC16DA391C0077990F /* domecircle_280.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_280.png; sourceTree = "<group>"; };
 		D5AA90FE16DA395F0077990F /* domecircle_260.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_260.png; sourceTree = "<group>"; };
+		D5B018E816DD73A200284478 /* polybutton_state1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = polybutton_state1.png; sourceTree = "<group>"; };
+		D5B018E916DD73A200284478 /* polybutton_state0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = polybutton_state0.png; sourceTree = "<group>"; };
+		D5B018EA16DD73A200284478 /* polybutton_state0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polybutton_state0@2x.png"; sourceTree = "<group>"; };
+		D5B018EB16DD73A200284478 /* polybutton_state1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polybutton_state1@2x.png"; sourceTree = "<group>"; };
+		D5B018F916DD7DE800284478 /* polybutton_state0_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = polybutton_state0_on.png; sourceTree = "<group>"; };
+		D5B018FA16DD7DE800284478 /* polybutton_state1_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = polybutton_state1_on.png; sourceTree = "<group>"; };
+		D5B018FB16DD7DE800284478 /* polybutton_state1_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polybutton_state1_on@2x.png"; sourceTree = "<group>"; };
+		D5B018FC16DD7DE800284478 /* polybutton_state0_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polybutton_state0_on@2x.png"; sourceTree = "<group>"; };
 		D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octahedron_icon.png; sourceTree = "<group>"; };
 		D5C81DB216C9F03D002557EB /* foggydark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggydark.png; sourceTree = "<group>"; };
 		D5C9596B16C72411003A6941 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
@@ -232,6 +248,14 @@
 			children = (
 				D59B414916D3890300A90C52 /* Default.png */,
 				D59B414B16D38FDC00A90C52 /* textlogo.png */,
+				D5B018E816DD73A200284478 /* polybutton_state1.png */,
+				D5B018E916DD73A200284478 /* polybutton_state0.png */,
+				D5B018EA16DD73A200284478 /* polybutton_state0@2x.png */,
+				D5B018EB16DD73A200284478 /* polybutton_state1@2x.png */,
+				D5B018F916DD7DE800284478 /* polybutton_state0_on.png */,
+				D5B018FA16DD7DE800284478 /* polybutton_state1_on.png */,
+				D5B018FB16DD7DE800284478 /* polybutton_state1_on@2x.png */,
+				D5B018FC16DD7DE800284478 /* polybutton_state0_on@2x.png */,
 				D535D88B16DAFDBA006B21E5 /* lock.png */,
 				D5AA90FA16DA2DAB0077990F /* domecircle_180.png */,
 				D507588716DB1EA1001D958E /* domecircle_54.png */,
@@ -394,6 +418,14 @@
 				D535D88E16DB0048006B21E5 /* domecircle_260@2x.png in Resources */,
 				D507588916DB1EA1001D958E /* domecircle_54.png in Resources */,
 				D507588A16DB1EA1001D958E /* domecircle_54@2x.png in Resources */,
+				D5B018EC16DD73A200284478 /* polybutton_state1.png in Resources */,
+				D5B018ED16DD73A200284478 /* polybutton_state0.png in Resources */,
+				D5B018EE16DD73A200284478 /* polybutton_state0@2x.png in Resources */,
+				D5B018EF16DD73A200284478 /* polybutton_state1@2x.png in Resources */,
+				D5B018FD16DD7DE800284478 /* polybutton_state0_on.png in Resources */,
+				D5B018FE16DD7DE800284478 /* polybutton_state1_on.png in Resources */,
+				D5B018FF16DD7DE800284478 /* polybutton_state1_on@2x.png in Resources */,
+				D5B0190016DD7DE800284478 /* polybutton_state0_on@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

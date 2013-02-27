@@ -25,6 +25,7 @@
     Point3D *touchPanRotate;  // last position in pan during rotate mode
     CGFloat touchPanEdit;     // last position in pan during slice mode
     CGFloat touchPinch;       // last position in pinch to scale
+    CGPoint touchOrigin;     // origin of panning, to check if it began on the drawing square
     BOOL icosahedron;
     BOOL alignToSlice;        // auto-aligns dome before splicing
     int VNumber;
@@ -60,6 +61,7 @@
 @synthesize modelButton;
 @synthesize sizeButton;
 @synthesize instructionButton;
+@synthesize aboveInstructionButton;
 @synthesize pageNumber;
 @synthesize cropButton;
 @synthesize VLabel;
@@ -70,6 +72,7 @@
 @synthesize icosaButton;
 @synthesize octaButton;
 @synthesize modelWindow;
+@synthesize polyButton;
 
 - (void)viewDidLoad
 {
@@ -268,11 +271,13 @@
     [coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     [self.view addSubview:coverup];
     
-    [sizeButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [sizeButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    [sizeButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [sizeButton.layer setCornerRadius:7.0f];
     sizeButton.layer.masksToBounds = TRUE;
     sizeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     sizeButton.layer.borderWidth = 1;
+    [sizeButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     domePreview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle_54.png"]];
     [domePreview setFrame:CGRectMake(25, 8, 54, 54)];
     domePreview.contentMode = UIViewContentModeTopLeft; // This determines position of image
@@ -284,24 +289,32 @@
     [sizeButton addSubview:domePreview];
     [sizeButton addSubview:heightMarkerPreview];
     
+    [aboveInstructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    [aboveInstructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
+    [aboveInstructionButton.layer setCornerRadius:7.0f];
+    aboveInstructionButton.layer.masksToBounds = TRUE;
+    //[instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    //[instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [instructionButton.layer setCornerRadius:7.0f];
     instructionButton.layer.masksToBounds = TRUE;
     instructionButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     instructionButton.layer.borderWidth = 1;
+    [instructionButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     //[instructionButton.layer setClipToBounds:YES];
     diagramPreview = [[DiagramView alloc] initWithFrame:CGRectMake(216, 29, 96, 70) Dome:domeView.dome];
     [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
-    [diagramPreview setBackgroundColor:[UIColor whiteColor]];
+    [diagramPreview setBackgroundColor:[UIColor clearColor]];
     [diagramPreview.layer setCornerRadius:7.0f];
     diagramPreview.layer.masksToBounds = TRUE;
     [self.view addSubview:diagramPreview];
     
+    [self.view sendSubviewToBack:diagramPreview];
     [self.view sendSubviewToBack:modelButton];
     [self.view sendSubviewToBack:sizeButton];
     [self.view sendSubviewToBack:instructionButton];
-    [self.view sendSubviewToBack:diagramPreview];
+
    
     
 ////////////
@@ -375,6 +388,21 @@
     CGFloat manHeight = (6/domeSize) * domeCircleScale*domeHeightRatio;
     [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
     [voyagercat setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.5*.25*manHeight/.75, domeSizeGround-.25*manHeight, .25*manHeight/.75, .25*manHeight)];
+    if (domeSize > 6)
+    {
+        [voyagercat setAlpha:0.0];
+        [voyagerman setAlpha:1.0];
+    }
+    else if (domeSize > 5 && domeSize < 6)
+    {
+        [voyagercat setAlpha:(6.0-domeSize)];
+        [voyagerman setAlpha:(domeSize-5.0)];
+    }
+    else
+    {
+        [voyagercat setAlpha:1.0];
+        [voyagerman setAlpha:0.0];
+    }
     
     [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
     [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
@@ -468,6 +496,28 @@
     }
 }
 
+-(IBAction)polyButtonTouchDown:(id)sender
+{
+    if(icosahedron)
+    {
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0_on.png"]];
+    }
+    else
+    {
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1_on.png"]];
+        
+    }
+}
+-(IBAction)polyButtonTouchDragOff:(id)sender
+{
+    if(icosahedron)
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
+    else
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
+    
+}
+
+
 -(IBAction)solidChange:(id)sender
 {
     //if(alignToSlice) [domeView align];
@@ -475,6 +525,7 @@
     {
         solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"OCTAHEDRON"];
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
         icosaButton.enabled = true;
         octaButton.enabled = false;
         icosahedron = false;
@@ -488,6 +539,7 @@
     else{
         solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"ICOSAHEDRON"];
+        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
         icosaButton.enabled = false;
         octaButton.enabled = true;
         icosahedron = true;
@@ -561,32 +613,37 @@
     //CGPoint location = [sender locationInView:self.view];
     //if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
 
+    //NSLog(@"%d",[sender state]);
+    if([sender state] == 1) touchOrigin = [sender locationInView:modelWindow];
     CGPoint translation = [sender translationInView:self.view];
 
     if(modelWindow.hidden == false)
     {
-        if([domeView getSliceMode])
+        if (CGRectContainsPoint(domeView.frame, touchOrigin))
         {
-            if([sender state] == 1) touchPanEdit = [domeView getSliceY];
-            double sliceLocation = touchPanEdit+translation.y/[domeView getScale];
-            if(sliceLocation < -2) [domeView setSliceY:-2];
-            else if (sliceLocation > 2) [domeView setSliceY:2];
-            else [domeView setSliceY:sliceLocation];
+            if([domeView getSliceMode])
+            {
+                if([sender state] == 1) touchPanEdit = [domeView getSliceY];
+                double sliceLocation = touchPanEdit+translation.y/[domeView getScale];
+                if(sliceLocation < -2) [domeView setSliceY:-2];
+                else if (sliceLocation > 2) [domeView setSliceY:2];
+                else [domeView setSliceY:sliceLocation];
+            }
+            else
+            {
+                if([sender state] == 1) touchPanRotate = [domeView getRotation];
+                else if( [sender state] == 3) [domeView setRotationX:[touchPanRotate getX]-translation.y/200.0
+                                                                   Y:[touchPanRotate getY]-translation.x/200.0
+                                                                   Z:[touchPanRotate getZ]];
+                [domeView setRotationX:[touchPanRotate getX]-translation.y/200.0 Y:[touchPanRotate getY]-translation.x/200.0 Z:0];
+            }
+            [domeView refresh];
         }
-        else
-        {
-            if([sender state] == 1) touchPanRotate = [domeView getRotation];
-            else if( [sender state] == 3) [domeView setRotationX:[touchPanRotate getX]-translation.y/200.0
-                                                               Y:[touchPanRotate getY]-translation.x/200.0
-                                                               Z:[touchPanRotate getZ]];
-            [domeView setRotationX:[touchPanRotate getX]-translation.y/200.0 Y:[touchPanRotate getY]-translation.x/200.0 Z:0];
-        }
-        [domeView refresh];
     }
     else if(sizeWindow.hidden == false && domeHeightRatio != 0)
     {
         if([sender state] == 1) touchPanSize = domeSize;
-        domeSize = touchPanSize * pow(touchPanSize,(-translation.y/2000.0));
+        domeSize = touchPanSize * pow(touchPanSize,(translation.y/2000.0));
         longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
         if(domeSize > 1000) { /* gotta cut off somewhere */
             domeSize = 1000;
