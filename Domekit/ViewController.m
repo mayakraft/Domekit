@@ -47,13 +47,15 @@
     BOOL sizeLockMode;        // lock size to domeHeight (0) or longestStrut (1) when switching between domes
     UIButton *lockHeight;
     UIButton *lockStrut;
+    //INSTRUCTION VIEW
     UIView *instructionWindow;
     DiagramView *diagramView;
-    UIView *strutData;
+    //UIView *strutData;
     UIView *nodeData;
     UIView *faceData;
     UILabel *nodeCountLabel;
     UILabel *strutCountLabel;
+    UIScrollView *strutNodeScrollView;
 }
 @end
 
@@ -248,11 +250,15 @@
     UIButton *nodeButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     [nodeButton setFrame:CGRectMake(7, instructionWindow.bounds.size.height-70, 30, 30)];
     [instructionWindow addSubview:nodeButton];
+    [nodeButton addTarget:self action:@selector(nodeButtonPress:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *strutButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     [strutButton setFrame:CGRectMake(7, instructionWindow.bounds.size.height-40, 30, 30)];
     [instructionWindow addSubview:strutButton];
-    //[strutButton addTarget:self action:@selector(strutDetailPress:) forControlEvents:UIControlEventTouchUpInside];
+    [strutButton addTarget:self action:@selector(strutButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+    
+    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2)];
+    [strutNodeScrollView setHidden:TRUE];
     
 ////////////
 // TAB BAR BUTTONS
@@ -265,8 +271,8 @@
     modelButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     modelButton.layer.borderWidth = 1;
     [modelButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
-    [modelButton setBounds:CGRectMake(0, 0, 96, 90)];
-    [modelButton setFrame:CGRectMake(8, 29, 96, 90)];
+    //[modelButton setBounds:CGRectMake(0, 0, 96, 90)];
+    //[modelButton setFrame:CGRectMake(8, 29, 96, 90)];
     coverup = [[UIView alloc] initWithFrame:CGRectMake(9, 105, 94, 1)];
     [coverup setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
     [self.view addSubview:coverup];
@@ -293,8 +299,6 @@
     [aboveInstructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [aboveInstructionButton.layer setCornerRadius:7.0f];
     aboveInstructionButton.layer.masksToBounds = TRUE;
-    //[instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
-    //[instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
     [instructionButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [instructionButton.layer setCornerRadius:7.0f];
@@ -302,7 +306,6 @@
     instructionButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     instructionButton.layer.borderWidth = 1;
     [instructionButton setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
-    //[instructionButton.layer setClipToBounds:YES];
     diagramPreview = [[DiagramView alloc] initWithFrame:CGRectMake(216, 29, 96, 70) Dome:domeView.dome];
     [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     [diagramPreview setBackgroundColor:[UIColor clearColor]];
@@ -321,8 +324,12 @@
 // GESTURES
 ////////////
 
+    UITapGestureRecognizer *tapTwiceGesture = [[UITapGestureRecognizer alloc] init];
+    [tapTwiceGesture setNumberOfTapsRequired:2];
+    [tapTwiceGesture addTarget:self action:@selector(tapTwiceListener:)];
+    [self.view addGestureRecognizer:tapTwiceGesture];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    [tapGesture setNumberOfTapsRequired:2];
+    [tapGesture setNumberOfTapsRequired:1];
     [tapGesture addTarget:self action:@selector(tapListener:)];
     [self.view addGestureRecognizer:tapGesture];
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] init];
@@ -338,15 +345,16 @@
     //CGRect rect = modelButton.bounds;
     [modelButton setBounds:CGRectMake(0, 0, 96, 90)];
     [modelButton setFrame:CGRectMake(8, 29, 96, 90)];
-    [sizeButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [sizeButton setFrame:CGRectMake(112, 29, 96, 71)];
-    [instructionButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [instructionButton setFrame:CGRectMake(216, 29, 96, 71)];
+    [sizeButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [sizeButton setFrame:CGRectMake(112, 29, 96, 70)];
+    [instructionButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [instructionButton setFrame:CGRectMake(216, 29, 96, 70)];
     [coverup setFrame:CGRectMake(9, 105, 94, 1)];
     modelWindow.hidden = false;
     sizeWindow.hidden = true;
     instructionWindow.hidden = true;
     pageNumber.text = [NSString stringWithFormat:@"MODEL"];
+    [strutNodeScrollView setHidden:TRUE];   // Close when leaving Instruction Window
 }
 
 -(void) updateSizeButton
@@ -404,25 +412,27 @@
         [voyagerman setAlpha:0.0];
     }
     
-    [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
+    [modelButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 70)];
     [sizeButton setBounds:CGRectMake(0, 0, 96, 90)];
     [sizeButton setFrame:CGRectMake(112, 29, 96, 90)];
-    [instructionButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [instructionButton setFrame:CGRectMake(216, 29, 96, 71)];
+    [instructionButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [instructionButton setFrame:CGRectMake(216, 29, 96, 70)];
     [coverup setFrame:CGRectMake(113, 105, 94, 1)];
     modelWindow.hidden = true;
     sizeWindow.hidden = false;
     instructionWindow.hidden = true;
     pageNumber.text = [NSString stringWithFormat:@"SIZE"];
+    [strutNodeScrollView setHidden:TRUE];  // Close when leaving Instruction Window
+
 }
 
 -(IBAction)instructionButtonPress:(id)sender
 {
-    [modelButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [modelButton setFrame:CGRectMake(8, 29, 96, 71)];
-    [sizeButton setBounds:CGRectMake(0, 0, 96, 71)];
-    [sizeButton setFrame:CGRectMake(112, 29, 96, 71)];
+    [modelButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [modelButton setFrame:CGRectMake(8, 29, 96, 70)];
+    [sizeButton setBounds:CGRectMake(0, 0, 96, 70)];
+    [sizeButton setFrame:CGRectMake(112, 29, 96, 70)];
     [instructionButton setBounds:CGRectMake(0, 0, 96, 90)];
     [instructionButton setFrame:CGRectMake(216, 29, 96, 90)];
     [coverup setFrame:CGRectMake(217, 105, 94, 1)];
@@ -438,20 +448,6 @@
 
     nodeCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getPointCount]];
     strutCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getLineCount]];
-    /*NSArray *speciesCount = [[NSArray alloc] initWithArray:[diagramView getVisibleLineSpeciesCount]];
-    NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
-    NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
-    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[diagramView getLengthOrder]];
-    int i, j, index;
-    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
-    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++){
-        index = 0;
-        for(j = 0; j < diagramView.dome.lineClassLengths_.count; j++){
-            if(i!=j && [diagramView.dome.lineClassLengths_[i] doubleValue] > [diagramView.dome.lineClassLengths_[j] doubleValue]) index++;
-        }
-        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
-    }*/
-
 }
 
 -(IBAction)toggleDomeHeightLockOn:(id)sender
@@ -492,7 +488,7 @@
     }
     else{
         alignToSlice = true;
-        [sender setAlpha:.6];
+        [sender setAlpha:.75];
     }
 }
 
@@ -551,6 +547,101 @@
     }
     [self updateSizeButton];
 }
+
+-(IBAction)strutButtonPress:(id)sender
+{
+    
+    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2)];
+    [strutNodeScrollView setContentSize:CGSizeMake(1000, 1000)];
+    [strutNodeScrollView.layer setCornerRadius:7.0f];
+    strutNodeScrollView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    strutNodeScrollView.layer.borderWidth = 1.0;
+    strutNodeScrollView.layer.masksToBounds = TRUE;
+    UIView *window = [[UIView alloc] initWithFrame:CGRectMake(0, 0, strutNodeScrollView.frame.size.width, strutNodeScrollView.frame.size.height*2)];
+    [window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [strutNodeScrollView addSubview:window];
+    
+    int StrutScale = 5;
+    NSArray *speciesCount = [[NSArray alloc] initWithArray:[diagramView getVisibleLineSpeciesCount]];
+    NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
+    NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
+    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[diagramView getLengthOrder]];
+    int i, j, index;
+    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
+    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++){
+        index = 0;
+        for(j = 0; j < diagramView.dome.lineClassLengths_.count; j++){
+            if(i!=j && [diagramView.dome.lineClassLengths_[i] doubleValue] > [diagramView.dome.lineClassLengths_[j] doubleValue]) index++;
+        }
+        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
+    }
+
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(20, 20, 100, 23)];
+    [textField setBorderStyle:UITextBorderStyleBezel];
+    //[strutData addSubview:textField];
+    [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+    
+    NSMutableArray *strutLineExamples = [[NSMutableArray alloc] init];
+    for(i = 0; i < speciesCount.count; i++)
+    {
+        index = [lengthOrder[i] integerValue];
+        [strutLineExamples addObject:[[UIView alloc] initWithFrame:
+                                      CGRectMake(110-130*[diagramView.dome.lineClassLengths_[i] doubleValue],
+                                                 index*30+14+10,
+                                                 130*[diagramView.dome.lineClassLengths_[i] doubleValue],
+                                                 3)]];
+        if(index == 0)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0]];
+        if(index == 1)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0]];
+        if(index == 2)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0]];
+        if(index == 3)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0.8 green:0 blue:0.8 alpha:1.0]];
+        if(index == 4)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0.8 blue:0.8 alpha:1.0]];
+        if(index == 5)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor blackColor]];
+        [window addSubview:strutLineExamples[i]];
+    }
+    for(i = 0; i < speciesCount.count; i++)
+    {
+        index = [lengthOrder[i] integerValue];
+        [lineLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-60, 10+index*30, 100, 30)]];
+        if(index == 0)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0]];
+        if(index == 1)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0]];
+        if(index == 2)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0]];
+        if(index == 3)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0.8 green:0 blue:0.8 alpha:1.0]];
+        if(index == 4)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0.8 blue:0.8 alpha:1.0]];
+        
+        [(UILabel*)lineLabels[i] setBackgroundColor:[UIColor clearColor]];
+        [(UILabel*)lineLabels[i] setText:[NSString stringWithFormat:@"x %@",speciesCount[index]]];
+        [(UILabel*)lineLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];
+        [window addSubview:lineLabels[i]];
+        //NSLog(@"Length: %@",diagramView.dome.lineClassLengths_[i]);
+        
+        [lengthLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-164,10+index*30, 100, 30)]];
+        [(UILabel*)lengthLabels[i] setTextColor:[UIColor blackColor]];
+        [(UILabel*)lengthLabels[i] setBackgroundColor:[UIColor clearColor]];
+        [(UILabel*)lengthLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];
+        [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[i] doubleValue] * StrutScale]];
+        [window addSubview:lengthLabels[i]];
+    }
+    
+    
+    [instructionWindow addSubview:strutNodeScrollView];
+}
+
+
+-(IBAction)nodeButtonPress:(id)sender
+{
+    UIView *window = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2)];
+    [strutNodeScrollView setContentSize:CGSizeMake(1000, 1000)];
+    [strutNodeScrollView addSubview:window];
+    [strutNodeScrollView.layer setCornerRadius:7.0f];
+    strutNodeScrollView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    strutNodeScrollView.layer.borderWidth = 1.0;
+    strutNodeScrollView.layer.masksToBounds = TRUE;
+    
+    [instructionWindow addSubview:strutNodeScrollView];
+    
+}
 /*
 -(void) adjustSizeView
 {
@@ -588,13 +679,19 @@
     }
 }*/
 
--(void) tapListener:(UITapGestureRecognizer*)sender
+-(void) tapTwiceListener:(UITapGestureRecognizer*)sender
 {
     //NSLog(@"%f %f",domeView.bounds.origin.x, domeView.bounds.origin.y);
     //if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
     if(modelWindow.hidden == false)
         [self toggleSliceMode];
-    
+}
+
+// Only purpose, to close the STRUT and NODE view windows
+-(void) tapListener:(UITapGestureRecognizer*)sender
+{
+    if(instructionWindow.hidden == FALSE)
+        [strutNodeScrollView setHidden:TRUE];
 }
 
 -(void) pinchListener:(UIPinchGestureRecognizer*)sender
