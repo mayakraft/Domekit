@@ -12,6 +12,7 @@
 @interface DiagramView : UIView
 
 @property Dome *dome;
+@property NSArray *colorTable;
 
 -(id) initWithFrame:(CGRect)frame Dome:(Dome*)domeIn;
 -(void) importDome:(Dome*)domeIn Polaris:(int)north Octantis:(int)south;

@@ -102,15 +102,17 @@
     gridView.layer.borderWidth = 1;
     [self.view addSubview:gridView];
     [self.view sendSubviewToBack:gridView];
+
     
 ////////////
 // MODEL WINDOW
 ////////////
     
     domeView = [[DomeView alloc] initWithFrame:CGRectMake([self.view bounds].size.width*.05,
-                                                          15/*[self.view bounds].size.height*.1*/,
+                                                          (self.view.bounds.size.height-self.view.bounds.size.width-135)/2,
                                                           [self.view bounds].size.width*.9,
                                                           [self.view bounds].size.width*.9)];
+    NSLog(@"%f",(self.view.bounds.size.height-self.view.bounds.size.width-135)/2);
     [domeView.layer setCornerRadius:15.0f];
     domeView.layer.masksToBounds = TRUE;
     domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
@@ -128,12 +130,18 @@
     cropButton.layer.borderWidth = 1;
     [cropButton setBackgroundColor:[UIColor whiteColor]];
     [cropButton addTarget:self action:@selector(toggleSliceMode) forControlEvents:UIControlEventTouchDown];
+    
+    //cropButton
+    //stepper
+    //polyButton
+    //octaButton
+    //icosaButton
 
 ///////////
 // SIZE WINDOW
 ///////////
     
-    sizeWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 320, 355)];
+    sizeWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-105-20)];
     sizeWindow.hidden = true;
     [self.view addSubview:sizeWindow];
     
@@ -199,11 +207,11 @@
 // INSTRUCTION
 ///////////
     
-    instructionWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, 320, 355)];
+    instructionWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-105-20)];
     instructionWindow.hidden = true;
     [self.view addSubview:instructionWindow];
     
-    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake(0,-15,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width) Dome:domeView.dome];
+    diagramView = [[DiagramView alloc] initWithFrame:CGRectMake(0,instructionWindow.bounds.size.height/2-instructionWindow.bounds.size.width/2-35,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.width) Dome:domeView.dome];
     [diagramView setBackgroundColor:[UIColor clearColor]];
     [instructionWindow addSubview:diagramView];
     [instructionWindow sendSubviewToBack:diagramView];
@@ -366,9 +374,10 @@
 
 -(IBAction)sizeButtonPress:(id)sender
 {
+    int topMargin = (sizeWindow.bounds.size.height-sizeWindow.bounds.size.width)/2;
     longestStrutRatio = [domeView getLongestStrutLength];
     domeHeightRatio = [diagramPreview getDomeHeight];
-    
+ 
     if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
     {
         heightValueLabel.text = [NSString stringWithFormat:@"0 ft"];
@@ -389,9 +398,9 @@
         longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];        
     }
     // capture ground of the dome for person to stand on
-    domeSizeGround = 15+(domeCircleScale/2)*(1-domeHeightRatio)+ domeCircleScale*domeHeightRatio;
+    domeSizeGround = topMargin+(domeCircleScale/2)*(1-domeHeightRatio)+ domeCircleScale*domeHeightRatio;
     // cut dome sphere to mimic dome shape
-    [domeCircle setFrame:CGRectMake(sizeWindow.bounds.size.width/2-(domeCircleScale/2), 15+(domeCircleScale/2)*(1-domeHeightRatio), domeCircleScale, domeCircleScale*domeHeightRatio)];
+    [domeCircle setFrame:CGRectMake(sizeWindow.bounds.size.width/2-(domeCircleScale/2), topMargin+(domeCircleScale/2)*(1-domeHeightRatio), domeCircleScale, domeCircleScale*domeHeightRatio)];
     // new height of man relative to dome height
     CGFloat manHeight = (6/domeSize) * domeCircleScale*domeHeightRatio;
     [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
@@ -539,7 +548,7 @@
         icosaButton.enabled = false;
         octaButton.enabled = true;
         icosahedron = true;
-        stepper.maximumValue = 24;
+        stepper.maximumValue = 9;
         [domeView.dome setIcosahedron];
         [diagramPreview.dome setIcosahedron];
         [domeView generate:VNumber];
@@ -550,15 +559,16 @@
 
 -(IBAction)strutButtonPress:(id)sender
 {
+    [strutNodeScrollView setHidden:TRUE];
     
-    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2)];
-    [strutNodeScrollView setContentSize:CGSizeMake(1000, 1000)];
-    [strutNodeScrollView.layer setCornerRadius:7.0f];
-    strutNodeScrollView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    strutNodeScrollView.layer.borderWidth = 1.0;
-    strutNodeScrollView.layer.masksToBounds = TRUE;
+    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2+20)];
+    [strutNodeScrollView setContentSize:CGSizeMake(strutNodeScrollView.frame.size.width, 1000)];
     UIView *window = [[UIView alloc] initWithFrame:CGRectMake(0, 0, strutNodeScrollView.frame.size.width, strutNodeScrollView.frame.size.height*2)];
     [window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
+    [window.layer setCornerRadius:7.0f];
+    window.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    window.layer.borderWidth = 1.0;
+    window.layer.masksToBounds = TRUE;
     [strutNodeScrollView addSubview:window];
     
     int StrutScale = 5;
@@ -567,6 +577,7 @@
     NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
     NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[diagramView getLengthOrder]];
     int i, j, index;
+    //lineclasslengths_.count = how many types of struts there are
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++){
         index = 0;
@@ -575,38 +586,44 @@
         }
         lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
     }
+    NSLog(@"Step 1, Lengths tallied");
 
+    //fit scrollview window
+    [strutNodeScrollView setContentSize:CGSizeMake(strutNodeScrollView.frame.size.width, diagramView.dome.lineClassLengths_.count*30+20)];
+    [window setFrame:CGRectMake(0, 0, strutNodeScrollView.frame.size.width, diagramView.dome.lineClassLengths_.count*30+20)];
+    
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(20, 20, 100, 23)];
     [textField setBorderStyle:UITextBorderStyleBezel];
     //[strutData addSubview:textField];
     [textField setKeyboardType:UIKeyboardTypeDecimalPad];
     
     NSMutableArray *strutLineExamples = [[NSMutableArray alloc] init];
-    for(i = 0; i < speciesCount.count; i++)
+    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
     {
         index = [lengthOrder[i] integerValue];
         [strutLineExamples addObject:[[UIView alloc] initWithFrame:
-                                      CGRectMake(110-130*[diagramView.dome.lineClassLengths_[i] doubleValue],
+                                      CGRectMake(110-130*[diagramView.dome.lineClassLengths_[index] doubleValue],
                                                  index*30+14+10,
-                                                 130*[diagramView.dome.lineClassLengths_[i] doubleValue],
+                                                 130*[diagramView.dome.lineClassLengths_[index] doubleValue],
                                                  3)]];
-        if(index == 0)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0]];
-        if(index == 1)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0]];
-        if(index == 2)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0]];
-        if(index == 3)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0.8 green:0 blue:0.8 alpha:1.0]];
-        if(index == 4)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor colorWithRed:0 green:0.8 blue:0.8 alpha:1.0]];
-        if(index == 5)[(UIView*)strutLineExamples[i] setBackgroundColor:[UIColor blackColor]];
+        if(index < diagramView.colorTable.count-1)
+            [(UIView*)strutLineExamples[i] setBackgroundColor:diagramView.colorTable[index]];
+        else
+            [(UIView*)strutLineExamples[i] setBackgroundColor:diagramView.colorTable[diagramView.colorTable.count-1]];
+
         [window addSubview:strutLineExamples[i]];
     }
-    for(i = 0; i < speciesCount.count; i++)
+    NSLog(@"Step 2, Struts drawn");
+
+    for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
     {
         index = [lengthOrder[i] integerValue];
         [lineLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-60, 10+index*30, 100, 30)]];
-        if(index == 0)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0]];
-        if(index == 1)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0]];
-        if(index == 2)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0]];
-        if(index == 3)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0.8 green:0 blue:0.8 alpha:1.0]];
-        if(index == 4)[(UILabel*)lineLabels[i] setTextColor:[UIColor colorWithRed:0 green:0.8 blue:0.8 alpha:1.0]];
+ 
+        if(index < diagramView.colorTable.count-1)
+            [(UILabel*)lineLabels[i] setTextColor:diagramView.colorTable[index]];
+        else
+            [(UILabel*)lineLabels[i] setTextColor:diagramView.colorTable[diagramView.colorTable.count-1]];
         
         [(UILabel*)lineLabels[i] setBackgroundColor:[UIColor clearColor]];
         [(UILabel*)lineLabels[i] setText:[NSString stringWithFormat:@"x %@",speciesCount[index]]];
@@ -618,10 +635,10 @@
         [(UILabel*)lengthLabels[i] setTextColor:[UIColor blackColor]];
         [(UILabel*)lengthLabels[i] setBackgroundColor:[UIColor clearColor]];
         [(UILabel*)lengthLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];
-        [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[i] doubleValue] * StrutScale]];
+        [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[index] doubleValue] * StrutScale]];
         [window addSubview:lengthLabels[i]];
-    }
-    
+    }    
+    NSLog(@"Step 3, Text up, all done!");
     
     [instructionWindow addSubview:strutNodeScrollView];
 }
@@ -629,15 +646,17 @@
 
 -(IBAction)nodeButtonPress:(id)sender
 {
-    UIView *window = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [strutNodeScrollView setHidden:TRUE];
+
+    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*1)];
+    [strutNodeScrollView setContentSize:CGSizeMake(strutNodeScrollView.frame.size.width, strutNodeScrollView.frame.size.height)];
+    UIView *window = [[UIView alloc] initWithFrame:CGRectMake(0, 0, strutNodeScrollView.frame.size.width, strutNodeScrollView.frame.size.height)];
     [window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid.png"]]];
-    strutNodeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(20, 50, self.view.frame.size.width-40, self.view.frame.size.height/5*2)];
-    [strutNodeScrollView setContentSize:CGSizeMake(1000, 1000)];
+    [window.layer setCornerRadius:7.0f];
+    window.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    window.layer.borderWidth = 1.0;
+    window.layer.masksToBounds = TRUE;
     [strutNodeScrollView addSubview:window];
-    [strutNodeScrollView.layer setCornerRadius:7.0f];
-    strutNodeScrollView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    strutNodeScrollView.layer.borderWidth = 1.0;
-    strutNodeScrollView.layer.masksToBounds = TRUE;
     
     [instructionWindow addSubview:strutNodeScrollView];
     
@@ -800,6 +819,36 @@
         [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     }
     [domeView refresh];  // draw green slice line
+}
+
+-(void)flashMessage:(NSString*)message {
+    CAKeyframeAnimation *messageAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+    
+    NSArray *animationValues = [NSArray arrayWithObjects:
+                                [NSNumber numberWithFloat:0.8f],
+                                [NSNumber numberWithFloat:0.0f],
+                                nil];
+    
+    NSArray *animationTimes = [NSArray arrayWithObjects:
+                               [NSNumber numberWithFloat:0.3],
+                               [NSNumber numberWithFloat:1.0f],
+                               nil];
+    
+    NSArray *animationTimingFunctions = [NSArray arrayWithObjects:
+                                         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                         nil];
+    
+    [messageAnimation setValues:animationValues];
+    [messageAnimation setKeyTimes:animationTimes];
+    [messageAnimation setTimingFunctions:animationTimingFunctions];
+    
+    messageAnimation.fillMode = kCAFillModeForwards;
+    messageAnimation.removedOnCompletion = NO;
+    messageAnimation.duration = 0.4;
+    
+    [self.view.layer addAnimation:messageAnimation forKey:@"animation"];
+    //[savingText setHidden:YES];
 }
 /*
 -(void) toggleSizeMode

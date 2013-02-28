@@ -113,6 +113,7 @@
     lineClass_ = [[NSArray alloc] initWithArray:lineClass];
     lineClassLengths_ = [[NSArray alloc] initWithArray:originalLengths];
     //for(i=0; i < lineClass_.count; i++) NSLog(@"%d", [lineClass_[i] integerValue]);
+    NSLog(@"%d, %d, %d", lines_.count, lineClass_.count, lineClassLengths_.count);
 }
 
 -(void) geodecise:(int)vNum

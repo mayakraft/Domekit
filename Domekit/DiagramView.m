@@ -15,12 +15,15 @@
     int polaris, octantis;
     CGFloat lineWidth;
     UIImage *imageForContext;
+    
+    NSArray *colorTable;
 }
 @end
 
 @implementation DiagramView
 
 @synthesize dome;
+@synthesize colorTable;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -41,6 +44,27 @@
         dome = [[Dome alloc] initWithDome:domeIn];
         [self alignPoles];
     }
+    colorTable = [[NSArray alloc] initWithObjects:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0],  //red
+                  [UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0],  //blue
+                  [UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0],  //green
+                  [UIColor colorWithRed:0.53 green:0 blue:0.8 alpha:1.0],  //purple
+                  [UIColor colorWithRed:1 green:0.66 blue:0 alpha:1.0],   //orange
+                  [UIColor colorWithRed:0 green:0.66 blue:0.66 alpha:1.0], //teal
+                  [UIColor colorWithRed:0.88 green:0.88 blue:0 alpha:1.0],  //gold
+                  [UIColor colorWithRed:0.86 green:0 blue:0.73 alpha:1.0],  //pink
+                  [UIColor colorWithRed:0.66 green:.88 blue:0 alpha:1.0],  // lime green
+                  [UIColor colorWithRed:0.62 green:.42 blue:0.27 alpha:1.0],  // brown
+                  [UIColor colorWithRed:0.6 green:0.725 blue:0.95 alpha:1.0],  // light blue
+                  [UIColor colorWithRed:1 green:0.81 blue:0.51 alpha:1.0],  // salmon
+                  [UIColor colorWithRed:.89 green:0.6 blue:0.97 alpha:1.0],  // light purple
+                  [UIColor colorWithRed:.5 green:1 blue:1 alpha:1.0],  // cyan
+                  [UIColor colorWithRed:.75 green:.75 blue:.15 alpha:1.0],  // dull yellow
+                  [UIColor colorWithRed:0 green:.63 blue:.42 alpha:1.0],  // sea green
+                  [UIColor colorWithRed:0.26 green:0.19 blue:0.73 alpha:1.0],  // purple-blue
+                  [UIColor colorWithRed:0.2 green:0.47 blue:0.16 alpha:1.0],  // forest green
+                  [UIColor colorWithRed:0.19 green:0.37 blue:0.52 alpha:1.0],  // gray blue
+                  [UIColor colorWithRed:0.66 green:0.66 blue:0.66 alpha:1.0], nil];  //gray
+
     return self;
 }
 
@@ -79,6 +103,8 @@
     return count;
 }
 
+// question, should this include invisible lines, and just have 0s associated with them, or
+//    have them missing entirely?
 -(NSArray*) getVisibleLineSpeciesCount  /* how many of each type of strut length do we have? */
 {
     int i;
@@ -92,6 +118,7 @@
     for(i = 0; i < dome.lineClass_.count; i++)
     {
         if(speciesCount[i] != 0) mutable[i] = [[NSNumber alloc] initWithInt:speciesCount[i]];
+        else mutable[i] = [[NSNumber alloc] initWithInt:0];
     }
     return [[NSArray alloc] initWithArray:mutable];
 }
@@ -201,15 +228,11 @@
     countByOne = 0;
     for(count = 0; count < dome.lines_.count; count+=2)
     {
-        if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 0)[[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 1)[[UIColor colorWithRed:0 green:0 blue:1.0 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 2)[[UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 3)[[UIColor colorWithRed:0.8 green:0.8 blue:0 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 4)[[UIColor colorWithRed:0.65 green:0 blue:0.65 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 5)[[UIColor colorWithRed:0 green:0.7 blue:0.7 alpha:1.0] setStroke];
-        else if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] == 6)[[UIColor colorWithRed:0.95 green:0.65 blue:0.65 alpha:1.0] setStroke];
-        else [[UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1.0] setStroke];
-
+        if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] < colorTable.count-1)
+            [(UIColor*)colorTable[[lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue]] setStroke];
+        else
+            [(UIColor*)colorTable[colorTable.count-1] setStroke];
+        
         if( [dome.invisibleLines_[count] boolValue] == FALSE)
         {
             index1 = [dome.lines_[count] integerValue];

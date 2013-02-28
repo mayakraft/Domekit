@@ -90,7 +90,7 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aqj-bD-GK1">
                                 <subviews>
-                                    <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="blh-dU-RsC">
+                                    <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="blh-dU-RsC">
                                         <connections>
                                             <action selector="frequencyValueChanged:" destination="2" eventType="valueChanged" id="DsN-0p-DoS"/>
                                         </connections>
@@ -227,6 +227,7 @@
                                     <constraint firstItem="XIQ-f1-APn" firstAttribute="bottom" secondItem="LsN-ed-6r4" secondAttribute="bottom" type="default" id="LDA-Xq-LuD"/>
                                     <constraint firstItem="9Lu-LB-PII" firstAttribute="leading" secondItem="LsN-ed-6r4" secondAttribute="leading" constant="47" id="Lw4-9R-wnA"/>
                                     <constraint firstItem="XIQ-f1-APn" firstAttribute="top" secondItem="FDp-vW-8kF" secondAttribute="top" type="default" id="Pzd-qu-SUX"/>
+                                    <constraint firstAttribute="height" constant="20" type="user" id="n5s-wl-SMu"/>
                                     <constraint firstItem="9Lu-LB-PII" firstAttribute="bottom" secondItem="LsN-ed-6r4" secondAttribute="bottom" type="default" id="psx-4A-pcv"/>
                                     <constraint firstItem="FDp-vW-8kF" firstAttribute="leading" secondItem="LsN-ed-6r4" secondAttribute="leading" constant="90" id="tAl-Nx-F54"/>
                                 </constraints>
@@ -250,12 +251,11 @@
                             <constraint firstItem="aqj-bD-GK1" firstAttribute="top" secondItem="3" secondAttribute="top" constant="105" id="ZCy-sH-P2m"/>
                             <constraint firstItem="kkj-uw-KFm" firstAttribute="centerX" secondItem="8Y8-qe-EGQ" secondAttribute="centerX" type="default" id="b4J-AI-99p"/>
                             <constraint firstItem="Pso-ei-aNV" firstAttribute="leading" secondItem="h4y-UN-ewc" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="iTi-g6-LuQ"/>
-                            <constraint firstItem="LsN-ed-6r4" firstAttribute="top" secondItem="3" secondAttribute="top" constant="460" id="ilv-zY-f3a"/>
                             <constraint firstItem="aqj-bD-GK1" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="jva-O1-YTq"/>
                             <constraint firstItem="Pso-ei-aNV" firstAttribute="top" secondItem="UpT-we-ZEx" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="qY5-K8-Jvg"/>
                             <constraint firstItem="LsN-ed-6r4" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="qvt-vP-IU2"/>
                             <constraint firstItem="2rM-e7-kJN" firstAttribute="leading" secondItem="h4y-UN-ewc" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="r8T-Q8-nMH"/>
-                            <constraint firstItem="LsN-ed-6r4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="rjv-er-Ex2"/>
+                            <constraint firstItem="LsN-ed-6r4" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="user" id="rjv-er-Ex2"/>
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="top" secondItem="3" secondAttribute="top" constant="4" id="sG9-jz-TN5"/>
                             <constraint firstItem="Pso-ei-aNV" firstAttribute="trailing" secondItem="UpT-we-ZEx" secondAttribute="trailing" type="default" id="uER-MT-o5f"/>
                             <constraint firstItem="aqj-bD-GK1" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="yRO-S0-I9z"/>

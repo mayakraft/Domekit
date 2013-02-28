@@ -18,8 +18,8 @@
     NSArray *invisiblePoints_;  // not a copy of point data, merely an array of indexes to points, TRUE or FALSE
     NSArray *invisibleLines_;   // same as above. also, everytime points or lines data increases, increase these too
     
-    NSArray *lineClass_;  //   category of lines by class
-    NSArray *lineClassLengths_;  //  lengths of each category of lines
+    NSArray *lineClass_;         // category of lines by class.        arraysize = sizeof(lines_) / 2
+    NSArray *lineClassLengths_;  // lengths of each category of lines. arraysize = tiny. however many different strut lengths.
     int v;
     BOOL icosahedron; // 1 = icosa, 0 = octa
 }
