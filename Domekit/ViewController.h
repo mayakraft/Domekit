@@ -26,7 +26,7 @@
 @property IBOutlet UIButton *icosaButton;    //|
 @property IBOutlet UIButton *octaButton;     //| polyhedra button
 @property IBOutlet UIImageView *polyButton;  //|
-
+@property IBOutlet UILabel *alignAlertMessage;
 
 -(IBAction)modelButtonPress:(id)sender;
 -(IBAction)sizeButtonPress:(id)sender;

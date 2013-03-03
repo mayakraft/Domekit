@@ -114,8 +114,8 @@
     lineClassLengths_ = [[NSArray alloc] initWithArray:originalLengths];
     //for(i=0; i < lineClass_.count; i++) NSLog(@"%d", [lineClass_[i] integerValue]);
     //NSLog(@"%d, %d, %d", lines_.count, lineClass_.count, lineClassLengths_.count);
-    NSLog(@"*****************");
-    for(i=0; i < lineClassLengths_.count; i++) NSLog(@"Strut %d: %f", i, [lineClassLengths_[i] floatValue]);
+    //NSLog(@"*****************");
+    //for(i=0; i < lineClassLengths_.count; i++) NSLog(@"Strut %d: %f", i, [lineClassLengths_[i] floatValue]);
 }
 
 -(void) geodecise:(int)vNum

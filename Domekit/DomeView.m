@@ -14,12 +14,12 @@
 
 @interface DomeView()
 {
+    Dome *dome;
     double scale;    // scale for rendering
     CGPoint sliceLine;
     BOOL sliceMode;
     Point3D *r;  // angle of rotation in view from normals
     NSArray *projectedPoints_;      // rotated points
-    Dome *dome;
     int polaris, octantis;
     BOOL sphere;  // during calculateInvisibles, updates wether a dome or a sphere
 }
@@ -151,7 +151,6 @@
     }
     return [[NSArray alloc] initWithArray:lengthOrder];
 }
-
 
 -(void) capturePoles
 {

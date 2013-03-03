@@ -91,20 +91,6 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exz-UU-PNi">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="bKr-dE-ltV"/>
-                                            <constraint firstAttribute="height" constant="30" id="vyI-uj-1vX"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" backgroundImage="aligndome.png">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="et8-bc-v18">
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="fVK-ST-aRt"/>
@@ -155,16 +141,34 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="64" translatesAutoresizingMaskIntoConstraints="NO" id="oVd-CF-yOp"/>
+                                    <button opaque="NO" alpha="0.75" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJK-nA-JvF">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="29" id="7lS-Jk-IQ4"/>
+                                            <constraint firstAttribute="width" constant="32" id="Ili-uS-lAD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="autolock.png">
+                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="autoAlignPress:" destination="2" eventType="touchUpInside" id="duS-4m-T4j"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="mAY-92-IF2" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="203" id="5WD-ra-qgm"/>
                                     <constraint firstItem="mAY-92-IF2" firstAttribute="top" secondItem="Pb4-ss-jbi" secondAttribute="top" type="default" id="5qY-GG-hjv"/>
+                                    <constraint firstAttribute="bottom" secondItem="jJK-nA-JvF" secondAttribute="bottom" constant="157" id="BO1-Cw-z2A"/>
                                     <constraint firstItem="lZ0-vr-owT" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="48" id="G8y-e6-dpO"/>
                                     <constraint firstItem="mAY-92-IF2" firstAttribute="baseline" secondItem="Pb4-ss-jbi" secondAttribute="baseline" type="default" id="GJA-AD-dUa"/>
                                     <constraint firstItem="oVd-CF-yOp" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="220" id="IMF-Yu-sWL"/>
                                     <constraint firstItem="et8-bc-v18" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="343" id="R9z-c5-bOf"/>
-                                    <constraint firstAttribute="bottom" secondItem="exz-UU-PNi" secondAttribute="bottom" constant="334" id="VCC-OD-1wX"/>
+                                    <constraint firstItem="jJK-nA-JvF" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="74" id="YMU-Uj-QUj"/>
                                     <constraint firstItem="liJ-76-20L" firstAttribute="top" secondItem="et8-bc-v18" secondAttribute="top" type="default" id="Yy5-fh-Bil"/>
                                     <constraint firstAttribute="bottom" secondItem="oVd-CF-yOp" secondAttribute="bottom" constant="27" id="boJ-5f-FKJ"/>
                                     <constraint firstAttribute="bottom" secondItem="et8-bc-v18" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="cA2-Ns-ka9"/>
@@ -176,7 +180,6 @@
                                     <constraint firstAttribute="trailing" secondItem="liJ-76-20L" secondAttribute="trailing" constant="343" id="wMR-pB-Mx6"/>
                                     <constraint firstItem="hgE-pC-B4v" firstAttribute="bottom" secondItem="oVd-CF-yOp" secondAttribute="bottom" type="default" id="xgB-uW-dsg"/>
                                     <constraint firstItem="Pb4-ss-jbi" firstAttribute="leading" secondItem="bVL-qY-62G" secondAttribute="leading" constant="91" id="ya4-jo-GlN"/>
-                                    <constraint firstItem="exz-UU-PNi" firstAttribute="centerX" secondItem="hgE-pC-B4v" secondAttribute="centerX" type="default" id="yh2-gG-K40"/>
                                     <constraint firstItem="Pb4-ss-jbi" firstAttribute="baseline" secondItem="lZ0-vr-owT" secondAttribute="baseline" type="default" id="zzD-ox-5b0"/>
                                 </constraints>
                             </view>
@@ -209,7 +212,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="aligndome.png" width="60" height="60"/>
+        <image name="autolock.png" width="21" height="19"/>
         <image name="icosahedron_icon.png" width="100" height="100"/>
         <image name="octahedron_icon.png" width="100" height="100"/>
         <image name="textlogo_dark.png" width="383" height="83"/>
@@ -225,13 +228,18 @@
                 <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
                 <relationship kind="action" name="instructionButtonPress:"/>
                 <relationship kind="action" name="modelButtonPress:"/>
+                <relationship kind="action" name="polyButtonTouchDown:"/>
+                <relationship kind="action" name="polyButtonTouchDragOff:"/>
                 <relationship kind="action" name="sizeButtonPress:"/>
                 <relationship kind="action" name="solidChange:"/>
+                <relationship kind="action" name="strutButtonPress:"/>
                 <relationship kind="action" name="toggleDomeHeightLockOn:"/>
                 <relationship kind="action" name="toggleStrutLengthLockOn:"/>
                 <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="aboveInstructionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="alignAlertMessage" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="cropButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="icosaButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>
