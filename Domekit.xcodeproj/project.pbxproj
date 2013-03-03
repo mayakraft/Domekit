@@ -68,7 +68,6 @@
 		D5B0190016DD7DE800284478 /* polybutton_state0_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B018FC16DD7DE800284478 /* polybutton_state0_on@2x.png */; };
 		D5C4267E16D4B46800FA1DCD /* octahedron_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */; };
 		D5C81DB316C9F03D002557EB /* foggydark.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C81DB216C9F03D002557EB /* foggydark.png */; };
-		D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C9596C16C72411003A6941 /* InstructionsViewController.m */; };
 		D5CB23A416CE3CD9005DF916 /* voyagercat.png in Resources */ = {isa = PBXBuildFile; fileRef = D5CB23A316CE3CD9005DF916 /* voyagercat.png */; };
 		D5CCFF8216C08FE400E27EE0 /* DiagramView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5CCFF8116C08FE400E27EE0 /* DiagramView.m */; };
 /* End PBXBuildFile section */
@@ -155,8 +154,6 @@
 		D5B018FC16DD7DE800284478 /* polybutton_state0_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "polybutton_state0_on@2x.png"; sourceTree = "<group>"; };
 		D5C4267C16D4B46800FA1DCD /* octahedron_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octahedron_icon.png; sourceTree = "<group>"; };
 		D5C81DB216C9F03D002557EB /* foggydark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggydark.png; sourceTree = "<group>"; };
-		D5C9596B16C72411003A6941 /* InstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsViewController.h; sourceTree = "<group>"; };
-		D5C9596C16C72411003A6941 /* InstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsViewController.m; sourceTree = "<group>"; };
 		D5CB23A316CE3CD9005DF916 /* voyagercat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagercat.png; sourceTree = "<group>"; };
 		D5CCFF8016C08FE400E27EE0 /* DiagramView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramView.h; sourceTree = "<group>"; };
 		D5CCFF8116C08FE400E27EE0 /* DiagramView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiagramView.m; sourceTree = "<group>"; };
@@ -227,18 +224,16 @@
 				D514EE1416B748A5000D9264 /* MainStoryboard_iPad.storyboard */,
 				D514EE1716B748A5000D9264 /* ViewController.h */,
 				D514EE1816B748A5000D9264 /* ViewController.m */,
-				D5CCFF8016C08FE400E27EE0 /* DiagramView.h */,
-				D5CCFF8116C08FE400E27EE0 /* DiagramView.m */,
 				D514EE3716B74A13000D9264 /* DomeView.h */,
 				D514EE3816B74A13000D9264 /* DomeView.m */,
+				D5CCFF8016C08FE400E27EE0 /* DiagramView.h */,
+				D5CCFF8116C08FE400E27EE0 /* DiagramView.m */,
 				D514EE3E16B74F81000D9264 /* Dome.h */,
 				D514EE3F16B74F81000D9264 /* Dome.m */,
 				D514EE4116B7E35A000D9264 /* Point3D.h */,
 				D514EE4216B7E35A000D9264 /* Point3D.m */,
 				D564799016D010E800FCBDE0 /* HeightMarker.h */,
 				D564799116D010E800FCBDE0 /* HeightMarker.m */,
-				D5C9596B16C72411003A6941 /* InstructionsViewController.h */,
-				D5C9596C16C72411003A6941 /* InstructionsViewController.m */,
 				D514EE0016B748A5000D9264 /* Supporting Files */,
 			);
 			path = Domekit;
@@ -475,7 +470,6 @@
 				D514EE4016B74F82000D9264 /* Dome.m in Sources */,
 				D514EE4316B7E35A000D9264 /* Point3D.m in Sources */,
 				D5CCFF8216C08FE400E27EE0 /* DiagramView.m in Sources */,
-				D5C9596D16C72411003A6941 /* InstructionsViewController.m in Sources */,
 				D564799216D010E800FCBDE0 /* HeightMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

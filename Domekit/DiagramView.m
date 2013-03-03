@@ -15,7 +15,6 @@
     int polaris, octantis;
     CGFloat lineWidth;
     UIImage *imageForContext;
-    
     NSArray *colorTable;
 }
 @end
@@ -40,7 +39,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         lineWidth = 1;
-        size = 33;
+        size = 28;
         dome = [[Dome alloc] initWithDome:domeIn];
         [self alignPoles];
     }
@@ -68,87 +67,18 @@
     return self;
 }
 
--(double) getDomeHeight  /* returns value between 0 and 1 */
-{
-    double lowest = -2;
-    double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
-    for(int i = 0; i < dome.points_.count; i++)
-    {
-        if([dome.invisiblePoints_[i] boolValue] == FALSE && [dome.points_[i] getY] > lowest)
-            lowest = [dome.points_[i] getY];
-    }
-    lowest = ( lowest + max ) / (2 * max);
-    if(lowest < 0) lowest = 0;
-    return lowest;
-}
-
--(int) getLineCount /* only visible lines */
-{
-    int count = 0;
-    for(int i = 0; i < dome.invisibleLines_.count; i++)
-    {
-        if([dome.invisibleLines_[i] boolValue] == FALSE) count++;
-    }
-    count = count/2.0;  // lines are stored as pairs of points, so divide by 2
-    return count;
-}
-
--(int) getPointCount  /* only visible points */
-{
-    int count = 0;
-    for(int i = 0; i < dome.invisiblePoints_.count; i++)
-    {
-        if([dome.invisiblePoints_[i] boolValue] == FALSE) count++;
-    }
-    return count;
-}
-
-// question, should this include invisible lines, and just have 0s associated with them, or
-//    have them missing entirely?
--(NSArray*) getVisibleLineSpeciesCount  /* how many of each type of strut length do we have? */
-{
-    int i;
-    int speciesCount[dome.lineClass_.count];
-    for(i = 0; i < dome.lineClass_.count; i++) speciesCount[i] = 0;
-    for(i = 0; i < dome.lineClass_.count; i++)
-    {
-        if(![dome.invisibleLines_[i*2] boolValue])speciesCount[[dome.lineClass_[i] integerValue]]++;
-    }
-    NSMutableArray *mutable = [[NSMutableArray alloc] init];
-    for(i = 0; i < dome.lineClass_.count; i++)
-    {
-        if(speciesCount[i] != 0) mutable[i] = [[NSNumber alloc] initWithInt:speciesCount[i]];
-        else mutable[i] = [[NSNumber alloc] initWithInt:0];
-    }
-    return [[NSArray alloc] initWithArray:mutable];
-}
-
--(NSArray*) getLengthOrder
-{
-    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithCapacity:dome.lineClassLengths_.count];
-    int i, j, index;
-    for(i = 0; i < dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
-    for(i = 0; i < dome.lineClassLengths_.count; i++){
-        index = 0;
-        for(j = 0; j < dome.lineClassLengths_.count; j++){
-            if(i!=j && [dome.lineClassLengths_[i] doubleValue] > [dome.lineClassLengths_[j] doubleValue]) index++;
-        }
-        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
-    }
-    return [[NSArray alloc] initWithArray:lengthOrder];
-}
-
 -(void) importDome:(Dome*)domeIn Polaris:(int)north Octantis:(int)south
 {
     dome = [[Dome alloc] initWithDome:domeIn];
     polaris = north;
     octantis = south;
-    size = 33;        // calibrated for preview size
+    size = 28;        // calibrated for preview size
     lineWidth = 1;    //     "
     [self alignPoles];
     [self setNeedsDisplay];
 }
 
+// calling this before drawing diagram centers the top point (polaris) in the middle of the diagram
 -(void) alignPoles
 {
     NSMutableArray *points = [[NSMutableArray alloc] init];
@@ -182,13 +112,26 @@
 -(void) setScale:(double)x { size = x; }
 -(void) setLineWidth:(CGFloat)x { lineWidth = x; }
 
+-(NSArray*) getLengthOrder
+{
+    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithCapacity:dome.lineClassLengths_.count];
+    int i, j, index;
+    for(i = 0; i < dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
+    for(i = 0; i < dome.lineClassLengths_.count; i++){
+        index = 0;
+        for(j = 0; j < dome.lineClassLengths_.count; j++){
+            if(i!=j && [dome.lineClassLengths_[i] doubleValue] > [dome.lineClassLengths_[j] doubleValue]) index++;
+        }
+        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
+    }
+    return [[NSArray alloc] initWithArray:lengthOrder];
+}
 
 // draws an assembly diagram with a size and line width as specified in setScale and setLineWidth
 - (void)drawRect:(CGRect)rect
 {
     imageForContext = [[UIImage alloc] init];
     CGContextRef context = UIGraphicsGetCurrentContext();
-    //CGContextClearRect(context, [self bounds]);
     int halfHeight = [self bounds].size.height / 2.0;
     int halfWidth = [self bounds].size.width / 2.0;
     Point3D *point1 = [[Point3D alloc] init];
@@ -221,9 +164,6 @@
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
     
-    //double smallestY = 1.9022;
-    //double largestY = 0;
-    
     int index1, index2;
     countByOne = 0;
     for(count = 0; count < dome.lines_.count; count+=2)
@@ -248,10 +188,6 @@
                 
                 if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
                 else fisheye = 1;
-                /*if(index1 != polaris){
-                    if(yOffset < smallestY) smallestY = yOffset;
-                    if(yOffset > largestY) largestY = yOffset;
-                }*/
 
                 CGContextBeginPath(context);
                 CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
@@ -263,10 +199,6 @@
                 if(yOffset > 1.63) fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;
                 else fisheye = 1;
                 
-                /*if(index2 != polaris){
-                    if(yOffset < smallestY) smallestY = yOffset;
-                    if(yOffset > largestY) largestY = yOffset;
-                }*/
                 CGContextAddLineToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
                                         fisheye*yOffset*cos(angle)*scale+halfHeight);
                 CGContextClosePath(context);
@@ -306,11 +238,7 @@
             }
         }
         countByOne++;
-    }
-    //NSLog(@"Smallest: %.3f, Largest: %.3f",smallestY, largestY);
-    //imageForContext = UIGraphicsGetImageFromCurrentImageContext();
-    //UIGraphicsEndImageContext();
-    
+    }    
 }
 
 

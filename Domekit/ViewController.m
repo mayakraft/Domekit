@@ -20,15 +20,17 @@
     DiagramView *diagramPreview;
     UIImageView *domePreview;
     HeightMarker *heightMarkerPreview;
+    
     //MODEL VIEW
     DomeView *domeView;
     Point3D *touchPanRotate;  // last position in pan during rotate mode
     CGFloat touchPanEdit;     // last position in pan during slice mode
     CGFloat touchPinch;       // last position in pinch to scale
     CGPoint touchOrigin;     // origin of panning, to check if it began on the drawing square
-    BOOL icosahedron;
+    BOOL icosahedron;       // TRUE=icosahedron, FALSE=octahedron
     BOOL alignToSlice;        // auto-aligns dome before splicing
-    int VNumber;
+    int VNumber;             //dome Frequency
+    
     //SIZE VIEW
     UIView *sizeWindow;
     UIView *scaleFigureView;
@@ -47,10 +49,10 @@
     BOOL sizeLockMode;        // lock size to domeHeight (0) or longestStrut (1) when switching between domes
     UIButton *lockHeight;
     UIButton *lockStrut;
+    
     //INSTRUCTION VIEW
     UIView *instructionWindow;
     DiagramView *diagramView;
-    //UIView *strutData;
     UIView *nodeData;
     UIView *faceData;
     UILabel *nodeCountLabel;
@@ -112,7 +114,6 @@
                                                           (self.view.bounds.size.height-self.view.bounds.size.width-135)/2,
                                                           [self.view bounds].size.width*.9,
                                                           [self.view bounds].size.width*.9)];
-    NSLog(@"%f",(self.view.bounds.size.height-self.view.bounds.size.width-135)/2);
     [domeView.layer setCornerRadius:15.0f];
     domeView.layer.masksToBounds = TRUE;
     domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
@@ -133,7 +134,7 @@
     
     //cropButton
     //stepper
-    //polyButton
+    //polyButton   //these elements could be sized better
     //octaButton
     //icosaButton
 
@@ -182,7 +183,7 @@
     [sizeWindow addSubview:heightValueLabel];
     
     longestStrutRatio = [domeView getLongestStrutLength];
-    longestStrut = domeSize / [diagramPreview getDomeHeight] * longestStrutRatio;
+    longestStrut = domeSize / [domeView getDomeHeight] * longestStrutRatio;
 
     longestStrutLengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-40, 125, 30)];
     [longestStrutLengthLabel setBackgroundColor:[UIColor clearColor]];
@@ -244,7 +245,7 @@
     [nodeCountLabel setTextColor:[UIColor blackColor]];
     [nodeCountLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
     [nodeCountLabel setTextAlignment:NSTextAlignmentRight];
-    nodeCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getPointCount]];
+    nodeCountLabel.text = [NSString stringWithFormat:@"%d",[domeView getPointCount]];
     [instructionWindow addSubview:nodeCountLabel];
     
     strutCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(instructionWindow.bounds.size.width-90, instructionWindow.bounds.size.height-40, 75, 30)];
@@ -252,13 +253,13 @@
     [strutCountLabel setTextColor:[UIColor blackColor]];
     [strutCountLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
     [strutCountLabel setTextAlignment:NSTextAlignmentRight];
-    strutCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getLineCount]];
+    strutCountLabel.text = [NSString stringWithFormat:@"%d",[domeView getLineCount]];
     [instructionWindow addSubview:strutCountLabel];
     
-    UIButton *nodeButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    [nodeButton setFrame:CGRectMake(7, instructionWindow.bounds.size.height-70, 30, 30)];
-    [instructionWindow addSubview:nodeButton];
-    [nodeButton addTarget:self action:@selector(nodeButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+    //UIButton *nodeButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    //[nodeButton setFrame:CGRectMake(7, instructionWindow.bounds.size.height-70, 30, 30)];
+    //[instructionWindow addSubview:nodeButton];
+    //[nodeButton addTarget:self action:@selector(nodeButtonPress:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *strutButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     [strutButton setFrame:CGRectMake(7, instructionWindow.bounds.size.height-40, 30, 30)];
@@ -271,7 +272,7 @@
 ////////////
 // TAB BAR BUTTONS
 ////////////
-        
+    
     [modelButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
     [modelButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
     [modelButton.layer setCornerRadius:7.0f];
@@ -326,8 +327,6 @@
     [self.view sendSubviewToBack:sizeButton];
     [self.view sendSubviewToBack:instructionButton];
 
-   
-    
 ////////////
 // GESTURES
 ////////////
@@ -365,18 +364,11 @@
     [strutNodeScrollView setHidden:TRUE];   // Close when leaving Instruction Window
 }
 
--(void) updateSizeButton
-{
-    [domePreview setFrame:CGRectMake(25, 8+27*(1-[diagramPreview getDomeHeight]), 54, 54*[diagramPreview getDomeHeight])];
-    [heightMarkerPreview setFrame:CGRectMake(10, 8+27*(1-[diagramPreview getDomeHeight]), 10, 54*[diagramPreview getDomeHeight])];
-    [heightMarkerPreview setNeedsDisplay];
-}
-
 -(IBAction)sizeButtonPress:(id)sender
 {
     int topMargin = (sizeWindow.bounds.size.height-sizeWindow.bounds.size.width)/2;
     longestStrutRatio = [domeView getLongestStrutLength];
-    domeHeightRatio = [diagramPreview getDomeHeight];
+    domeHeightRatio = [domeView getDomeHeight];
  
     if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
     {
@@ -386,14 +378,10 @@
     else
     {
         if(!sizeLockMode) /* lock to dome height */
-        {
             longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
-        }
         else  /*lock to longest strut length */
-        {
             domeSize = domeHeightRatio * longestStrut / longestStrutRatio;
-            //domeSize = domeHeightRatio / longestStrut;
-        }
+    
         heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
         longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];        
     }
@@ -455,8 +443,15 @@
     [diagramView setLineWidth:4.0];
     [diagramView setNeedsDisplay];
 
-    nodeCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getPointCount]];
-    strutCountLabel.text = [NSString stringWithFormat:@"%d",[diagramView getLineCount]];
+    nodeCountLabel.text = [NSString stringWithFormat:@"%d",[domeView getPointCount]];
+    strutCountLabel.text = [NSString stringWithFormat:@"%d",[domeView getLineCount]];
+}
+
+-(void) updateSizeButton
+{
+    [domePreview setFrame:CGRectMake(25, 8+27*(1-[domeView getDomeHeight]), 54, 54*[domeView getDomeHeight])];
+    [heightMarkerPreview setFrame:CGRectMake(10, 8+27*(1-[domeView getDomeHeight]), 10, 54*[domeView getDomeHeight])];
+    [heightMarkerPreview setNeedsDisplay];
 }
 
 -(IBAction)toggleDomeHeightLockOn:(id)sender
@@ -504,24 +499,18 @@
 -(IBAction)polyButtonTouchDown:(id)sender
 {
     if(icosahedron)
-    {
         [polyButton setImage:[UIImage imageNamed:@"polybutton_state0_on.png"]];
-    }
     else
-    {
         [polyButton setImage:[UIImage imageNamed:@"polybutton_state1_on.png"]];
-        
-    }
 }
+
 -(IBAction)polyButtonTouchDragOff:(id)sender
 {
     if(icosahedron)
         [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
     else
         [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
-    
 }
-
 
 -(IBAction)solidChange:(id)sender
 {
@@ -572,10 +561,10 @@
     [strutNodeScrollView addSubview:window];
     
     int StrutScale = 5;
-    NSArray *speciesCount = [[NSArray alloc] initWithArray:[diagramView getVisibleLineSpeciesCount]];
+    NSArray *speciesCount = [[NSArray alloc] initWithArray:[domeView getVisibleLineSpeciesCount]];
     NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
     NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
-    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[diagramView getLengthOrder]];
+    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[domeView getLengthOrder]];
     int i, j, index;
     //lineclasslengths_.count = how many types of struts there are
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
@@ -586,7 +575,7 @@
         }
         lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
     }
-    NSLog(@"Step 1, Lengths tallied");
+    //NSLog(@"Step 1, Lengths tallied");
 
     //fit scrollview window
     [strutNodeScrollView setContentSize:CGSizeMake(strutNodeScrollView.frame.size.width, diagramView.dome.lineClassLengths_.count*30+20)];
@@ -600,7 +589,8 @@
     NSMutableArray *strutLineExamples = [[NSMutableArray alloc] init];
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
     {
-        index = [lengthOrder[i] integerValue];
+        //index will count a little different from i, it counts in order of strut length
+        index = i;//[lengthOrder[i] integerValue];
         [strutLineExamples addObject:[[UIView alloc] initWithFrame:
                                       CGRectMake(110-130*[diagramView.dome.lineClassLengths_[index] doubleValue],
                                                  index*30+14+10,
@@ -613,11 +603,12 @@
 
         [window addSubview:strutLineExamples[i]];
     }
-    NSLog(@"Step 2, Struts drawn");
+   // NSLog(@"Step 2, Struts drawn");
 
     for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
     {
-        index = [lengthOrder[i] integerValue];
+        //index will count a little different from i, it counts in order of strut length
+        index = i;//[lengthOrder[i] integerValue];
         [lineLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-60, 10+index*30, 100, 30)]];
  
         if(index < diagramView.colorTable.count-1)
@@ -638,13 +629,12 @@
         [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[index] doubleValue] * StrutScale]];
         [window addSubview:lengthLabels[i]];
     }    
-    NSLog(@"Step 3, Text up, all done!");
+  //  NSLog(@"Step 3, Text up, all done!");
     
     [instructionWindow addSubview:strutNodeScrollView];
 }
 
-
--(IBAction)nodeButtonPress:(id)sender
+/*-(IBAction)nodeButtonPress:(id)sender
 {
     [strutNodeScrollView setHidden:TRUE];
 
@@ -659,43 +649,6 @@
     [strutNodeScrollView addSubview:window];
     
     [instructionWindow addSubview:strutNodeScrollView];
-    
-}
-/*
--(void) adjustSizeView
-{
-    CGFloat y = domeCircle.frame.origin.y+5;
-    if(y > 390) y = 390;
-    if((domeSize*[diagramView getDomeHeight]) < 10)
-        [sizeView setFrame:CGRectMake(-2, y, 92, 50)];//CGRectMake(15, 475, 92, 50)];
-    else if((domeSize*[diagramView getDomeHeight]) < 100)
-        [sizeView setFrame:CGRectMake(9, y, 92, 50)];//CGRectMake(10, 475, 92, 50)];
-    else
-        [sizeView setFrame:CGRectMake(22, y, 92, 50)];//CGRectMake(5, 475, 92, 50)];
-
-}*/
-
-/*
--(void) refreshHeight
-{
-    int height = 86 * [diagramView getDomeHeight];
-    domeCircle.frame = CGRectMake(22, [self.view bounds].size.height-98+(86-height), 86, height);
-    sizeLabel.text = [NSString stringWithFormat:@"%d",(int)(domeSize*[diagramView getDomeHeight])];
-    sizeFPartLabel.text = [NSString stringWithFormat:@"%d", (int)floorf( 10*(domeSize*[diagramView getDomeHeight]-(int)(domeSize*[diagramView getDomeHeight])) ) ];
-    heightMarker.frame = CGRectMake(5, [self.view bounds].size.height-98+(86-height), 15, height);
-    [heightMarker setNeedsDisplay];
-}
-*/
-
-/*- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"InstructionSegue"]) {
-        InstructionsViewController *instructions = (InstructionsViewController *)segue.destinationViewController;
-        //instructions.StrutScale = domeSize;
-        instructions.diagramView = [[DiagramView alloc] initWithFrame:[[UIScreen mainScreen]bounds] Dome:domeView.dome];
-        [instructions.diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
-        [instructions.diagramView setScale:100];
-    }
 }*/
 
 -(void) tapTwiceListener:(UITapGestureRecognizer*)sender
@@ -767,7 +720,7 @@
         }   
         heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
         longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft", longestStrut];
-        CGFloat manHeight = (6/domeSize) * domeCircleScale*[diagramPreview getDomeHeight];
+        CGFloat manHeight = (6/domeSize) * domeCircleScale*[domeView getDomeHeight];
         [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
         [voyagercat setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.5*.25*manHeight/.75, domeSizeGround-.25*manHeight, .25*manHeight/.75, .25*manHeight)];
        // NSLog(@"%f",domeSize);
@@ -850,35 +803,6 @@
     [self.view.layer addAnimation:messageAnimation forKey:@"animation"];
     //[savingText setHidden:YES];
 }
-/*
--(void) toggleSizeMode
-{
-    if([domeView getSliceMode]) [self toggleSliceMode];
-    if(sizeToggle){
-        [sizeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        sizeButton.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
-        domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
-        sizeToggle = false;
-        [sizeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlEventTouchDown];
-        scaleFigureView.hidden = TRUE;
-    }
-    else{
-        domeView.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.8 alpha:1.0].CGColor;
-        sizeButton.layer.borderColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.8 alpha:1.0].CGColor;
-        [sizeButton setTitleColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.8 alpha:1.0] forState:UIControlStateNormal];
-        sizeToggle = true;
-        [sizeButton setTitleColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.8 alpha:1.0] forState:UIControlEventTouchDown];
-        scaleFigureView.hidden = FALSE;
-        int floor;
-        double sphereHeight = [domeView getScale] * 2 * sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
-        int margin = (scaleFigureView.bounds.size.height - sphereHeight)/2;  // between tip of dome and border
-        floor = margin+ sphereHeight*[diagramView getDomeHeight];
-        voyagerman.frame = CGRectMake(scaleFigureView.bounds.size.width/2.0 - (1/(domeSize/6)*scaleFigureView.bounds.size.height*.8*.4)/2,
-                                      floor-1/(domeSize/6)*scaleFigureView.bounds.size.height*.8,
-                                      1/(domeSize/6)*scaleFigureView.bounds.size.height*.8*.4,
-                                      1/(domeSize/6)*scaleFigureView.bounds.size.height*.8);
-    }
-}*/
 
 - (void)didReceiveMemoryWarning
 {

@@ -13,19 +13,19 @@
 @property IBOutlet UIButton *modelButton;           //|
 @property IBOutlet UIButton *sizeButton;            //| three tab bar buttons
 @property IBOutlet UIButton *instructionButton;     //|
-@property IBOutlet UIButton *aboveInstructionButton;     //|
+@property IBOutlet UIButton *aboveInstructionButton;//| (actual instruction button which receives IBAction
 @property IBOutlet UILabel *VLabel;             //|
-@property IBOutlet UILabel *FractionLabel;      //| bottom status bar descriptions
+@property IBOutlet UILabel *FractionLabel;      //| status bar dome description
 @property IBOutlet UILabel *SolidLabel;         //|
-@property IBOutlet UIImageView *solidView;  // polyhedron picture in model tab button
+@property IBOutlet UIImageView *solidView;  // polyhedron picture in model tab bar button
 @property IBOutlet UILabel *pageNumber;   // status bar page description label
+@property IBOutlet UIView *modelWindow;   // together with sizeWindow, and instructionWindow = the 3 containers for each page
 // model window page elements
-@property IBOutlet UIView *modelWindow;
-@property IBOutlet UIStepper *stepper;
+@property IBOutlet UIStepper *stepper;  // Frequency  - / +
 @property IBOutlet UIButton *cropButton;
-@property IBOutlet UIButton *icosaButton;
-@property IBOutlet UIButton *octaButton;
-@property IBOutlet UIImageView *polyButton;
+@property IBOutlet UIButton *icosaButton;    //|
+@property IBOutlet UIButton *octaButton;     //| polyhedra button
+@property IBOutlet UIImageView *polyButton;  //|
 
 
 -(IBAction)modelButtonPress:(id)sender;

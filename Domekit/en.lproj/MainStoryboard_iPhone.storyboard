@@ -171,19 +171,19 @@
                                 <constraints>
                                     <constraint firstItem="g4B-OV-egz" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="28" id="1fg-Ai-xBd"/>
                                     <constraint firstItem="blh-dU-RsC" firstAttribute="centerX" secondItem="aqj-bD-GK1" secondAttribute="centerX" type="default" id="2VM-yh-cbx"/>
-                                    <constraint firstItem="sjU-MT-xgU" firstAttribute="top" secondItem="jvu-yS-e7r" secondAttribute="top" type="default" id="B6t-df-gjR"/>
                                     <constraint firstItem="jvu-yS-e7r" firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" type="default" id="Cff-yL-T42"/>
+                                    <constraint firstItem="jvu-yS-e7r" firstAttribute="top" secondItem="Xtn-dE-nkN" secondAttribute="top" type="default" id="F6T-9s-UAZ"/>
                                     <constraint firstItem="jvu-yS-e7r" firstAttribute="leading" secondItem="Xtn-dE-nkN" secondAttribute="leading" type="default" id="GDm-NU-Kks"/>
+                                    <constraint firstItem="sjU-MT-xgU" firstAttribute="top" secondItem="Xtn-dE-nkN" secondAttribute="top" type="default" id="IJZ-u2-F6z"/>
                                     <constraint firstItem="jvu-yS-e7r" firstAttribute="top" secondItem="sXr-KM-our" secondAttribute="top" type="default" id="RfL-Pg-9oD"/>
-                                    <constraint firstItem="sjU-MT-xgU" firstAttribute="bottom" secondItem="jvu-yS-e7r" secondAttribute="bottom" type="default" id="TaY-cJ-wXm"/>
-                                    <constraint firstItem="sjU-MT-xgU" firstAttribute="bottom" secondItem="Xtn-dE-nkN" secondAttribute="bottom" type="default" id="Tkv-xc-DSR"/>
                                     <constraint firstAttribute="bottom" secondItem="g4B-OV-egz" secondAttribute="bottom" constant="64" id="VV8-HV-EWq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Xtn-dE-nkN" secondAttribute="trailing" constant="16" id="YdU-UM-Euk"/>
+                                    <constraint firstItem="sjU-MT-xgU" firstAttribute="bottom" secondItem="jvu-yS-e7r" secondAttribute="bottom" type="default" id="c1B-cH-LAw"/>
                                     <constraint firstItem="blh-dU-RsC" firstAttribute="centerY" secondItem="jvu-yS-e7r" secondAttribute="centerY" type="default" id="dEq-uI-LJN"/>
-                                    <constraint firstItem="sXr-KM-our" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="21" id="gr6-bB-Ub2"/>
-                                    <constraint firstItem="Xtn-dE-nkN" firstAttribute="top" secondItem="jvu-yS-e7r" secondAttribute="top" type="default" id="lOd-Zl-wcT"/>
+                                    <constraint firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" constant="10" id="e0M-nY-l2g"/>
                                     <constraint firstItem="sjU-MT-xgU" firstAttribute="trailing" secondItem="Xtn-dE-nkN" secondAttribute="trailing" type="default" id="oyx-NB-Gyd"/>
-                                    <constraint firstAttribute="bottom" secondItem="sXr-KM-our" secondAttribute="bottom" constant="8" id="qwM-DG-unz"/>
-                                    <constraint firstAttribute="trailing" secondItem="Xtn-dE-nkN" secondAttribute="trailing" constant="21" id="tuk-bj-NML"/>
+                                    <constraint firstItem="jvu-yS-e7r" firstAttribute="bottom" secondItem="Xtn-dE-nkN" secondAttribute="bottom" type="default" id="qfE-me-Gjk"/>
+                                    <constraint firstItem="sXr-KM-our" firstAttribute="leading" secondItem="aqj-bD-GK1" secondAttribute="leading" constant="16" id="zA7-Ey-m6u"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="MODEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UpT-we-ZEx">
@@ -304,7 +304,6 @@
                 <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
                 <relationship kind="action" name="instructionButtonPress:"/>
                 <relationship kind="action" name="modelButtonPress:"/>
-                <relationship kind="action" name="nodeButtonPress:"/>
                 <relationship kind="action" name="polyButtonTouchDown:"/>
                 <relationship kind="action" name="polyButtonTouchDragOff:"/>
                 <relationship kind="action" name="sizeButtonPress:"/>

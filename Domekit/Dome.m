@@ -113,7 +113,9 @@
     lineClass_ = [[NSArray alloc] initWithArray:lineClass];
     lineClassLengths_ = [[NSArray alloc] initWithArray:originalLengths];
     //for(i=0; i < lineClass_.count; i++) NSLog(@"%d", [lineClass_[i] integerValue]);
-    NSLog(@"%d, %d, %d", lines_.count, lineClass_.count, lineClassLengths_.count);
+    //NSLog(@"%d, %d, %d", lines_.count, lineClass_.count, lineClassLengths_.count);
+    NSLog(@"*****************");
+    for(i=0; i < lineClassLengths_.count; i++) NSLog(@"Strut %d: %f", i, [lineClassLengths_[i] floatValue]);
 }
 
 -(void) geodecise:(int)vNum
@@ -313,14 +315,15 @@
 
 -(void) loadOctahedron
 {
+    double radius = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
     points_ = [[NSArray alloc] initWithObjects:
-               [[Point3D alloc] initWithCoordinatesX:0 Y:1.9 Z:0],
-               [[Point3D alloc] initWithCoordinatesX:1.9 Y:0 Z:0],
-               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:-1.9],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:radius Z:0],
+               [[Point3D alloc] initWithCoordinatesX:radius Y:0 Z:0],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:-radius],
                
-               [[Point3D alloc] initWithCoordinatesX:-1.9 Y:0 Z:0],
-               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:1.9],
-               [[Point3D alloc] initWithCoordinatesX:0 Y:-1.9 Z:0], nil];
+               [[Point3D alloc] initWithCoordinatesX:-radius Y:0 Z:0],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:0 Z:radius],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:-radius Z:0], nil];
     
     lines_ = [[NSArray alloc] initWithObjects:
               [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:1],
