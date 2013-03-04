@@ -31,6 +31,7 @@
     //MODEL VIEW
     DomeView *domeView;
     Point3D *touchPanRotate;  // last position in pan during rotate mode
+    UIButton *autoLockButton;
     CGFloat touchPanEdit;     // last position in pan during slice mode
     CGFloat touchPinch;       // last position in pinch to scale
     CGPoint touchOrigin;     // origin of panning, to check if it began on the drawing square
@@ -134,6 +135,15 @@
     [modelWindow addSubview:domeView];
     [modelWindow sendSubviewToBack:domeView];
     
+    autoLockButton = [[UIButton alloc] initWithFrame:CGRectMake(domeView.frame.size.width*.05+6,
+                                        (self.view.bounds.size.height-self.view.bounds.size.width-135)/2+domeView.frame.size.height-34,
+                                        32,
+                                        29)];
+    [autoLockButton addTarget:self action:@selector(autoAlignPress:) forControlEvents:UIControlEventTouchUpInside];
+    [autoLockButton setImage:[UIImage imageNamed:@"autolock.png"] forState:UIControlStateNormal];
+    [autoLockButton setAlpha:0.75];
+    [modelWindow addSubview:autoLockButton];
+    
     cropButton.adjustsImageWhenHighlighted = false;
     [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     [cropButton.layer setCornerRadius:7.0f];
@@ -206,12 +216,12 @@
     [sizeWindow addSubview:longestStrutLengthLabel];
     
     lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-70, 35, 30)];
-    [lockHeight setImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
+    [lockHeight setImage:[UIImage imageNamed:@"lock_closed.png"] forState:UIControlStateNormal];
     [lockHeight addTarget:self action:@selector(toggleDomeHeightLockOn:) forControlEvents:UIControlEventTouchUpInside];
     [sizeWindow addSubview:lockHeight];
     lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-40, 35, 30)];
-    [lockStrut setImage:[UIImage imageNamed:@"lock.png"] forState:UIControlStateNormal];
-    [lockStrut setAlpha:0.17];
+    [lockStrut setImage:[UIImage imageNamed:@"lock_open.png"] forState:UIControlStateNormal];
+    [lockStrut setAlpha:0.5];
     [lockStrut addTarget:self action:@selector(toggleStrutLengthLockOn:) forControlEvents:UIControlEventTouchUpInside];
     [sizeWindow addSubview:lockStrut];
     
@@ -479,13 +489,17 @@
 -(IBAction)toggleDomeHeightLockOn:(id)sender
 {
     sizeLockMode = false;
-    lockStrut.alpha = 0.17;
+    [lockHeight setImage:[UIImage imageNamed:@"lock_closed.png"] forState:UIControlStateNormal];
+    [lockStrut setImage:[UIImage imageNamed:@"lock_open.png"] forState:UIControlStateNormal];
+    lockStrut.alpha = 0.5;
     lockHeight.alpha = 1.0;
 }
 -(IBAction)toggleStrutLengthLockOn:(id)sender
 {
     sizeLockMode = true;
-    lockHeight.alpha = 0.17;
+    [lockHeight setImage:[UIImage imageNamed:@"lock_open.png"] forState:UIControlStateNormal];
+    [lockStrut setImage:[UIImage imageNamed:@"lock_closed.png"] forState:UIControlStateNormal];
+    lockHeight.alpha = 0.5;
     lockStrut.alpha = 1.0;
 }
 
