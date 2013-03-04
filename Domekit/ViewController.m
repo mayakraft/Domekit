@@ -615,7 +615,7 @@
         NSArray *speciesCount = [[NSArray alloc] initWithArray:[domeView getVisibleLineSpeciesCount]];
         NSMutableArray *lineLabels = [[NSMutableArray alloc] init];
         NSMutableArray *lengthLabels = [[NSMutableArray alloc] init];
-        NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithArray:[domeView getLengthOrder]];
+        NSMutableArray *lengthOrder = [[NSMutableArray alloc] init];
         int i, j, index;
         //lineclasslengths_.count = how many types of struts there are
         for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
@@ -627,6 +627,9 @@
             lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
         }
         //NSLog(@"Step 1, Lengths tallied");
+        //for(i=0;i<diagramView.dome.lineClassLengths_.count; i++) NSLog(@"ORDER %d: %f", i, [diagramView.dome.lineClassLengths_[i] floatValue]);
+        //for(i=0;i<lengthOrder.count; i++) NSLog(@"ORDER %d: %d", i, [lengthOrder[i] integerValue]);
+        
         
         //fit scrollview window
         [strutNodeScrollView setContentSize:CGSizeMake(strutNodeScrollView.frame.size.width, diagramView.dome.lineClassLengths_.count*30+20)];
@@ -641,10 +644,10 @@
         for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
         {
             //index will count a little different from i, it counts in order of strut length
-            index = i;//[lengthOrder[i] integerValue];
+            index = [lengthOrder[i] integerValue];
             [strutLineExamples addObject:[[UIView alloc] initWithFrame:
                                           CGRectMake(110-50*[diagramView.dome.lineClassLengths_[index] doubleValue]/(longestStrutRatio*radius),
-                                                     index*30+14+10,
+                                                     i*30+14+10,
                                                      50*[diagramView.dome.lineClassLengths_[index] doubleValue]/(longestStrutRatio*radius),
                                                      3)]];
             if(index < diagramView.colorTable.count-1)
@@ -661,8 +664,8 @@
         for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
         {
             //index will count a little different from i, it counts in order of strut length
-            index = i;//[lengthOrder[i] integerValue];
-            [lineLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-60, 10+index*30, 100, 30)]];
+            index = [lengthOrder[i] integerValue];
+            [lineLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-60, 10+i*30, 100, 30)]];
             
             if(index < diagramView.colorTable.count-1)
                 [(UILabel*)lineLabels[i] setTextColor:diagramView.colorTable[index]];
@@ -675,7 +678,7 @@
             [window addSubview:lineLabels[i]];
             //NSLog(@"Length: %@",diagramView.dome.lineClassLengths_[i]);
             
-            [lengthLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-164,10+index*30, 100, 30)]];
+            [lengthLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-164,10+i*30, 100, 30)]];
             [(UILabel*)lengthLabels[i] setTextColor:[UIColor blackColor]];
             [(UILabel*)lengthLabels[i] setBackgroundColor:[UIColor clearColor]];
             [(UILabel*)lengthLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];

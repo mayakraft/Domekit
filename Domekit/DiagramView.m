@@ -143,7 +143,7 @@
 
     CGFloat dashedLine[2] = {0.5,1.5};
     
-    NSArray *lengthOrder = [[NSArray alloc] initWithArray:[self getLengthOrder]];
+    //NSArray *lengthOrder = [[NSArray alloc] initWithArray:[self getLengthOrder]];
 
     for(count = 0; count < dome.points_.count; count++)
     {
