@@ -63,6 +63,13 @@
     return self;
 }
 
+-(id) initWithTriangle
+{
+    [self loadTriangle];
+    v = 1;
+    return self;
+}
+
 -(void) setIcosahedron {icosahedron = true;}
 -(void) setOctahedron {icosahedron = false;}
 
@@ -124,6 +131,16 @@
     else [self loadOctahedron];
     [self divideFaces:vNum];
     [self spherize];
+    if(vNum!=1)[self connectTheDots];
+    [self classifyLines];
+}
+
+-(void) geodeciseTriangle:(int)vNum
+{
+    [self loadTriangle];
+    [self divideFaces:vNum];
+    //[self spherize];
+    icosahedron = true;
     if(vNum!=1)[self connectTheDots];
     [self classifyLines];
 }
@@ -311,6 +328,31 @@
         if(!found) [points addObject:points_[i]];
     }
     points_ = [[NSArray alloc] initWithArray:points];
+}
+
+-(void) loadTriangle
+{
+    points_ = [[NSArray alloc] initWithObjects: [[Point3D alloc] initWithCoordinatesX:-1 Y:sqrt(3)/2 Z:100],
+               [[Point3D alloc] initWithCoordinatesX:1 Y:sqrt(3)/2 Z:100],
+               [[Point3D alloc] initWithCoordinatesX:0 Y:-sqrt(3)/2 Z:100], nil];
+    lines_ = [[NSArray alloc] initWithObjects:  [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:1],
+              [[NSNumber alloc] initWithInt:1],[[NSNumber alloc] initWithInt:2],
+              [[NSNumber alloc] initWithInt:2],[[NSNumber alloc] initWithInt:0], nil];
+    faces_ = [[NSArray alloc] initWithObjects:
+              [[NSNumber alloc] initWithInt:0],[[NSNumber alloc] initWithInt:1],[[NSNumber alloc] initWithInt:2],nil];
+    invisiblePoints_ = [[NSArray alloc] initWithObjects:[[NSNumber alloc] initWithBool:FALSE],
+                        [[NSNumber alloc] initWithBool:FALSE],
+                        [[NSNumber alloc] initWithBool:FALSE],nil];
+    invisibleLines_ = [[NSArray alloc] initWithObjects:
+                       [[NSNumber alloc] initWithBool:FALSE],[[NSNumber alloc] initWithBool:FALSE],
+                       [[NSNumber alloc] initWithBool:FALSE],[[NSNumber alloc] initWithBool:FALSE],
+                       [[NSNumber alloc] initWithBool:FALSE],[[NSNumber alloc] initWithBool:FALSE], nil];
+    lineClass_ = [[NSArray alloc] initWithObjects:  [[NSNumber alloc] initWithInt:1],
+                  [[NSNumber alloc] initWithInt:1],
+                  [[NSNumber alloc] initWithInt:1],nil];
+    lineClassLengths_ = [[NSArray alloc] initWithObjects:   [[NSNumber alloc] initWithInt:2],
+                         [[NSNumber alloc] initWithInt:2],
+                         [[NSNumber alloc] initWithInt:2],nil];
 }
 
 -(void) loadOctahedron

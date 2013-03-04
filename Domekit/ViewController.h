@@ -13,6 +13,7 @@
 @property IBOutlet UIButton *modelButton;           //|
 @property IBOutlet UIButton *sizeButton;            //| three tab bar buttons
 @property IBOutlet UIButton *instructionButton;     //|
+@property IBOutlet UIButton *aboveModelButton;//| (actual instruction button which receives IBAction
 @property IBOutlet UIButton *aboveInstructionButton;//| (actual instruction button which receives IBAction
 @property IBOutlet UILabel *VLabel;             //|
 @property IBOutlet UILabel *FractionLabel;      //| status bar dome description

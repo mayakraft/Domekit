@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "QuartzCore/QuartzCore.h"
 #import "DomeView.h"
+#import "TriangleView.h"
 #import "DiagramView.h"
 #import "Point3D.h"
 #import "HeightMarker.h"
@@ -20,6 +21,7 @@
     DiagramView *diagramPreview;
     UIImageView *domePreview;
     HeightMarker *heightMarkerPreview;
+    TriangleView *geodesicTriangle;
     
     CGFloat domeSize;          // height of dome in feet
     CGFloat domeHeightRatio;
@@ -68,6 +70,7 @@
 @synthesize modelButton;
 @synthesize sizeButton;
 @synthesize instructionButton;
+@synthesize aboveModelButton;
 @synthesize aboveInstructionButton;
 @synthesize pageNumber;
 @synthesize cropButton;
@@ -93,12 +96,12 @@
     icosahedron = true;  //initial polyhedron: icosahedron
     icosaButton.enabled = false;  
     alignToSlice = true;
-    //borderColor = [[UIColor alloc] init];
     borderColor = [UIColor darkGrayColor];
     
-    
-    
     // general page layout
+    geodesicTriangle = [[TriangleView alloc] initWithFrame:CGRectMake(15, 8, 64, 54)];
+    [geodesicTriangle setBackgroundColor:[UIColor clearColor]];
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"grid_33dark.png"]]];
     UIView *titleBar = [[UIView alloc] initWithFrame:CGRectMake(0,0,[self.view bounds].size.width,23)];
     [titleBar setBackgroundColor:[UIColor blackColor]];
@@ -330,11 +333,20 @@
     [diagramPreview.layer setCornerRadius:7.0f];
     diagramPreview.layer.masksToBounds = TRUE;
     [self.view addSubview:diagramPreview];
-    
+
+    [aboveModelButton setBackgroundImage:[UIImage imageNamed:@"transparent.png"] forState:UIControlStateNormal];
+    [aboveModelButton setBackgroundImage:[UIImage imageNamed:@"foggydark.png"] forState:UIControlEventTouchDown];
+    [aboveModelButton.layer setCornerRadius:7.0f];
+    aboveModelButton.layer.masksToBounds = TRUE;
+
+    [modelButton addSubview:geodesicTriangle];
+    [modelButton sendSubviewToBack:geodesicTriangle];
+
     [self.view sendSubviewToBack:diagramPreview];
     [self.view sendSubviewToBack:modelButton];
     [self.view sendSubviewToBack:sizeButton];
     [self.view sendSubviewToBack:instructionButton];
+    
 
 ////////////
 // GESTURES
@@ -354,6 +366,7 @@
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
     [panGesture addTarget:self action:@selector(panListener:)];
     [self.view addGestureRecognizer:panGesture];
+    
 }
 
 -(IBAction)modelButtonPress:(id)sender
@@ -483,7 +496,9 @@
         if(alignToSlice) [domeView align];
         [domeView generate:VNumber];
         [diagramPreview importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
-        
+
+        [geodesicTriangle generate:VNumber];
+
         //[self refreshHeight];
         [self updateSizeButton];
         if([domeView getDomeHeight]==1) FractionLabel.text = [NSString stringWithFormat:@"SPHERE"];

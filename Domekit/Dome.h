@@ -35,7 +35,9 @@
 
 -(id) init;
 -(id) initWithDome:(Dome*) input;
+-(id) initWithTriangle;
 -(void) geodecise:(int)v;
+-(void) geodeciseTriangle:(int)v;
 -(void) classifyLines;
 -(void) setIcosahedron;
 -(void) setOctahedron;
