@@ -33,7 +33,7 @@
 -(void) setSliceY:(CGFloat)y;
 -(BOOL) isSphere;
 -(double) getDomeHeight;  /* height of visible dome, between 0 and 1 */
--(double) getLongestStrutLength; /* length of longest visible strut, a fraction of the dome diameter, which is 1 */
+-(double) getLongestStrutLength:(BOOL)visibleOnly;  /* length of longest visible strut, a fraction of the dome diameter, which is 1 */
 -(int) getPointCount;  /* only visible points */
 -(int) getLineCount; /* only visible lines */
 -(NSArray*) getVisibleLineSpeciesCount;  /* how many of each type of strut length do we have? */

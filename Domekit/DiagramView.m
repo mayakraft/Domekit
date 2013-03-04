@@ -168,8 +168,10 @@
     countByOne = 0;
     for(count = 0; count < dome.lines_.count; count+=2)
     {
-        if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] < colorTable.count-1)
-            [(UIColor*)colorTable[[lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue]] setStroke];
+        //if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] < colorTable.count-1)
+        //    [(UIColor*)colorTable[[lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue]] setStroke];
+        if( [ dome.lineClass_[countByOne] integerValue] < colorTable.count-1)
+            [(UIColor*)colorTable[ [dome.lineClass_[countByOne] integerValue]] setStroke];
         else
             [(UIColor*)colorTable[colorTable.count-1] setStroke];
         

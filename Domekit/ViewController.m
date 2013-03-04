@@ -194,7 +194,7 @@
     heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
     [sizeWindow addSubview:heightValueLabel];
     
-    longestStrutRatio = [domeView getLongestStrutLength];
+    longestStrutRatio = [domeView getLongestStrutLength:true];
     longestStrut = domeSize / [domeView getDomeHeight] * longestStrutRatio;
 
     longestStrutLengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-40, 125, 30)];
@@ -389,7 +389,7 @@
 -(IBAction)sizeButtonPress:(id)sender
 {
     int topMargin = (sizeWindow.bounds.size.height-sizeWindow.bounds.size.width)/2;
-    longestStrutRatio = [domeView getLongestStrutLength];
+    longestStrutRatio = [domeView getLongestStrutLength:true];
     domeHeightRatio = [domeView getDomeHeight];
  
     if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
@@ -556,7 +556,13 @@
         octaButton.enabled = false;
         icosahedron = false;
         stepper.maximumValue = 4;
-        if(VNumber > 4) {VNumber = 4; stepper.value = 4;VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];}
+        if(VNumber > 4)
+        {
+            VNumber = 4;
+            stepper.value = 4;
+            VLabel.text = [NSString stringWithFormat:@"%dV",VNumber];
+            [geodesicTriangle generate:VNumber];
+        }
         [domeView.dome setOctahedron];
         [diagramPreview.dome setOctahedron];
         [domeView generate:VNumber];
@@ -587,7 +593,7 @@
         [strutNodeScrollView setHidden:TRUE];
 
         double radius = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
-        longestStrutRatio = [domeView getLongestStrutLength];
+        longestStrutRatio = [domeView getLongestStrutLength:FALSE];
         domeHeightRatio = [domeView getDomeHeight];
         
         if(!sizeLockMode) /* lock to dome height */
@@ -650,6 +656,8 @@
         }
         // NSLog(@"Step 2, Struts drawn");
         
+        longestStrutRatio = [domeView getLongestStrutLength:true];  //called twice because numbers rely on
+        
         for(i = 0; i < diagramView.dome.lineClassLengths_.count; i++)
         {
             //index will count a little different from i, it counts in order of strut length
@@ -700,9 +708,9 @@
 -(void) tapTwiceListener:(UITapGestureRecognizer*)sender
 {
     //NSLog(@"%f %f",domeView.bounds.origin.x, domeView.bounds.origin.y);
-    //if (CGRectContainsPoint(domeView.frame, [sender locationInView:self.view]))
-    if(modelWindow.hidden == false)
-        [self toggleSliceMode];
+    if (CGRectContainsPoint(domeView.frame, [sender locationInView:modelWindow]))
+        if(modelWindow.hidden == false)
+            [self toggleSliceMode];
 }
 
 // Only purpose, to close the STRUT and NODE view windows

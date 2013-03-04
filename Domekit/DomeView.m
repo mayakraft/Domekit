@@ -79,18 +79,29 @@
     return lowest;
 }
 
--(double) getLongestStrutLength  
+-(double) getLongestStrutLength:(BOOL)visibleOnly
 {
     double distance;
     double longest = 0;
     for(int i = 0; i < dome.lines_.count; i+=2)
     {
-        if([dome.invisibleLines_[i] boolValue] == FALSE)
+        if(visibleOnly)
         {
+            if( [dome.invisibleLines_[i] boolValue] == FALSE)
+            {
+                distance= sqrt(
+                               pow( [dome.points_[ [dome.lines_[i] integerValue] ]getX] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getX], 2) +
+                               pow( [dome.points_[ [dome.lines_[i] integerValue] ]getY] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getY], 2) +
+                               pow( [dome.points_[ [dome.lines_[i] integerValue] ]getZ] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getZ], 2) );
+                
+                if(longest < distance) longest = distance;
+            }
+        }
+        else{
             distance= sqrt(
-        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getX] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getX], 2) +
-        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getY] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getY], 2) +
-        pow( [dome.points_[ [dome.lines_[i] integerValue] ]getZ] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getZ], 2) );
+                           pow( [dome.points_[ [dome.lines_[i] integerValue] ]getX] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getX], 2) +
+                           pow( [dome.points_[ [dome.lines_[i] integerValue] ]getY] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getY], 2) +
+                           pow( [dome.points_[ [dome.lines_[i] integerValue] ]getZ] - [dome.points_[ [dome.lines_[i+1] integerValue] ]getZ], 2) );
             
             if(longest < distance) longest = distance;
         }
