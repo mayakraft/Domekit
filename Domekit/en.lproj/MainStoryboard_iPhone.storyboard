@@ -90,12 +90,6 @@
                                     <constraint firstAttribute="width" constant="65" id="fts-Uq-PZA"/>
                                 </constraints>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="icosahedron_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="kkj-uw-KFm">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="58" id="bJv-0T-RGf"/>
-                                    <constraint firstAttribute="width" constant="58" id="nCg-e9-70y"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aqj-bD-GK1">
                                 <subviews>
                                     <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="blh-dU-RsC">
@@ -130,11 +124,11 @@
                                         </state>
                                         <connections>
                                             <action selector="polyButtonTouchDown:" destination="2" eventType="touchDown" id="bcZ-lb-JKi"/>
-                                            <action selector="polyButtonTouchDown:" destination="2" eventType="touchUpOutside" id="hN9-LG-lpO"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragInside" id="JID-Wx-IUH"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragExit" id="LU2-XZ-AAP"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragOutside" id="Mbf-A1-5Eo"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragEnter" id="Xn7-Oy-RQz"/>
+                                            <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchUpOutside" id="ceP-Ji-afF"/>
                                             <action selector="solidChange:" destination="2" eventType="touchUpInside" id="oBx-aF-IFb"/>
                                         </connections>
                                     </button>
@@ -152,10 +146,10 @@
                                         </state>
                                         <connections>
                                             <action selector="polyButtonTouchDown:" destination="2" eventType="touchDown" id="Cdd-Of-lpj"/>
-                                            <action selector="polyButtonTouchDown:" destination="2" eventType="touchUpOutside" id="b2J-zb-2C8"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragEnter" id="BCj-re-yoy"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragInside" id="Edk-tG-hXi"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragOutside" id="H7y-jI-bWl"/>
+                                            <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchUpOutside" id="N5b-37-FdI"/>
                                             <action selector="polyButtonTouchDragOff:" destination="2" eventType="touchDragExit" id="iXw-9m-7A0"/>
                                             <action selector="solidChange:" destination="2" eventType="touchUpInside" id="vjG-Is-Z8L"/>
                                         </connections>
@@ -253,7 +247,6 @@
                             <constraint firstItem="bEb-jp-MBH" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="92" id="APv-UB-PdB"/>
                             <constraint firstItem="2rM-e7-kJN" firstAttribute="trailing" secondItem="Pso-ei-aNV" secondAttribute="trailing" type="default" id="BQd-2n-3b0"/>
                             <constraint firstAttribute="bottom" secondItem="aqj-bD-GK1" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="Cf8-Ac-HAd"/>
-                            <constraint firstItem="HwL-ez-h8C" firstAttribute="centerX" secondItem="kkj-uw-KFm" secondAttribute="centerX" type="default" id="DWt-9M-DVS"/>
                             <constraint firstItem="UpT-we-ZEx" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="FuD-sm-GC4"/>
                             <constraint firstItem="8Y8-qe-EGQ" firstAttribute="top" secondItem="3" secondAttribute="top" constant="29" type="user" id="J3C-dS-rda"/>
                             <constraint firstItem="LsN-ed-6r4" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="LMl-ZJ-KTb"/>
@@ -261,7 +254,6 @@
                             <constraint firstItem="h4y-UN-ewc" firstAttribute="top" secondItem="3" secondAttribute="top" constant="29" type="user" id="P4W-TW-Ue6"/>
                             <constraint firstItem="aqj-bD-GK1" firstAttribute="centerX" secondItem="h4y-UN-ewc" secondAttribute="centerX" type="default" id="RTn-sx-JGX"/>
                             <constraint firstItem="h4y-UN-ewc" firstAttribute="leading" secondItem="8Y8-qe-EGQ" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="SDG-AV-mgL"/>
-                            <constraint firstItem="2rM-e7-kJN" firstAttribute="centerY" secondItem="kkj-uw-KFm" secondAttribute="centerY" type="default" id="TjU-3l-kt5"/>
                             <constraint firstItem="ijo-G8-f5R" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="6" id="Xzx-QY-Hx0"/>
                             <constraint firstItem="aqj-bD-GK1" firstAttribute="top" secondItem="3" secondAttribute="top" constant="105" id="ZCy-sH-P2m"/>
                             <constraint firstItem="Pso-ei-aNV" firstAttribute="bottom" secondItem="h4y-UN-ewc" secondAttribute="bottom" type="default" id="a6e-WH-Ufe"/>
@@ -298,7 +290,6 @@
                         <outlet property="pageNumber" destination="UpT-we-ZEx" id="NnQ-zU-KUy"/>
                         <outlet property="polyButton" destination="Xtn-dE-nkN" id="crG-SD-XK5"/>
                         <outlet property="sizeButton" destination="h4y-UN-ewc" id="ILG-mX-fZ5"/>
-                        <outlet property="solidView" destination="kkj-uw-KFm" id="upc-7c-58j"/>
                         <outlet property="stepper" destination="blh-dU-RsC" id="Uf3-K9-I4t"/>
                     </connections>
                 </viewController>
@@ -308,7 +299,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icosahedron_icon.png" width="100" height="100"/>
         <image name="polybutton_state0.png" width="81" height="36"/>
         <image name="textlogo_dark.png" width="383" height="83"/>
         <image name="transparent.png" width="50" height="50"/>
@@ -337,7 +327,6 @@
                 <relationship kind="outlet" name="aboveInstructionButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="aboveModelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="alignAlertMessage" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="autoLockButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="cropButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="icosaButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>

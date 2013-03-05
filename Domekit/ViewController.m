@@ -14,6 +14,16 @@
 #import "Point3D.h"
 #import "HeightMarker.h"
 
+
+BOOL isPad() {
+#ifdef UI_USER_INTERFACE_IDIOM
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+#else
+    return NO;
+#endif
+}
+
+
 @interface ViewController ()
 {
     //TAB BAR BUTTONS
@@ -131,7 +141,9 @@
     domeView.layer.masksToBounds = TRUE;
     domeView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
     domeView.layer.borderWidth = 3;
+    if(isPad())[domeView setScale:[domeView getScale] * 2.5];
     [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_320.png"]]];
+    //if(isPad()) [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_320.png"]]];
     [modelWindow addSubview:domeView];
     [modelWindow sendSubviewToBack:domeView];
     
@@ -147,6 +159,7 @@
     cropButton.adjustsImageWhenHighlighted = false;
     [cropButton setTitleColor:[UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0] forState:UIControlEventTouchDown];
     [cropButton.layer setCornerRadius:7.0f];
+    if(isPad())[cropButton.layer setCornerRadius:14.0f];
     [cropButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     cropButton.layer.masksToBounds = TRUE;
     cropButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -239,6 +252,7 @@
     [instructionWindow addSubview:diagramView];
     [instructionWindow sendSubviewToBack:diagramView];
     [diagramView setScale:130];
+    if(isPad()) [diagramView setScale:330];
     [diagramView setLineWidth:4.0];
     
     UILabel *nodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, instructionWindow.bounds.size.height-70, 200, 30)];
@@ -472,6 +486,7 @@
     // draw large diagram
     [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
     [diagramView setScale:130];
+    if(isPad())[diagramView setScale:330];
     [diagramView setLineWidth:4.0];
     [diagramView setNeedsDisplay];
 
@@ -744,6 +759,7 @@
     {
         if([sender state] == 1) touchPinch = [domeView getScale];
         [domeView setScale:[sender scale] * touchPinch];
+        if(isPad())[domeView setScale:[sender scale] * 2.5 * touchPinch];
         [domeView refresh];
     }
 }

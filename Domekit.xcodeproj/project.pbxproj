@@ -198,7 +198,6 @@
 		D514EDEA16B748A5000D9264 = {
 			isa = PBXGroup;
 			children = (
-				D5217ED716C862E500E98F34 /* QuartzCore.framework */,
 				D514EDFF16B748A5000D9264 /* Domekit */,
 				D514EE2616B748A6000D9264 /* DomekitTests */,
 				D514EDF816B748A5000D9264 /* Frameworks */,
@@ -218,6 +217,7 @@
 		D514EDF816B748A5000D9264 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D5217ED716C862E500E98F34 /* QuartzCore.framework */,
 				D514EDF916B748A5000D9264 /* UIKit.framework */,
 				D514EDFB16B748A5000D9264 /* Foundation.framework */,
 				D514EDFD16B748A5000D9264 /* CoreGraphics.framework */,
