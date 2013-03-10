@@ -14,14 +14,10 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>domekit-icon.png</string>
-				<string>domekit-icon 57.png</string>
-				<string>icon72.png</string>
-				<string>icon144.png</string>
-				<string>domekit_icon@2x.png</string>
-				<string>domekit_icon.png</string>
-				<string>domekit_icon_iPad@2x.png</string>
-				<string>domekit_icon_iPad.png</string>
+				<string>icon_iPhone@2x.png</string>
+				<string>icon_iPhone.png</string>
+				<string>icon_iPad@2x.png</string>
+				<string>icon_iPad.png</string>
 			</array>
 		</dict>
 	</dict>
