@@ -10,6 +10,7 @@
 		D501870C16BFD6C400322E31 /* grid.png in Resources */ = {isa = PBXBuildFile; fileRef = D501870B16BFD6C400322E31 /* grid.png */; };
 		D507588916DB1EA1001D958E /* domecircle_54.png in Resources */ = {isa = PBXBuildFile; fileRef = D507588716DB1EA1001D958E /* domecircle_54.png */; };
 		D507588A16DB1EA1001D958E /* domecircle_54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D507588816DB1EA1001D958E /* domecircle_54@2x.png */; };
+		D50D86B716E72E78001C5D27 /* Instructions.m in Sources */ = {isa = PBXBuildFile; fileRef = D50D86B616E72E78001C5D27 /* Instructions.m */; };
 		D514EDFA16B748A5000D9264 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDF916B748A5000D9264 /* UIKit.framework */; };
 		D514EDFC16B748A5000D9264 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFB16B748A5000D9264 /* Foundation.framework */; };
 		D514EDFE16B748A5000D9264 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D514EDFD16B748A5000D9264 /* CoreGraphics.framework */; };
@@ -57,6 +58,10 @@
 		D59B414816D3883800A90C52 /* domekit-icon 57.png in Resources */ = {isa = PBXBuildFile; fileRef = D59B414716D3883800A90C52 /* domekit-icon 57.png */; };
 		D59B414A16D3890300A90C52 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D59B414916D3890300A90C52 /* Default.png */; };
 		D59B414C16D38FDC00A90C52 /* textlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = D59B414B16D38FDC00A90C52 /* textlogo.png */; };
+		D5A0D54416EC0E0100C77CDF /* ftm0.png in Resources */ = {isa = PBXBuildFile; fileRef = D5A0D54016EC0E0100C77CDF /* ftm0.png */; };
+		D5A0D54516EC0E0100C77CDF /* ftm0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5A0D54116EC0E0100C77CDF /* ftm0@2x.png */; };
+		D5A0D54616EC0E0100C77CDF /* ftm1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5A0D54216EC0E0100C77CDF /* ftm1@2x.png */; };
+		D5A0D54716EC0E0100C77CDF /* ftm1.png in Resources */ = {isa = PBXBuildFile; fileRef = D5A0D54316EC0E0100C77CDF /* ftm1.png */; };
 		D5AA90F916DA23AF0077990F /* domecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90F816DA23AF0077990F /* domecircle.png */; };
 		D5AA90FB16DA2DAC0077990F /* domecircle_180.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90FA16DA2DAB0077990F /* domecircle_180.png */; };
 		D5AA90FD16DA391D0077990F /* domecircle_280.png in Resources */ = {isa = PBXBuildFile; fileRef = D5AA90FC16DA391C0077990F /* domecircle_280.png */; };
@@ -91,6 +96,8 @@
 		D501870B16BFD6C400322E31 /* grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grid.png; sourceTree = "<group>"; };
 		D507588716DB1EA1001D958E /* domecircle_54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_54.png; sourceTree = "<group>"; };
 		D507588816DB1EA1001D958E /* domecircle_54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "domecircle_54@2x.png"; sourceTree = "<group>"; };
+		D50D86B516E72E78001C5D27 /* Instructions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instructions.h; sourceTree = "<group>"; };
+		D50D86B616E72E78001C5D27 /* Instructions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instructions.m; sourceTree = "<group>"; };
 		D514EDF516B748A5000D9264 /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D514EDF916B748A5000D9264 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D514EDFB16B748A5000D9264 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -149,6 +156,10 @@
 		D59B414716D3883800A90C52 /* domekit-icon 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "domekit-icon 57.png"; path = "../domekit-icon 57.png"; sourceTree = "<group>"; };
 		D59B414916D3890300A90C52 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		D59B414B16D38FDC00A90C52 /* textlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textlogo.png; sourceTree = "<group>"; };
+		D5A0D54016EC0E0100C77CDF /* ftm0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ftm0.png; sourceTree = "<group>"; };
+		D5A0D54116EC0E0100C77CDF /* ftm0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ftm0@2x.png"; sourceTree = "<group>"; };
+		D5A0D54216EC0E0100C77CDF /* ftm1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ftm1@2x.png"; sourceTree = "<group>"; };
+		D5A0D54316EC0E0100C77CDF /* ftm1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ftm1.png; sourceTree = "<group>"; };
 		D5AA90F816DA23AF0077990F /* domecircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle.png; sourceTree = "<group>"; };
 		D5AA90FA16DA2DAB0077990F /* domecircle_180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_180.png; sourceTree = "<group>"; };
 		D5AA90FC16DA391C0077990F /* domecircle_280.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domecircle_280.png; sourceTree = "<group>"; };
@@ -233,6 +244,12 @@
 				D514EE0916B748A5000D9264 /* AppDelegate.m */,
 				D514EE1116B748A5000D9264 /* MainStoryboard_iPhone.storyboard */,
 				D514EE1416B748A5000D9264 /* MainStoryboard_iPad.storyboard */,
+				D5A0D54016EC0E0100C77CDF /* ftm0.png */,
+				D5A0D54116EC0E0100C77CDF /* ftm0@2x.png */,
+				D5A0D54216EC0E0100C77CDF /* ftm1@2x.png */,
+				D5A0D54316EC0E0100C77CDF /* ftm1.png */,
+				D50D86B516E72E78001C5D27 /* Instructions.h */,
+				D50D86B616E72E78001C5D27 /* Instructions.m */,
 				D514EE1716B748A5000D9264 /* ViewController.h */,
 				D514EE1816B748A5000D9264 /* ViewController.m */,
 				D514EE3716B74A13000D9264 /* DomeView.h */,
@@ -450,6 +467,10 @@
 				D57BF42916E538D900A8E64F /* lock_open.png in Resources */,
 				D57BF42A16E538D900A8E64F /* lock_open@2x.png in Resources */,
 				D57BF42B16E538D900A8E64F /* lock_closed@2x.png in Resources */,
+				D5A0D54416EC0E0100C77CDF /* ftm0.png in Resources */,
+				D5A0D54516EC0E0100C77CDF /* ftm0@2x.png in Resources */,
+				D5A0D54616EC0E0100C77CDF /* ftm1@2x.png in Resources */,
+				D5A0D54716EC0E0100C77CDF /* ftm1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +514,7 @@
 				D5CCFF8216C08FE400E27EE0 /* DiagramView.m in Sources */,
 				D564799216D010E800FCBDE0 /* HeightMarker.m in Sources */,
 				D53726AE16E4376600D6B102 /* TriangleView.m in Sources */,
+				D50D86B716E72E78001C5D27 /* Instructions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

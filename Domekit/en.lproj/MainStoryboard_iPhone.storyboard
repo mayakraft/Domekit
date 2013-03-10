@@ -303,44 +303,6 @@
         <image name="textlogo_dark.png" width="383" height="83"/>
         <image name="transparent.png" width="50" height="50"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="autoAlignPress:"/>
-                <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
-                <relationship kind="action" name="instructionButtonPress:"/>
-                <relationship kind="action" name="modelButtonPress:"/>
-                <relationship kind="action" name="polyButtonTouchDown:"/>
-                <relationship kind="action" name="polyButtonTouchDragOff:"/>
-                <relationship kind="action" name="sizeButtonPress:"/>
-                <relationship kind="action" name="solidChange:"/>
-                <relationship kind="action" name="strutButtonPress:"/>
-                <relationship kind="action" name="toggleDomeHeightLockOn:"/>
-                <relationship kind="action" name="toggleStrutLengthLockOn:"/>
-                <relationship kind="outlet" name="FractionLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="SolidLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="VLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="aboveInstructionButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="aboveModelButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="alignAlertMessage" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="cropButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="icosaButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="instructionButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="modelButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="modelWindow" candidateClass="UIView"/>
-                <relationship kind="outlet" name="octaButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="pageNumber" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="polyButton" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="sizeButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="solidView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="stepper" candidateClass="UIStepper"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

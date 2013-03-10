@@ -13,6 +13,7 @@
 #import "DiagramView.h"
 #import "Point3D.h"
 #import "HeightMarker.h"
+#import "Instructions.h"
 
 
 BOOL isPad() {
@@ -57,6 +58,7 @@ BOOL isPad() {
     UIImageView *domeCircle;
     CGFloat domeCircleScale;
     CGFloat domeSizeGround;   // screen location on which to stand man and cat
+    UILabel *floorValueLabel;
     UILabel *heightValueLabel;
     UILabel *longestStrutLengthLabel;
     CGFloat touchPanSize;     // last position in pan during size mode
@@ -65,6 +67,8 @@ BOOL isPad() {
     BOOL sizeLockMode;        // lock size to domeHeight (0) or longestStrut (1) when switching between domes
     UIButton *lockHeight;
     UIButton *lockStrut;
+    BOOL footMeter;
+    UIButton *ftmButton;
     
     //INSTRUCTION VIEW
     UIView *instructionWindow;
@@ -74,6 +78,9 @@ BOOL isPad() {
     UILabel *nodeCountLabel;
     UILabel *strutCountLabel;
     UIScrollView *strutNodeScrollView;
+    
+    //DOWNLOAD INSTRUCTIONS
+    Instructions *instructions;
 }
 @end
 
@@ -105,7 +112,8 @@ BOOL isPad() {
     sizeLockMode = FALSE;  // lock to domeHeight
     VNumber = 1; 
     icosahedron = true;  //initial polyhedron: icosahedron
-    icosaButton.enabled = false;  
+    icosaButton.enabled = false;
+    footMeter = false; // feet
     alignToSlice = true;
     borderColor = [UIColor darkGrayColor];
     
@@ -177,7 +185,7 @@ BOOL isPad() {
 // SIZE WINDOW
 ///////////
     
-    sizeWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 105, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-105-20)];
+    sizeWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 90, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-90-20)];
     sizeWindow.hidden = true;
     [self.view addSubview:sizeWindow];
     
@@ -195,44 +203,65 @@ BOOL isPad() {
     [sizeWindow addSubview:voyagerman];
     [sizeWindow addSubview:voyagercat];
     
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-70, 200, 30)];
+    ftmButton = [[UIButton alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-60, 30/*sizeWindow.bounds.size.height-110*/, 53, 25)];
+    [ftmButton setBackgroundImage:[UIImage imageNamed:@"ftm0.png"] forState:UIControlStateNormal];
+    [ftmButton addTarget:self action:@selector(ftmButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+    [sizeWindow addSubview:ftmButton];
+    
+    UILabel *floorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-80, 200, 30)];
+    [floorLabel setBackgroundColor:[UIColor clearColor]];
+    [floorLabel setTextColor:[UIColor blackColor]];
+    [floorLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
+    floorLabel.text = [NSString stringWithFormat:@"FLOOR DIAMETER"];
+    [sizeWindow addSubview:floorLabel];
+
+    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-55, 200, 30)];
     [heightLabel setBackgroundColor:[UIColor clearColor]];
     [heightLabel setTextColor:[UIColor blackColor]];
-    [heightLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [heightLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
     heightLabel.text = [NSString stringWithFormat:@"DOME HEIGHT"];
     [sizeWindow addSubview:heightLabel];
 
-    UILabel *longestStrutLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-40, 200, 30)];
+    UILabel *longestStrutLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, sizeWindow.bounds.size.height-30, 200, 30)];
     [longestStrutLabel setBackgroundColor:[UIColor clearColor]];
     [longestStrutLabel setTextColor:[UIColor blackColor]];
-    [longestStrutLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [longestStrutLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
     longestStrutLabel.text = [NSString stringWithFormat:@"LONGEST STRUT"];
     [sizeWindow addSubview:longestStrutLabel];
 
-    heightValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-70, 125, 30)];
+    floorValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-80, 125, 30)];
+    [floorValueLabel setBackgroundColor:[UIColor clearColor]];
+    [floorValueLabel setTextColor:[UIColor blackColor]];
+    [floorValueLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
+    [floorValueLabel setTextAlignment:NSTextAlignmentRight];
+    floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+
+    [sizeWindow addSubview:floorValueLabel];
+
+    heightValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-55, 125, 30)];
     [heightValueLabel setBackgroundColor:[UIColor clearColor]];
     [heightValueLabel setTextColor:[UIColor blackColor]];
-    [heightValueLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [heightValueLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
     [heightValueLabel setTextAlignment:NSTextAlignmentRight];
     heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
     [sizeWindow addSubview:heightValueLabel];
     
     longestStrutRatio = [domeView getLongestStrutLength:true];
     longestStrut = domeSize / [domeView getDomeHeight] * longestStrutRatio;
-
-    longestStrutLengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-40, 125, 30)];
+    
+    longestStrutLengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(sizeWindow.bounds.size.width-140, sizeWindow.bounds.size.height-30, 125, 30)];
     [longestStrutLengthLabel setBackgroundColor:[UIColor clearColor]];
     [longestStrutLengthLabel setTextColor:[UIColor blackColor]];
-    [longestStrutLengthLabel setFont:[UIFont boldSystemFontOfSize:21.0]];
+    [longestStrutLengthLabel setFont:[UIFont boldSystemFontOfSize:19.0]];
     [longestStrutLengthLabel setTextAlignment:NSTextAlignmentRight];
     longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];
     [sizeWindow addSubview:longestStrutLengthLabel];
     
-    lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-70, 35, 30)];
+    lockHeight = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-55, 35, 30)];
     [lockHeight setImage:[UIImage imageNamed:@"lock_closed.png"] forState:UIControlStateNormal];
     [lockHeight addTarget:self action:@selector(toggleDomeHeightLockOn:) forControlEvents:UIControlEventTouchUpInside];
     [sizeWindow addSubview:lockHeight];
-    lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-40, 35, 30)];
+    lockStrut = [[UIButton alloc] initWithFrame:CGRectMake(5, sizeWindow.bounds.size.height-30, 35, 30)];
     [lockStrut setImage:[UIImage imageNamed:@"lock_open.png"] forState:UIControlStateNormal];
     [lockStrut setAlpha:0.5];
     [lockStrut addTarget:self action:@selector(toggleStrutLengthLockOn:) forControlEvents:UIControlEventTouchUpInside];
@@ -418,8 +447,16 @@ BOOL isPad() {
  
     if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
     {
-        heightValueLabel.text = [NSString stringWithFormat:@"0 ft"];
-        longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 ft"];
+        if(!footMeter){
+            heightValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 ft"];
+            floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+        }
+        else{
+            heightValueLabel.text = [NSString stringWithFormat:@"0 m"];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 m"];
+            floorValueLabel.text = [NSString stringWithFormat:@"0 m"];
+        }
     }
     else
     {
@@ -427,9 +464,23 @@ BOOL isPad() {
             longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
         else  /*lock to longest strut length */
             domeSize = domeHeightRatio * longestStrut / longestStrutRatio;
-    
-        heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
-        longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];        
+        
+        if(!footMeter){
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];
+            floorValueLabel.text = [NSString stringWithFormat:@"%.2f ft",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI)];
+        }
+        else{
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f m",domeSize *1200/3937];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f m",longestStrut *1200/3937];
+            floorValueLabel.text = [NSString stringWithFormat:@"%.2f m",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI) *1200/3937];
+        }
+    }
+    if (domeHeightRatio == 1) {
+        if(!footMeter)
+            floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+        else
+            floorValueLabel.text = [NSString stringWithFormat:@"0 m"];
     }
     // capture ground of the dome for person to stand on
     domeSizeGround = topMargin+(domeCircleScale/2)*(1-domeHeightRatio)+ domeCircleScale*domeHeightRatio;
@@ -494,6 +545,30 @@ BOOL isPad() {
     strutCountLabel.text = [NSString stringWithFormat:@"%d",[domeView getLineCount]];
 }
 
+-(void) saveInstructionImage
+{
+    //UIGraphicsBeginImageContextWithOptions([[UIScreen mainScreen] bounds].size, NO, 0.0);
+    //[self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    //UIImage *imageView = UIGraphicsGetImageFromCurrentImageContext();
+    //UIGraphicsEndImageContext();
+    //UIImageWriteToSavedPhotosAlbum(imageView, nil, nil, nil);
+
+    UIView *instructionPage = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4500, 6000)];
+    //UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, [[UIScreen mainScreen] scale]);
+    UIGraphicsBeginImageContext(instructionPage.bounds.size);
+    [diagramView importDome:domeView.dome Polaris:domeView.polaris Octantis:domeView.octantis];
+    [diagramView setScale:130];
+    if(isPad())[diagramView setScale:330];
+    [diagramView setLineWidth:4.0];
+    [diagramView setNeedsDisplay];
+
+    [instructionPage.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageWriteToSavedPhotosAlbum(img,nil,nil,nil);
+    //return img;
+}
+
 -(void) updateSizeButton
 {
     [domePreview setFrame:CGRectMake(25, 8+27*(1-[domeView getDomeHeight]), 54, 54*[domeView getDomeHeight])];
@@ -516,6 +591,59 @@ BOOL isPad() {
     [lockStrut setImage:[UIImage imageNamed:@"lock_closed.png"] forState:UIControlStateNormal];
     lockHeight.alpha = 0.5;
     lockStrut.alpha = 1.0;
+}
+
+-(IBAction)ftmButtonPress:(id)sender
+{
+    if(footMeter)
+    {
+        [ftmButton setBackgroundImage:[UIImage imageNamed:@"ftm0.png"] forState:UIControlStateNormal];
+        footMeter = false;
+    }
+    else{
+        [ftmButton setBackgroundImage:[UIImage imageNamed:@"ftm1.png"] forState:UIControlStateNormal];
+        footMeter = true;
+    }
+    longestStrutRatio = [domeView getLongestStrutLength:true];
+    domeHeightRatio = [domeView getDomeHeight];
+    
+    if(domeHeightRatio == 0)  /* in case the user just built a dome with no points */
+    {
+        if(!footMeter){
+            heightValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 ft"];
+            floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+        }
+        else{
+            heightValueLabel.text = [NSString stringWithFormat:@"0 m"];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"0 m"];
+            floorValueLabel.text = [NSString stringWithFormat:@"0 m"];
+        }
+    }
+    else
+    {
+        if(!sizeLockMode) /* lock to dome height */
+            longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
+        else  /*lock to longest strut length */
+            domeSize = domeHeightRatio * longestStrut / longestStrutRatio;
+        
+        if(!footMeter){
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft",longestStrut];
+            floorValueLabel.text = [NSString stringWithFormat:@"%.2f ft",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI)];
+        }
+        else{
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f m",domeSize *1200/3937];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f m",longestStrut *1200/3937];
+            floorValueLabel.text = [NSString stringWithFormat:@"%.2f m",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI) *1200/3937];
+        }
+    }
+    if (domeHeightRatio == 1) {
+        if(!footMeter)
+            floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+        else
+            floorValueLabel.text = [NSString stringWithFormat:@"0 m"];
+    }
 }
 
 - (IBAction)frequencyValueChanged:(UIStepper *)sender {
@@ -706,12 +834,15 @@ BOOL isPad() {
             [(UILabel*)lineLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];
             [window addSubview:lineLabels[i]];
             //NSLog(@"Length: %@",diagramView.dome.lineClassLengths_[i]);
-            
-            [lengthLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-164,10+i*30, 100, 30)]];
+            [lengthLabels addObject:[[UILabel alloc] initWithFrame:CGRectMake(window.frame.size.width-189,10+i*30, 125, 30)]];
             [(UILabel*)lengthLabels[i] setTextColor:[UIColor blackColor]];
             [(UILabel*)lengthLabels[i] setBackgroundColor:[UIColor clearColor]];
             [(UILabel*)lengthLabels[i] setFont:[UIFont boldSystemFontOfSize:21.0]];
-            [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[index] doubleValue] / 2 / radius * domeSize / domeHeightRatio]];
+            [(UILabel*)lengthLabels[i] setTextAlignment:NSTextAlignmentRight];
+            if(!footMeter)
+                [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f ft",[diagramView.dome.lineClassLengths_[index] doubleValue] / 2 / radius * domeSize / domeHeightRatio]];
+            else
+                [(UILabel*)lengthLabels[i] setText:[NSString stringWithFormat:@"%.05f m",[diagramView.dome.lineClassLengths_[index] doubleValue] / 2 / radius * domeSize / domeHeightRatio*1200/3937]];
             [window addSubview:lengthLabels[i]];
         }    
         //  NSLog(@"Step 3, Text up, all done!");
@@ -804,9 +935,23 @@ BOOL isPad() {
         if(domeSize > 1000) { /* gotta cut off somewhere */
             domeSize = 1000;
             longestStrut = domeSize / domeHeightRatio * longestStrutRatio;
-        }   
-        heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
-        longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft", longestStrut];
+        }
+        if(!footMeter){
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f ft",domeSize];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f ft", longestStrut];
+            if( [domeView getDomeHeight] == 1 || [domeView getDomeHeight] == 0)
+                floorValueLabel.text = [NSString stringWithFormat:@"0 ft"];
+            else
+                floorValueLabel.text = [NSString stringWithFormat:@"%.2f ft",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI) ];
+        }
+        else{
+            heightValueLabel.text = [NSString stringWithFormat:@"%.2f m",domeSize*1200/3937];
+            longestStrutLengthLabel.text = [NSString stringWithFormat:@"%.2f m", longestStrut*1200/3937];
+            if( [domeView getDomeHeight] == 1 || [domeView getDomeHeight] == 0)
+                floorValueLabel.text = [NSString stringWithFormat:@"0 m"];
+            else
+                floorValueLabel.text = [NSString stringWithFormat:@"%.2f m",(domeSize / domeHeightRatio) * sin(domeHeightRatio*M_PI)*1200/3937 ];
+        }
         CGFloat manHeight = (6/domeSize) * domeCircleScale*[domeView getDomeHeight];
         [voyagerman setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.2*manHeight, domeSizeGround-manHeight, .4*manHeight, manHeight)];
         [voyagercat setFrame:CGRectMake(sizeWindow.bounds.size.width/2-.5*.25*manHeight/.75, domeSizeGround-.25*manHeight, .25*manHeight/.75, .25*manHeight)];
