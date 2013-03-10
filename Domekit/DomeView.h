@@ -33,6 +33,7 @@
 -(void) setSliceY:(CGFloat)y;
 -(BOOL) isSphere;
 -(double) getDomeHeight;  /* height of visible dome, between 0 and 1 */
+-(double) getDomeHeightAutoAlignOff;
 -(double) getLongestStrutLength:(BOOL)visibleOnly;  /* length of longest visible strut, a fraction of the dome diameter, which is 1 */
 -(int) getPointCount;  /* only visible points */
 -(int) getLineCount; /* only visible lines */

@@ -18,6 +18,10 @@
 				<string>domekit-icon 57.png</string>
 				<string>icon72.png</string>
 				<string>icon144.png</string>
+				<string>domekit_icon@2x.png</string>
+				<string>domekit_icon.png</string>
+				<string>domekit_icon_iPad@2x.png</string>
+				<string>domekit_icon_iPad.png</string>
 			</array>
 		</dict>
 	</dict>
@@ -45,12 +49,12 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UIStatusBarHidden</key>
-	<true/>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

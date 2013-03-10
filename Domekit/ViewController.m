@@ -573,8 +573,14 @@ BOOL isPad() {
 
 -(void) updateSizeButton
 {
-    [domePreview setFrame:CGRectMake(25, 8+27*(1-[domeView getDomeHeight]), 54, 54*[domeView getDomeHeight])];
-    [heightMarkerPreview setFrame:CGRectMake(10, 8+27*(1-[domeView getDomeHeight]), 10, 54*[domeView getDomeHeight])];
+    [domeView capturePoles];
+    double thisDomeHeight;
+    // if sliceLock off, run larger function which also aligns poles before calculating height
+    if(alignToSlice) thisDomeHeight = [domeView getDomeHeight];
+    else thisDomeHeight = [domeView getDomeHeightAutoAlignOff];
+    
+    [domePreview setFrame:CGRectMake(25, 8+27*(1-thisDomeHeight), 54, 54*thisDomeHeight)];
+    [heightMarkerPreview setFrame:CGRectMake(10, 8+27*(1-thisDomeHeight), 10, 54*thisDomeHeight)];
     [heightMarkerPreview setNeedsDisplay];
 }
 

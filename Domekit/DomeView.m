@@ -71,8 +71,51 @@
     double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
     for(int i = 0; i < dome.points_.count; i++)
     {
-        if([dome.invisiblePoints_[i] boolValue] == FALSE && [dome.points_[i] getY] > lowest)
-            lowest = [dome.points_[i] getY];
+        if([dome.invisiblePoints_[i] boolValue] == FALSE && [projectedPoints_[i] getY] > lowest)
+            lowest = [projectedPoints_[i] getY];
+    }
+    lowest = ( lowest + max ) / (2 * max);
+    if(lowest < 0) lowest = 0;
+    return lowest;
+}
+
+// calling this before drawing diagram centers the top point (polaris) in the middle of the diagram
+-(double) getDomeHeightAutoAlignOff  /* returns value between 0 and 1, visible dome only*/
+{
+    NSArray *points = [[NSMutableArray alloc] initWithArray:dome.points_];
+    NSMutableArray *container = [[NSMutableArray alloc] init];
+    Point3D *rotated = [[Point3D alloc] init];
+    double offset =  atan2([points[octantis] getX], [points[octantis] getY]);
+    double distance, angle;
+    for(int i = 0; i < points.count; i++)
+    {
+        angle = atan2([points[i] getX], [points[i] getY]);
+        distance = sqrt( pow([points[i] getX], 2) + pow([points[i] getY], 2) );
+        rotated = [[Point3D alloc] initWithCoordinatesX:distance*sin(angle-offset)
+                                                      Y:distance*cos(angle-offset)
+                                                      Z:[points[i] getZ]];
+        [container addObject:rotated];
+    }
+    points = [[NSArray alloc] initWithArray:container];
+    container = [[NSMutableArray alloc] init];
+    offset =  atan2([points[octantis] getZ], [points[octantis] getY]);
+    for(int i = 0; i < points.count; i++)
+    {
+        angle = atan2([points[i] getZ], [points[i] getY]);
+        distance = sqrt( pow([points[i] getZ], 2) + pow([points[i] getY], 2) );
+        rotated = [[Point3D alloc] initWithCoordinatesX:[points[i] getX]
+                                                      Y:distance*cos(angle-offset)
+                                                      Z:distance*sin(angle-offset)];
+        [container addObject:rotated];
+    }
+    points = [[NSArray alloc] initWithArray:container];
+
+    double lowest = -2;
+    double max = sqrt( ((1 + sqrt(5)) / 2 ) + 2 );
+    for(int i = 0; i < points.count; i++)
+    {
+        if([dome.invisiblePoints_[i] boolValue] == FALSE && [points[i] getY] > lowest)
+            lowest = [points[i] getY];
     }
     lowest = ( lowest + max ) / (2 * max);
     if(lowest < 0) lowest = 0;
