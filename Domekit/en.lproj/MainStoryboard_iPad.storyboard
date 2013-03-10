@@ -99,10 +99,9 @@
                                     </stepper>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="itg-i9-Zvd">
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="72" id="7E8-K5-YOL"/>
                                             <constraint firstAttribute="width" constant="162" id="OP3-Ty-Ooa"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="33"/>
                                         <state key="normal" title="slice">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -155,11 +154,7 @@
                                             <action selector="solidChange:" destination="2" eventType="touchUpInside" id="7hl-mJ-5dK"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="polybutton_state0.png" translatesAutoresizingMaskIntoConstraints="NO" id="AgG-ZU-kFO">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="162" id="GFC-gr-8hU"/>
-                                        </constraints>
-                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="polybutton_iPad_state0.png" translatesAutoresizingMaskIntoConstraints="NO" id="AgG-ZU-kFO"/>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="frequency" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYu-Qt-qjd">
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="cnq-MT-RHj"/>
@@ -304,7 +299,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="polybutton_state0.png" width="81" height="36"/>
+        <image name="polybutton_iPad_state0.png" width="162" height="72"/>
         <image name="textlogo_dark.png" width="383" height="83"/>
         <image name="transparent.png" width="50" height="50"/>
     </resources>
@@ -317,6 +312,7 @@
             <relationships>
                 <relationship kind="action" name="autoAlignPress:"/>
                 <relationship kind="action" name="frequencyValueChanged:" candidateClass="UIStepper"/>
+                <relationship kind="action" name="ftmButtonPress:"/>
                 <relationship kind="action" name="instructionButtonPress:"/>
                 <relationship kind="action" name="modelButtonPress:"/>
                 <relationship kind="action" name="polyButtonTouchDown:"/>

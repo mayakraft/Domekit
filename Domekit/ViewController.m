@@ -109,6 +109,7 @@ BOOL isPad() {
     
     domeSize = 10;   // 10 feet tall
     domeCircleScale = 260;
+    if(isPad()) domeCircleScale = 600;
     sizeLockMode = FALSE;  // lock to domeHeight
     VNumber = 1; 
     icosahedron = true;  //initial polyhedron: icosahedron
@@ -151,7 +152,7 @@ BOOL isPad() {
     domeView.layer.borderWidth = 3;
     if(isPad())[domeView setScale:[domeView getScale] * 2.5];
     [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_320.png"]]];
-    //if(isPad()) [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_320.png"]]];
+    if(isPad()) [domeView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"blackboard_750.jpg"]]];
     [modelWindow addSubview:domeView];
     [modelWindow sendSubviewToBack:domeView];
     
@@ -192,6 +193,7 @@ BOOL isPad() {
     voyagerman = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagerman.png"]];
     voyagercat = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercat.png"]];
     domeCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle_260.png"]];
+    if(isPad()) domeCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"domecircle_600.png"]];
     domeCircle.contentMode = UIViewContentModeTopLeft; // This determines position of image
     //domeCircle.contentMode = UIViewContentModeScaleAspectFill;
     domeCircle.clipsToBounds = YES;
@@ -687,18 +689,35 @@ BOOL isPad() {
 
 -(IBAction)polyButtonTouchDown:(id)sender
 {
-    if(icosahedron)
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0_on.png"]];
-    else
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1_on.png"]];
+    if(!isPad()){
+        if(icosahedron)
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_state0_on.png"]];
+        else
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_state1_on.png"]];
+    }
+    else{
+        if(icosahedron)
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state0_on.png"]];
+        else
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state1_on.png"]];
+
+    }
 }
 
 -(IBAction)polyButtonTouchDragOff:(id)sender
 {
-    if(icosahedron)
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
-    else
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
+    if(!isPad()){
+        if(icosahedron)
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
+        else
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
+    }
+    else{
+        if(icosahedron)
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state0.png"]];
+        else
+            [polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state1.png"]];
+    }
 }
 
 -(IBAction)solidChange:(id)sender
@@ -708,7 +727,8 @@ BOOL isPad() {
     {
         solidView.image = [UIImage imageNamed:@"octahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"OCTAHEDRON"];
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
+        if(isPad())[polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state1.png"]];
+        else [polyButton setImage:[UIImage imageNamed:@"polybutton_state1.png"]];
         icosaButton.enabled = true;
         octaButton.enabled = false;
         icosahedron = false;
@@ -728,7 +748,8 @@ BOOL isPad() {
     else{
         solidView.image = [UIImage imageNamed:@"icosahedron_icon.png"];
         SolidLabel.text = [NSString stringWithFormat:@"ICOSAHEDRON"];
-        [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
+        if(isPad())[polyButton setImage:[UIImage imageNamed:@"polybutton_iPad_state0.png"]];
+        else [polyButton setImage:[UIImage imageNamed:@"polybutton_state0.png"]];
         icosaButton.enabled = false;
         octaButton.enabled = true;
         icosahedron = true;
