@@ -32,7 +32,7 @@ void set_color(float* color, float* color_ref){
 +(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
     Stage *stage = [[Stage alloc] init];
     if(stage){
-        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
+        if(![stage view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
         [stage setRoom:room];
         [stage setFlat:flat];
         [stage setNavBar:navBar];
@@ -145,7 +145,8 @@ void set_color(float* color, float* color_ref){
     
     if([motionManager isDeviceMotionAvailable]){
         CMRotationMatrix m = motionManager.deviceMotion.attitude.rotationMatrix;
-        _deviceAttitude = GLKMatrix4MakeLookAt(m.m31, m.m32, m.m33, 0, 0, 0, m.m21, m.m22, m.m23);
+        float s = 2.33;
+        _deviceAttitude = GLKMatrix4MakeLookAt(m.m31 * s, m.m32 * s, m.m33 * s, 0, 0, 0, m.m21, m.m22, m.m23);
     }
 }
 
@@ -169,7 +170,7 @@ void set_color(float* color, float* color_ref){
     
     glDisable(GL_LIGHTING);
 //    glDisable(GL_CULL_FACE);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
     
     if(_room)
         [_room draw];

@@ -21,6 +21,8 @@
 		D50571611961D7E900DDC70D /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D505715C1961D7E900DDC70D /* Hotspot.m */; };
 		D505716E1961DACA00DDC70D /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */; };
 		D505716F1961DACA00DDC70D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */; };
+		D5D3BD6A19629EA7000912FC /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6919629EA7000912FC /* Animation.m */; };
+		D5D3BD6E1962A2B6000912FC /* GeodesicRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,12 +63,16 @@
 		D505715A1961D7E900DDC70D /* Flat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flat.m; sourceTree = "<group>"; };
 		D505715B1961D7E900DDC70D /* Hotspot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotspot.h; sourceTree = "<group>"; };
 		D505715C1961D7E900DDC70D /* Hotspot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hotspot.m; sourceTree = "<group>"; };
-		D50571651961D96900DDC70D /* geodesic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geodesic.c; path = Geodesic/geodesic.c; sourceTree = SOURCE_ROOT; };
-		D50571661961D96900DDC70D /* geodesic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geodesic.h; path = Geodesic/geodesic.h; sourceTree = SOURCE_ROOT; };
-		D50571671961D96900DDC70D /* geomesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geomesh.c; path = Geodesic/geomesh.c; sourceTree = SOURCE_ROOT; };
-		D50571681961D96900DDC70D /* geomesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geomesh.h; path = Geodesic/geomesh.h; sourceTree = SOURCE_ROOT; };
 		D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D5D3BD6319629721000912FC /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geodesic.c; path = ../../Geodesic/geodesic.c; sourceTree = "<group>"; };
+		D5D3BD6419629721000912FC /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geodesic.h; path = ../../Geodesic/geodesic.h; sourceTree = "<group>"; };
+		D5D3BD6519629721000912FC /* geomesh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geomesh.c; path = ../../Geodesic/geomesh.c; sourceTree = "<group>"; };
+		D5D3BD6619629721000912FC /* geomesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geomesh.h; path = ../../Geodesic/geomesh.h; sourceTree = "<group>"; };
+		D5D3BD6819629EA7000912FC /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
+		D5D3BD6919629EA7000912FC /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animation.m; sourceTree = "<group>"; };
+		D5D3BD6C1962A2B6000912FC /* GeodesicRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicRoom.h; sourceTree = "<group>"; };
+		D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicRoom.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +121,7 @@
 				D50571641961D83800DDC70D /* Interface */,
 				D50571621961D81500DDC70D /* StageKit */,
 				D50571631961D82C00DDC70D /* StageKit Tools */,
-				D505716B1961D96E00DDC70D /* Geodesic */,
+				D5D3BD6719629725000912FC /* Geodesic */,
 				D50571301961D79400DDC70D /* Images.xcassets */,
 				D50571291961D79400DDC70D /* Supporting Files */,
 			);
@@ -166,12 +172,14 @@
 		D50571631961D82C00DDC70D /* StageKit Tools */ = {
 			isa = PBXGroup;
 			children = (
+				D50571541961D7E900DDC70D /* common.c */,
 				D50571481961D7B000DDC70D /* Primitives.h */,
 				D50571491961D7B000DDC70D /* Primitives.m */,
 				D50571521961D7B600DDC70D /* lights.c */,
-				D50571541961D7E900DDC70D /* common.c */,
 				D505715B1961D7E900DDC70D /* Hotspot.h */,
 				D505715C1961D7E900DDC70D /* Hotspot.m */,
+				D5D3BD6819629EA7000912FC /* Animation.h */,
+				D5D3BD6919629EA7000912FC /* Animation.m */,
 			);
 			name = "StageKit Tools";
 			sourceTree = "<group>";
@@ -181,19 +189,21 @@
 			children = (
 				D50571551961D7E900DDC70D /* Controls.h */,
 				D50571561961D7E900DDC70D /* Controls.m */,
+				D5D3BD6C1962A2B6000912FC /* GeodesicRoom.h */,
+				D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */,
 				D50571571961D7E900DDC70D /* CubeOctaRoom.h */,
 				D50571581961D7E900DDC70D /* CubeOctaRoom.m */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
 		};
-		D505716B1961D96E00DDC70D /* Geodesic */ = {
+		D5D3BD6719629725000912FC /* Geodesic */ = {
 			isa = PBXGroup;
 			children = (
-				D50571651961D96900DDC70D /* geodesic.c */,
-				D50571661961D96900DDC70D /* geodesic.h */,
-				D50571671961D96900DDC70D /* geomesh.c */,
-				D50571681961D96900DDC70D /* geomesh.h */,
+				D5D3BD6319629721000912FC /* geodesic.c */,
+				D5D3BD6419629721000912FC /* geodesic.h */,
+				D5D3BD6519629721000912FC /* geomesh.c */,
+				D5D3BD6619629721000912FC /* geomesh.h */,
 			);
 			name = Geodesic;
 			sourceTree = "<group>";
@@ -298,12 +308,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D50571511961D7B000DDC70D /* Stage.m in Sources */,
+				D5D3BD6E1962A2B6000912FC /* GeodesicRoom.m in Sources */,
 				D50571601961D7E900DDC70D /* Flat.m in Sources */,
 				D50571501961D7B000DDC70D /* Room.m in Sources */,
 				D50571611961D7E900DDC70D /* Hotspot.m in Sources */,
 				D505714E1961D7B000DDC70D /* NavBar.m in Sources */,
 				D505715E1961D7E900DDC70D /* Controls.m in Sources */,
 				D505715F1961D7E900DDC70D /* CubeOctaRoom.m in Sources */,
+				D5D3BD6A19629EA7000912FC /* Animation.m in Sources */,
 				D505712F1961D79400DDC70D /* AppDelegate.m in Sources */,
 				D505712C1961D79400DDC70D /* main.m in Sources */,
 				D505714F1961D7B000DDC70D /* Primitives.m in Sources */,
@@ -412,6 +424,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					../Geodesic,
+				);
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -425,6 +442,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					../Geodesic,
+				);
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
