@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0450"
+   LastUpgradeVersion = "0600"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D514EDF416B748A5000D9264"
+               BlueprintIdentifier = "D50571251961D79400DDC70D"
                BuildableName = "Domekit.app"
                BlueprintName = "Domekit"
                ReferencedContainer = "container:Domekit.xcodeproj">
@@ -32,8 +32,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D514EE1E16B748A6000D9264"
-               BuildableName = "DomekitTests.octest"
+               BlueprintIdentifier = "D50571351961D79400DDC70D"
+               BuildableName = "DomekitTests.xctest"
                BlueprintName = "DomekitTests"
                ReferencedContainer = "container:Domekit.xcodeproj">
             </BuildableReference>
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D514EDF416B748A5000D9264"
+            BlueprintIdentifier = "D50571251961D79400DDC70D"
             BuildableName = "Domekit.app"
             BlueprintName = "Domekit"
             ReferencedContainer = "container:Domekit.xcodeproj">
@@ -61,7 +61,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D514EDF416B748A5000D9264"
+            BlueprintIdentifier = "D50571251961D79400DDC70D"
             BuildableName = "Domekit.app"
             BlueprintName = "Domekit"
             ReferencedContainer = "container:Domekit.xcodeproj">
@@ -79,7 +79,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D514EDF416B748A5000D9264"
+            BlueprintIdentifier = "D50571251961D79400DDC70D"
             BuildableName = "Domekit.app"
             BlueprintName = "Domekit"
             ReferencedContainer = "container:Domekit.xcodeproj">

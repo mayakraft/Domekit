@@ -2,31 +2,38 @@
 //  DomekitTests.m
 //  DomekitTests
 //
-//  Created by Robby on 1/28/13.
-//  Copyright (c) 2013 Robby Kraft. All rights reserved.
+//  Created by Robby on 6/30/14.
+//  Copyright (c) 2014 Robby. All rights reserved.
 //
 
-#import "DomekitTests.h"
+#import <XCTest/XCTest.h>
+
+@interface DomekitTests : XCTestCase
+
+@end
 
 @implementation DomekitTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
-    
-    // Set-up code here.
+    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in DomekitTests");
+- (void)testExample {
+    // This is an example of a functional test case.
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testPerformanceExample {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+    }];
 }
 
 @end
