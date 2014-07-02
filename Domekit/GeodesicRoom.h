@@ -13,4 +13,6 @@
 @property NSInteger frequency;
 @property NSString *polyhedraType;
 
+-(void) makeGeodesic:(int)frequency;
+
 @end

@@ -24,8 +24,8 @@
 }
 
 -(void) setup{
-    _geo = icosahedron(2);
-    _mesh = makeMeshTriangles(&_geo, 0.8);
+    _geo = icosahedron(1);
+    _mesh = makeMeshTriangles(&_geo, 0.85);
 }
 
 -(void) draw{
@@ -34,6 +34,13 @@
 //    geodesicDrawTriangles(&_geo);
     
     geodesicMeshDrawExtrudedTriangles(&_mesh);
+}
+
+-(void)makeGeodesic:(int)frequency{
+    deleteGeodesic(&_geo);
+    deleteMeshTriangles(&_mesh);
+    _geo = icosahedron(frequency);
+    _mesh = makeMeshTriangles(&_geo, 0.85);
 }
 
 @end

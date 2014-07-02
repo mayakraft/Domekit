@@ -25,9 +25,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    Controls *control = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     Stage *stage = [Stage StageWithRoom:[GeodesicRoom room]
-                                   Flat:[[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]]
-                                 NavBar:[NavBar navBar]];
+                                   Flat:control
+                                 NavBar:nil];
+    [control setDelegate:stage];
     [stage setBackgroundColor:whiteColor];
     self.window.rootViewController = stage;
     self.window.backgroundColor = [UIColor blackColor];

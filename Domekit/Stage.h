@@ -5,12 +5,13 @@
 #import "Flat.h"
 #import "NavBar.h"
 #import "common.c"
+#import "Controls.h"
+#import "GeodesicRoom.h"
 //#import "lights.c"
 
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
-
-@interface Stage : GLKViewController <NavBarDelegate>//<AnimationDelegate>
+@interface Stage : GLKViewController <NavBarDelegate, ControlsDelegate>//<AnimationDelegate>
 
 @property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
 @property (nonatomic) Flat *flat;         // SCREENS (ORTHOGRAPHIC LAYERS)

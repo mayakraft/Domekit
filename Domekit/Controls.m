@@ -16,68 +16,31 @@ typedef enum{
 }
 
 -(void) setup{
-    float w = self.view.bounds.size.width * .875;
-    _slider = [[UISlider alloc] initWithFrame:CGRectMake(self.view.bounds.size.width*.5 - w*.5, self.view.bounds.size.height*.9, w, 48)];
-    [self.view addSubview:_slider];
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.85, self.view.bounds.size.width, self.view.bounds.size.height*.3)];
+    [_scrollView setBackgroundColor:[UIColor darkGrayColor]];
+    [_scrollView setContentSize:CGSizeMake(self.view.bounds.size.width*6, self.view.bounds.size.height*.3)];
+    [self.view addSubview:_scrollView];
+    
+    _scrollView.delaysContentTouches = NO;
+
+    float w = self.view.bounds.size.width * .7;
+//    _slider = [[UISlider alloc] initWithFrame:CGRectMake(self.view.bounds.size.width*.5 - w*.5, self.view.bounds.size.height*.9, w, self.view.bounds.size.height*.2)];
+    _slider = [[UISlider alloc] initWithFrame:CGRectMake(self.view.bounds.size.width*.5 - w*.5, 0, w, self.view.bounds.size.height*.2)];
+    [_slider setMinimumTrackTintColor:[UIColor lightGrayColor]];
+    [_slider setMaximumTrackTintColor:[UIColor lightGrayColor]];
+    [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpInside];
+    [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpOutside];
+
+    [_scrollView setPagingEnabled:YES];
+    [_scrollView addSubview:_slider];
 }
 
-//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    for(UITouch *touch in touches){
-//        for(Hotspot *spot in self.hotspots){
-//            if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                // customize response to each touch area
-//                if([spot ID] == hotspotControls) { }
-//                break;
-//            }
-//        }
-//    }
-//}
-//
-//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    for(UITouch *touch in touches){
-//        for(Hotspot *spot in self.hotspots){
-//            if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                // customize response to each touch area
-//                if([spot ID] == hotspotControls && _scene == scene2){
-//                    float freq = ([touch locationInView:self.view].x-(self.view.frame.size.width)/12.*1.5) / ((self.view.frame.size.width)/12.);
-//                    if(freq < 0) freq = 0;
-//                    if(freq > 8) freq = 8;
-//                    //TODO: THIS NEEDS TO GET THE UPDATE
-//                    //                        [navScreen setRadioBarPosition:freq];
-//                }
-//                break;
-//            }
-//        }
-//    }
-//}
-//
-//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-//    for(UITouch *touch in touches){
-//        for(Hotspot *spot in self.hotspots){
-//            if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                // customize response to each touch area
-//                else if([spot ID] == hotspotControls){
-//                    if(_scene == scene1){
-//                        if([touch locationInView:self.view].x < self.view.frame.size.width*.5){
-//                            
-//                        }
-//                        else if([touch locationInView:self.view].x > self.view.frame.size.width*.5){
-//                            
-//                        }
-//                    }
-//                    if(_scene == scene2){
-//                        int freq = ([touch locationInView:self.view].x-(self.view.frame.size.width)/12.*1.5) / ((self.view.frame.size.width)/12.);
-//                        if(freq < 0) freq = 0;
-//                        if(freq > 8) freq = 8;
-//                        //TODO: THIS NEEDS TO GET THE UPDATE
-//                        //                            [navScreen setRadioBarPosition:freq];
-//                        animationNewGeodesic = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.5];
-//                    }
-//                }
-//                break;
-//            }
-//        }
-//    }
-//}
+-(void) sliderChanged{
+    int segments = 8;  // points on the line is segments+1
+    int closest = floorf(_slider.value * segments + .5);
+    [_slider setValue:(1.0f/segments)*closest animated:YES];
+    [_delegate frequencySliderChanged:closest+1];
+}
 
 @end

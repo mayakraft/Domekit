@@ -27,7 +27,7 @@ void set_color(float* color, float* color_ref){
 
 @implementation Stage
 
-// INITIALIZERS
+#pragma mark-SETTERS
 
 +(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
     Stage *stage = [[Stage alloc] init];
@@ -41,7 +41,7 @@ void set_color(float* color, float* color_ref){
     return stage;
 }
 
-// STARTUP
+#pragma mark-SETTERS
 
 -(void) setup{
     NSLog(@"setup");
@@ -96,8 +96,8 @@ void set_color(float* color, float* color_ref){
     NSLog(@"customizeOpenGL");
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
 //    glEnable(GL_DEPTH_TEST);
 //    glEnable(GL_BLEND);
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -117,7 +117,7 @@ void set_color(float* color, float* color_ref){
 }
 
 
-// SETTERS
+#pragma mark-SETTERS
 
 -(void) setBackgroundColor:(float *)backgroundColor{
     set_color(_backgroundColor, backgroundColor);
@@ -172,6 +172,8 @@ void set_color(float* color, float* color_ref){
 //    glDisable(GL_CULL_FACE);
     glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
     
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     if(_room)
         [_room draw];
     
@@ -194,7 +196,13 @@ void set_color(float* color, float* color_ref){
 //    if(_userInteractionEnabled){ }
 //}
 
-// DELEGATES
+
+#pragma mark-DELEGATES
+
+-(void) frequencySliderChanged:(int)value{
+    NSLog(@"%d", value);
+    [(GeodesicRoom*)_room makeGeodesic:value];
+}
 
 -(void) pageTurnBack:(NSInteger)page{
     NSLog(@"(%d) Back button pressed", page);
