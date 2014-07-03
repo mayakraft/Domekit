@@ -31,8 +31,8 @@
     [_titleLabel setTextColor:[UIColor blackColor]];
     [[self view] addSubview:_titleLabel];
     
-    _numPages = 5;
-    [self setTitles:@[@"SCENE 1", @"SCENE 2", @"SCENE 3", @"SCENE 4", @"SCENE 5"]];
+    _numPages = 4;
+    [self setTitles:@[@"FILE", @"MAKE", @"ASSEMBLY", @"SHARE"]];
 }
 
 +(instancetype) navBar{
@@ -59,14 +59,16 @@
     if(self.page <= 0) return;
     self.page--;
     [[self delegate] pageTurnBack:self.page];
+    [[self delegate] pageChanged];
     [self setNeedsLayout];
 }
 
 -(void) forwardButtonPressed{
     if(self.page >= _numPages-1) return;
     self.page++;
-    [self setNeedsLayout];
     [[self delegate] pageTurnForward:self.page];
+    [[self delegate] pageChanged];
+    [self setNeedsLayout];
 }
 
 @end

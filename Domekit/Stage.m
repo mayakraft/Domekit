@@ -16,12 +16,17 @@ void set_color(float* color, float* color_ref){
     float       _fieldOfView;
 
     CMMotionManager *motionManager;
+    
+    Controls *controls;
+    NSArray *navBarFlats;
 }
 
 @property (readonly)  NSTimeInterval elapsedSeconds;
 @property (nonatomic) GLKQuaternion  orientation;      // WORLD ORIENTATION, can depend or not on device attitude
 @property (nonatomic) GLKMatrix4     deviceAttitude;
 //@property (nonatomic) GLKQuaternion  deviceAttitude;
+
+
 
 @end
 
@@ -46,11 +51,19 @@ void set_color(float* color, float* color_ref){
     if(self){
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
         [self setRoom:[GeodesicRoom room]];
-        Controls *control = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        [self setFlat:control];
         [self setNavBar:[NavBar navBar]];
         
-        [control setDelegate:self];
+        [_navBar setPage:0];
+        [(GeodesicRoom*)_room setHideGeodesic:YES];
+        
+        // setup FLAT control layers
+        controls = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [controls setDelegate:self];
+        
+        navBarFlats = @[[[Flat alloc] init],
+                        controls,
+                        [[Flat alloc] init],
+                        [[Flat alloc] init]];
         
         [self setup];
         
@@ -143,6 +156,8 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) setFlat:(Flat *)flat{
+    if(_flat)
+        [[_flat view] removeFromSuperview];
     _flat = flat;
 //    [_flat setDelegate:self];
     [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
@@ -218,13 +233,29 @@ void set_color(float* color, float* color_ref){
 
 #pragma mark-DELEGATES
 
+-(void) pageChanged{
+    if(_navBar.page == 0){
+        [self setFlat:nil];
+        [(GeodesicRoom*)_room setHideGeodesic:YES];
+    }
+    if(_navBar.page == 1){
+        [self setFlat:controls];
+        [(GeodesicRoom*)_room setHideGeodesic:NO];
+    }
+    if(_navBar.page == 2){
+        [self setFlat:nil];
+        [(GeodesicRoom*)_room setHideGeodesic:YES];
+    }
+    NSLog(@"changing page, %d", _navBar.page);
+}
+
 -(void) frequencySliderChanged:(int)value{
     NSLog(@"new %d geodesic", value);
     [(GeodesicRoom*)_room makeGeodesic:value];
 }
 
 -(void) pageTurnBack:(NSInteger)page{
-    NSLog(@"(%ld) Back button pressed", (long)page);
+//    NSLog(@"(%ld) Back button pressed", (long)page);
 //    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
 //    if(page == 1)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
@@ -238,7 +269,7 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) pageTurnForward:(NSInteger)page{
-    NSLog(@"(%ld) Forward button pressed", (long)page);
+//    NSLog(@"(%ld) Forward button pressed", (long)page);
 //    if(page == 2)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
 //    if(page == 4)

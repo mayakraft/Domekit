@@ -13,14 +13,16 @@ typedef enum{
 -(void) customDraw{
 //    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 //    [self drawRect:CGRectMake(self.view.bounds.size.width*.5, self.view.bounds.size.height*.066, self.view.bounds.size.width, self.view.bounds.size.height*.133)];
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
+
 
 -(void) setup{
     
     float margin = self.view.bounds.size.width*.1;
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(margin, self.view.bounds.size.height*.75, self.view.bounds.size.width-margin*2, self.view.bounds.size.height*.25)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
-    [_scrollView setContentSize:CGSizeMake(self.view.bounds.size.width*6, self.view.bounds.size.height*.25)];
+    [_scrollView setContentSize:CGSizeMake((self.view.bounds.size.width-margin*2)*6+margin*2, self.view.bounds.size.height*.25)];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setClipsToBounds:NO];
@@ -37,6 +39,12 @@ typedef enum{
         [back setBackgroundColor:[UIColor blackColor]];
         [_scrollView addSubview:back];
     }
+    for(int i = 1; i < 6; i++){
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width * i - margin*.25, _scrollView.bounds.size.height* .5 - margin*.5*1.618, margin*.5, margin*1.618)];
+        [separator setBackgroundColor:[UIColor blackColor]];
+        [_scrollView addSubview:separator];
+    }
+
     
     // PAGE 1, slider
 
@@ -48,6 +56,8 @@ typedef enum{
     [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpInside];
     [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpOutside];
     [_scrollView addSubview:_slider];
+    
+    [_slider setThumbTintColor:[UIColor colorWithRed:.3f green:.3f blue:1.0f alpha:1.0f]];
         
     // numbers count
     for(int i = 0; i < 9; i++){

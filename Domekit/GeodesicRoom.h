@@ -15,4 +15,6 @@
 
 -(void) makeGeodesic:(int)frequency;
 
+@property BOOL hideGeodesic;
+
 @end

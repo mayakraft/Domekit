@@ -13,7 +13,6 @@
 
 @property UIView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;
-@property NSInteger page;
 
 //@property NSMutableArray *elements;   // add all user interface elements here after creating
 //@property (nonatomic) NSArray *hotspots;

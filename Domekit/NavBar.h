@@ -4,6 +4,8 @@
 @optional
 -(void) pageTurnBack:(NSInteger)page;
 -(void) pageTurnForward:(NSInteger)page;
+@required
+-(void) pageChanged;
 @end
 
 
@@ -16,6 +18,8 @@
 @property UIButton *backButton;
 
 @property (nonatomic) NSArray *titles;
+
+@property (nonatomic) NSInteger page;
 @property (nonatomic) NSInteger numPages;
 
 +(instancetype) navBar;

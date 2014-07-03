@@ -9,5 +9,3 @@
 # assistance
 
 design @mfelix
-
-built with [stage](https://github.com/robbykraft/Stage)

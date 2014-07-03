@@ -32,8 +32,8 @@
 //    geodesicDrawPoints(&_geo);
 //    geodesicDrawLines(&_geo);
 //    geodesicDrawTriangles(&_geo);
-    
-    geodesicMeshDrawExtrudedTriangles(&_mesh);
+    if(!_hideGeodesic)
+        geodesicMeshDrawExtrudedTriangles(&_mesh);
 }
 
 -(void)makeGeodesic:(int)frequency{
