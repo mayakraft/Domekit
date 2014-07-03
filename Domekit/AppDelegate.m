@@ -9,11 +9,6 @@
 #import "AppDelegate.h"
 #import "Stage.h"
 
-#import "NavBar.h"
-#import "CubeOctaRoom.h"
-#import "GeodesicRoom.h"
-#import "Controls.h"
-
 @interface AppDelegate ()
             
 
@@ -25,12 +20,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    Controls *control = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    Stage *stage = [Stage StageWithRoom:[GeodesicRoom room]
-                                   Flat:control
-                                 NavBar:nil];
-    [control setDelegate:stage];
-    [stage setBackgroundColor:whiteColor];
+    Stage *stage = [[Stage alloc] init];
     self.window.rootViewController = stage;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];

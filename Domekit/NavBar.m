@@ -9,7 +9,7 @@
     _forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)];
     [_forwardButton addTarget:self action:@selector(forwardButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_forwardButton setBackgroundColor:[UIColor blackColor]];
-    [[_forwardButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+    [[_forwardButton titleLabel] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
     [_forwardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];

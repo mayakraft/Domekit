@@ -19,7 +19,7 @@
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
 
-+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar;
+//+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar;
 
 -(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;

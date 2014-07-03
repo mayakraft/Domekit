@@ -29,16 +29,35 @@ void set_color(float* color, float* color_ref){
 
 #pragma mark-SETTERS
 
-+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
-    Stage *stage = [[Stage alloc] init];
-    if(stage){
-        if(![stage view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
-        [stage setRoom:room];
-        [stage setFlat:flat];
-        [stage setNavBar:navBar];
-        [stage setup];
+//+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
+//    Stage *stage = [[Stage alloc] init];
+//    if(stage){
+//        if(![stage view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
+//        [stage setRoom:room];
+//        [stage setFlat:flat];
+//        [stage setNavBar:navBar];
+//        [stage setup];
+//    }
+//    return stage;
+//}
+
+-(id) init{
+    self = [super init];
+    if(self){
+        if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
+        [self setRoom:[GeodesicRoom room]];
+        Controls *control = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [self setFlat:control];
+        [self setNavBar:[NavBar navBar]];
+        
+        [control setDelegate:self];
+        
+        [self setup];
+        
+        [self setBackgroundColor:whiteColor];
+
     }
-    return stage;
+    return self;
 }
 
 #pragma mark-SETTERS
@@ -200,12 +219,12 @@ void set_color(float* color, float* color_ref){
 #pragma mark-DELEGATES
 
 -(void) frequencySliderChanged:(int)value{
-    NSLog(@"%d", value);
+    NSLog(@"new %d geodesic", value);
     [(GeodesicRoom*)_room makeGeodesic:value];
 }
 
 -(void) pageTurnBack:(NSInteger)page{
-    NSLog(@"(%d) Back button pressed", page);
+    NSLog(@"(%ld) Back button pressed", (long)page);
 //    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
 //    if(page == 1)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
@@ -219,7 +238,7 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) pageTurnForward:(NSInteger)page{
-    NSLog(@"(%d) Forward button pressed", page);
+    NSLog(@"(%ld) Forward button pressed", (long)page);
 //    if(page == 2)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
 //    if(page == 4)
