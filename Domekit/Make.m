@@ -20,49 +20,92 @@ typedef enum{
 -(void) setup{
     
     float margin = self.view.bounds.size.width*.1;
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(margin, self.view.bounds.size.height*.75, self.view.bounds.size.width-margin*2, self.view.bounds.size.height*.25)];
+    float pageW = self.view.bounds.size.width-margin*2;
+    float panelW = pageW * .9;
+    float controlsW = pageW * .7;
+    
+    int numPages = 4;
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(margin,
+                                                                 self.view.bounds.size.height*.75,
+                                                                 pageW,
+                                                                 self.view.bounds.size.height*.25)];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
-    [_scrollView setContentSize:CGSizeMake((self.view.bounds.size.width-margin*2)*6+margin*2, self.view.bounds.size.height*.25)];
+    [_scrollView setContentSize:CGSizeMake(pageW * numPages,
+                                           self.view.bounds.size.height*.25)];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setClipsToBounds:NO];
     _scrollView.delaysContentTouches = NO;
     [_scrollView setPagingEnabled:YES];
-    HitTestView *hitTestView = [[HitTestView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.75, self.view.bounds.size.width, self.view.bounds.size.height*.25) View:_scrollView];
+    HitTestView *hitTestView = [[HitTestView alloc] initWithFrame:CGRectMake(0,
+                                                                             self.view.bounds.size.height*.75,
+                                                                             self.view.bounds.size.width,
+                                                                             self.view.bounds.size.height*.25) View:_scrollView];
     [self.view addSubview:hitTestView];
     [self.view addSubview:_scrollView];
     
     // background views
-    float w2 = _scrollView.bounds.size.width * .9;
-    for(int i = 0; i < 6; i++){
-        UIView *back = [[UIView alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width * i + _scrollView.bounds.size.width*.5 - w2*.5, 0, w2, _scrollView.bounds.size.height*.9)];
+    for(int i = 0; i < numPages; i++){
+        UIView *back = [[UIView alloc] initWithFrame:CGRectMake(pageW * (i+.5) - panelW * .5,
+                                                                0,
+                                                                panelW,
+                                                                _scrollView.bounds.size.height*.9)];
         [back setBackgroundColor:[UIColor blackColor]];
         [_scrollView addSubview:back];
     }
     // GRIPS
-    for(int i = 1; i < 6; i++){
-        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width * i - margin*.25, _scrollView.bounds.size.height* .5 - margin*.5*1.618, margin*.5, margin*1.618)];
+    for(int i = 1; i < numPages; i++){
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(pageW * i - margin*.25,
+                                                                     _scrollView.bounds.size.height* .5 - margin*.5*1.618,
+                                                                     margin*.5,
+                                                                     margin*1.618)];
         [separator setBackgroundColor:[UIColor blackColor]];
         [_scrollView addSubview:separator];
     }
+    
+    // PAGE 1, polyhedra
+    UIButton *octaButton = [[UIButton alloc] initWithFrame:CGRectMake(pageW * .5 - panelW * .5,
+                                                                       0,
+                                                                       panelW*.5,
+                                                                       _scrollView.bounds.size.height*.9)];
+    [octaButton setBackgroundColor:[UIColor clearColor]];
+    UIButton *icosaButton = [[UIButton alloc] initWithFrame:CGRectMake(pageW * .5,
+                                                                       0,
+                                                                       panelW*.5,
+                                                                       _scrollView.bounds.size.height*.9)];
+    [icosaButton setBackgroundColor:[UIColor clearColor]];
+    
+    [icosaButton setTitle:@"✿" forState:UIControlStateNormal];
+    [octaButton setTitle:@"◆" forState:UIControlStateNormal];
+    [icosaButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [octaButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [[icosaButton titleLabel] setFont:[UIFont systemFontOfSize:40]];
+    [[octaButton titleLabel] setFont:[UIFont systemFontOfSize:40]];
+
+    [icosaButton addTarget:_delegate action:@selector(icosahedronButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [octaButton addTarget:_delegate action:@selector(octahedronButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollView addSubview:octaButton];
+    [_scrollView addSubview:icosaButton];
 
     
-    // PAGE 1, slider
-
-    float w = _scrollView.bounds.size.width * .7;
-//    _slider = [[UISlider alloc] initWithFrame:CGRectMake(self.view.bounds.size.width*.5 - w*.5, self.view.bounds.size.height*.9, w, self.view.bounds.size.height*.2)];
-    _slider = [[UISlider alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width*.5 - w*.5, self.view.bounds.size.height*.1, w, self.view.bounds.size.height*.1)];
+    // PAGE 2, slider
+    _slider = [[UISlider alloc] initWithFrame:CGRectMake(pageW*1.5 - controlsW*.5,
+                                                         self.view.bounds.size.height*.1,
+                                                         controlsW,
+                                                         self.view.bounds.size.height*.1)];
     [_slider setMinimumTrackTintColor:[UIColor lightGrayColor]];
     [_slider setMaximumTrackTintColor:[UIColor lightGrayColor]];
     [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpInside];
     [_slider addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventTouchUpOutside];
     [_scrollView addSubview:_slider];
-    
     [_slider setThumbTintColor:[UIColor colorWithRed:.3f green:.3f blue:1.0f alpha:1.0f]];
-        
     // numbers count
     for(int i = 0; i < 9; i++){
-        UILabel *number = [[UILabel alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width*.5 - w*.5 + w/9.0*i, self.view.bounds.size.height*.025, w/9.0, self.view.bounds.size.height*.085)];
+        UILabel *number = [[UILabel alloc] initWithFrame:CGRectMake(pageW*1.5 - controlsW*.5 + controlsW/9.0*i,
+                                                                    self.view.bounds.size.height*.025,
+                                                                    controlsW/9.0,
+                                                                    self.view.bounds.size.height*.085)];
         [number setText:[NSString stringWithFormat:@"%d",i+1]];
         [number setTextColor:[UIColor whiteColor]];
         [number setFont:[UIFont fontWithName:@"Montserrat-Regular" size:28]];
@@ -70,6 +113,22 @@ typedef enum{
         [_scrollView addSubview:number];
     }
     
+    // PAGE 3
+    UILabel *sliceLabel = [[UILabel alloc] initWithFrame:CGRectMake(pageW * 2.5 - controlsW*.5, self.view.bounds.size.height*.05, controlsW, self.view.bounds.size.height*.1)];
+    [sliceLabel setText:@"slice"];
+    [sliceLabel setTextAlignment:NSTextAlignmentCenter];
+    [sliceLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:28]];
+    [sliceLabel setTextColor:[UIColor whiteColor]];
+    [_scrollView addSubview:sliceLabel];
+    
+
+    // PAGE 4
+    UILabel *sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(pageW * 3.5 - controlsW*.5, self.view.bounds.size.height*.05, controlsW, self.view.bounds.size.height*.1)];
+    [sizeLabel setText:@"scale it up"];
+    [sizeLabel setTextAlignment:NSTextAlignmentCenter];
+    [sizeLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:28]];
+    [sizeLabel setTextColor:[UIColor whiteColor]];
+    [_scrollView addSubview:sizeLabel];
 }
 
 -(void) sliderChanged{

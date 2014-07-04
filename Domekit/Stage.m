@@ -51,10 +51,10 @@ void set_color(float* color, float* color_ref){
         [self setup];
 
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
-        [self setRoom:[GeodesicRoom room]];
+        [self setGeodesic:[Geodesic room]];
         [self setNavBar:[NavBar navBar]];
         
-        [(GeodesicRoom*)_room setHideGeodesic:YES];
+        [_geodesic setHideGeodesic:YES];
         
         // setup FACE control layers
         make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -209,8 +209,8 @@ void set_color(float* color, float* color_ref){
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
-    if(_room)
-        [_room draw];
+    if(_geodesic)
+        [_geodesic draw];
     
     if(_face)
         [_face draw];
@@ -236,20 +236,28 @@ void set_color(float* color, float* color_ref){
     if(_navBar.page == 0){
         [[_navBar backButton] setHidden:YES];
         [[_navBar forwardButton] setHidden:YES];
-        [(GeodesicRoom*)_room setHideGeodesic:YES];
+        [_geodesic setHideGeodesic:YES];
     }
     if(_navBar.page == 1){
         [[_navBar backButton] setHidden:NO];
         [[_navBar forwardButton] setHidden:NO];
-        [(GeodesicRoom*)_room setHideGeodesic:NO];
+        [_geodesic setHideGeodesic:NO];
     }
     if(_navBar.page == 2){
-        [(GeodesicRoom*)_room setHideGeodesic:YES];
+        [_geodesic setHideGeodesic:YES];
     }
 }
 
 
 #pragma mark-DELEGATES
+
+-(void) octahedronButtonPressed{
+    [_geodesic setPolyhedraType:0];
+}
+
+-(void) icosahedronButtonPressed{
+    [_geodesic setPolyhedraType:1];
+}
 
 -(void) makeNewDomePressed{
     NSLog(@"makenewdome delegate pressed");
@@ -267,7 +275,7 @@ void set_color(float* color, float* color_ref){
 
 -(void) frequencySliderChanged:(int)value{
     NSLog(@"new %d geodesic", value);
-    [(GeodesicRoom*)_room makeGeodesic:value];
+    [_geodesic setFrequency:value];
 }
 
 -(void) pageTurnBack:(NSInteger)page{

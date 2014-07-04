@@ -24,7 +24,7 @@
 		D513835619652E54009A54AE /* HitTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = D513835519652E54009A54AE /* HitTestView.m */; };
 		D513835B196645DD009A54AE /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = D513835A196645DD009A54AE /* File.m */; };
 		D5D3BD6A19629EA7000912FC /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6919629EA7000912FC /* Animation.m */; };
-		D5D3BD6E1962A2B6000912FC /* GeodesicRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */; };
+		D5D3BD6E1962A2B6000912FC /* Geodesic.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6D1962A2B6000912FC /* Geodesic.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,8 +84,8 @@
 		D5D3BD6619629721000912FC /* geomesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geomesh.h; path = ../../Geodesic/geomesh.h; sourceTree = "<group>"; };
 		D5D3BD6819629EA7000912FC /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
 		D5D3BD6919629EA7000912FC /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animation.m; sourceTree = "<group>"; };
-		D5D3BD6C1962A2B6000912FC /* GeodesicRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicRoom.h; sourceTree = "<group>"; };
-		D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicRoom.m; sourceTree = "<group>"; };
+		D5D3BD6C1962A2B6000912FC /* Geodesic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geodesic.h; sourceTree = "<group>"; };
+		D5D3BD6D1962A2B6000912FC /* Geodesic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geodesic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +131,8 @@
 				D505712E1961D79400DDC70D /* AppDelegate.m */,
 				D505714C1961D7B000DDC70D /* Stage.h */,
 				D505714D1961D7B000DDC70D /* Stage.m */,
+				D50571461961D7B000DDC70D /* NavBar.h */,
+				D50571471961D7B000DDC70D /* NavBar.m */,
 				D5138358196644F1009A54AE /* Rooms */,
 				D50571641961D83800DDC70D /* Interfaces */,
 				D50571621961D81500DDC70D /* StageKit */,
@@ -177,8 +179,6 @@
 				D505714B1961D7B000DDC70D /* Room.m */,
 				D50571591961D7E900DDC70D /* Face.h */,
 				D505715A1961D7E900DDC70D /* Face.m */,
-				D50571461961D7B000DDC70D /* NavBar.h */,
-				D50571471961D7B000DDC70D /* NavBar.m */,
 			);
 			name = StageKit;
 			sourceTree = "<group>";
@@ -222,8 +222,8 @@
 		D5138358196644F1009A54AE /* Rooms */ = {
 			isa = PBXGroup;
 			children = (
-				D5D3BD6C1962A2B6000912FC /* GeodesicRoom.h */,
-				D5D3BD6D1962A2B6000912FC /* GeodesicRoom.m */,
+				D5D3BD6C1962A2B6000912FC /* Geodesic.h */,
+				D5D3BD6D1962A2B6000912FC /* Geodesic.m */,
 				D50571571961D7E900DDC70D /* CubeOctaRoom.h */,
 				D50571581961D7E900DDC70D /* CubeOctaRoom.m */,
 			);
@@ -342,7 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D50571511961D7B000DDC70D /* Stage.m in Sources */,
-				D5D3BD6E1962A2B6000912FC /* GeodesicRoom.m in Sources */,
+				D5D3BD6E1962A2B6000912FC /* Geodesic.m in Sources */,
 				D50571601961D7E900DDC70D /* Face.m in Sources */,
 				D50571501961D7B000DDC70D /* Room.m in Sources */,
 				D513835619652E54009A54AE /* HitTestView.m in Sources */,

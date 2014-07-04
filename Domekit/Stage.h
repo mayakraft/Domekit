@@ -5,7 +5,7 @@
 #import "Face.h"
 #import "NavBar.h"
 #import "common.c"
-#import "GeodesicRoom.h"
+#import "Geodesic.h"
 //#import "lights.c"
 
 // FACES
@@ -16,7 +16,7 @@
 
 @interface Stage : GLKViewController <NavBarDelegate, MakeDelegate, FileDelegate>//<AnimationDelegate>
 
-@property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
+@property (nonatomic) Geodesic *geodesic; // ROOMS   (3D ENVIRONMENTS)
 @property (nonatomic) Face *face;         // SCREENS (ORTHOGRAPHIC LAYERS)
 @property (nonatomic) NavBar *navBar;     // SCREENS (ORTHOGRAPHIC LAYERS)
 

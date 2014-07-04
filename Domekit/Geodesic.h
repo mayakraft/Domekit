@@ -8,12 +8,10 @@
 
 #import "Room.h"
 
-@interface GeodesicRoom : Room
+@interface Geodesic : Room
 
-@property NSInteger frequency;
-@property NSString *polyhedraType;
-
--(void) makeGeodesic:(int)frequency;
+@property (nonatomic) NSInteger frequency;
+@property (nonatomic) BOOL polyhedraType;
 
 @property BOOL hideGeodesic;
 

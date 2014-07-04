@@ -1,7 +1,9 @@
 #import "Face.h"
 
 @protocol MakeDelegate <NSObject>
-@optional
+@required
+-(void) icosahedronButtonPressed;
+-(void) octahedronButtonPressed;
 -(void) frequencySliderChanged:(int)value;
 @end
 
