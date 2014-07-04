@@ -5,9 +5,10 @@
 -(void) icosahedronButtonPressed;
 -(void) octahedronButtonPressed;
 -(void) frequencySliderChanged:(int)value;
+-(void) auxiliaryDraw;  // for scroll view
 @end
 
-@interface Make : Face
+@interface Make : Face <UIScrollViewDelegate>
 
 @property id <MakeDelegate> delegate;
 

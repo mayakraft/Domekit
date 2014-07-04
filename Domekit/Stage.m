@@ -70,6 +70,7 @@ void set_color(float* color, float* color_ref){
 
         [self setBackgroundColor:whiteColor];
         [self updateLayout];
+        
     }
     return self;
 }
@@ -142,6 +143,8 @@ void set_color(float* color, float* color_ref){
     if([motionManager isDeviceMotionAvailable]){
         motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
         [motionManager startDeviceMotionUpdates];
+//        [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:UITrackingRunLoopMode];
+
     }
     else{
 //        _deviceAttitude = GLKQuaternionIdentity;
@@ -174,7 +177,6 @@ void set_color(float* color, float* color_ref){
 
 // called before draw function
 -(void) update{
-
     _elapsedSeconds = -[start timeIntervalSinceNow];
 //    [self animationHandler];
     
@@ -185,18 +187,23 @@ void set_color(float* color, float* color_ref){
     }
 }
 
+-(void) auxiliaryDraw{
+    [self update];
+    [(GLKView*)self.view display];
+}
+
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 
     glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
     glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-
+    
     glMatrixMode(GL_MODELVIEW);
-
+    
     glLoadIdentity();
     glPushMatrix();
     
@@ -209,6 +216,7 @@ void set_color(float* color, float* color_ref){
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
+    
     if(_geodesic)
         [_geodesic draw];
     
@@ -219,6 +227,7 @@ void set_color(float* color, float* color_ref){
         [_navBar draw];
     
     glPopMatrix();
+
 }
 
 //-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

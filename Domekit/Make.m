@@ -7,8 +7,36 @@ typedef enum{
     hotspotControls
 } HotspotID;
 
+@interface Make (){
+    CADisplayLink *displayLink;
+}
+
+@end
 
 @implementation Make
+
+-(void)startDisplayLinkIfNeeded{
+    if(!displayLink){
+        displayLink = [CADisplayLink displayLinkWithTarget:_delegate selector:@selector(auxiliaryDraw)];
+        [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:UITrackingRunLoopMode];
+    }
+}
+
+-(void) stopDisplayLink{
+    [displayLink invalidate];
+    displayLink = nil;
+}
+
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self startDisplayLinkIfNeeded];
+}
+-(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if(!decelerate)
+        [self stopDisplayLink];
+}
+-(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self stopDisplayLink];
+}
 
 -(void) customDraw{
 //    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -30,6 +58,7 @@ typedef enum{
                                                                  self.view.bounds.size.height*.75,
                                                                  pageW,
                                                                  self.view.bounds.size.height*.25)];
+    [_scrollView setDelegate:self];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setContentSize:CGSizeMake(pageW * numPages,
                                            self.view.bounds.size.height*.25)];
