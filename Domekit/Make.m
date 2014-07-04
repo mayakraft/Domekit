@@ -1,4 +1,4 @@
-#import "Controls.h"
+#import "Make.h"
 #import "HitTestView.h"
 
 typedef enum{
@@ -8,7 +8,7 @@ typedef enum{
 } HotspotID;
 
 
-@implementation Controls
+@implementation Make
 
 -(void) customDraw{
 //    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -39,6 +39,7 @@ typedef enum{
         [back setBackgroundColor:[UIColor blackColor]];
         [_scrollView addSubview:back];
     }
+    // GRIPS
     for(int i = 1; i < 6; i++){
         UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(_scrollView.bounds.size.width * i - margin*.25, _scrollView.bounds.size.height* .5 - margin*.5*1.618, margin*.5, margin*1.618)];
         [separator setBackgroundColor:[UIColor blackColor]];

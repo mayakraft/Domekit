@@ -1,15 +1,15 @@
 #import "Primitives.h"
 #import "Hotspot.h"
 
-//@protocol FlatDelegate <NSObject>
+//@protocol FaceDelegate <NSObject>
 //
 //@optional
 //
 //@end
 
-@interface Flat : Primitives
+@interface Face : Primitives
 
-//@property id <FlatDelegate> delegate;
+//@property id <FaceDelegate> delegate;
 
 @property UIView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;
@@ -23,8 +23,24 @@
 -(void) setNeedsLayout;
 
 //TODO: how do you say "REQUIRED"
+
+/*!
+ * Append any OpenGL draw calls here
+ * \param no params
+ * \returns nothing
+ */
 -(void) customDraw;
+
+/*!
+ * Implement custom UIKit elements here
+ * \param no params
+ * \returns nothing
+ */
 -(void) setup;
+
+/*!
+ * Leave this function un-implemented!
+ */
 -(void) draw;
 
 //-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -1,13 +1,13 @@
 #import <OpenGLES/ES1/gl.h>
-#import "Flat.h"
+#import "Face.h"
 
-@interface Flat (){
+@interface Face (){
     float _aspectRatio;
     float width, height;
 }
 @end
 
-@implementation Flat
+@implementation Face
 
 -(id) init{
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -1,13 +1,13 @@
-#import "Flat.h"
+#import "Face.h"
 
-@protocol ControlsDelegate <NSObject>
+@protocol MakeDelegate <NSObject>
 @optional
 -(void) frequencySliderChanged:(int)value;
 @end
 
-@interface Controls : Flat
+@interface Make : Face
 
-@property id <ControlsDelegate> delegate;
+@property id <MakeDelegate> delegate;
 
 @property UISlider *slider;
 @property UIScrollView *scrollView;

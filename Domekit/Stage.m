@@ -17,8 +17,9 @@ void set_color(float* color, float* color_ref){
 
     CMMotionManager *motionManager;
     
-    Controls *controls;
-    NSArray *navBarFlats;
+    File *file;
+    Make *make;
+    NSArray *navBarFaces;
 }
 
 @property (readonly)  NSTimeInterval elapsedSeconds;
@@ -26,15 +27,13 @@ void set_color(float* color, float* color_ref){
 @property (nonatomic) GLKMatrix4     deviceAttitude;
 //@property (nonatomic) GLKQuaternion  deviceAttitude;
 
-
-
 @end
 
 @implementation Stage
 
 #pragma mark-SETTERS
 
-//+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
+//+(instancetype) StageWithRoom:(Room*)room Face:(Face*)face NavBar:(NavBar*)navBar{
 //    Stage *stage = [[Stage alloc] init];
 //    if(stage){
 //        if(![stage view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
@@ -49,26 +48,28 @@ void set_color(float* color, float* color_ref){
 -(id) init{
     self = [super init];
     if(self){
+        [self setup];
+
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
         [self setRoom:[GeodesicRoom room]];
         [self setNavBar:[NavBar navBar]];
         
-        [_navBar setPage:0];
         [(GeodesicRoom*)_room setHideGeodesic:YES];
         
-        // setup FLAT control layers
-        controls = [[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        [controls setDelegate:self];
+        // setup FACE control layers
+        make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [make setDelegate:self];
+        file = [[File alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        [file setDelegate:self];
         
-        navBarFlats = @[[[Flat alloc] init],
-                        controls,
-                        [[Flat alloc] init],
-                        [[Flat alloc] init]];
+        navBarFaces = @[file,
+                        make,
+                        [[Face alloc] init],
+                        [[Face alloc] init]];
         
-        [self setup];
-        
-        [self setBackgroundColor:whiteColor];
 
+        [self setBackgroundColor:whiteColor];
+        [self updateLayout];
     }
     return self;
 }
@@ -80,7 +81,7 @@ void set_color(float* color, float* color_ref){
     start = [NSDate date];
     _userInteractionEnabled = true;
     orientToDevice = true;
-    _backgroundColor = malloc(sizeof(float)*4);
+    _backgroundColor = calloc(4, sizeof(float));
     [self initDeviceOrientation];
 }
 
@@ -155,12 +156,12 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) setFlat:(Flat *)flat{
-    if(_flat)
-        [[_flat view] removeFromSuperview];
-    _flat = flat;
+-(void) setFace:(Face *)face{
+    if(_face)
+        [[_face view] removeFromSuperview];
+    _face = face;
 //    [_flat setDelegate:self];
-    [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
+    [self.view addSubview:_face.view];     // add a screen's view or its UI elements won't show
     if(_navBar)
         [self.view bringSubviewToFront:_navBar.view];
 }
@@ -211,8 +212,8 @@ void set_color(float* color, float* color_ref){
     if(_room)
         [_room draw];
     
-    if(_flat)
-        [_flat draw];
+    if(_face)
+        [_face draw];
     
     if(_navBar)
         [_navBar draw];
@@ -230,22 +231,37 @@ void set_color(float* color, float* color_ref){
 //    if(_userInteractionEnabled){ }
 //}
 
-
-#pragma mark-DELEGATES
-
--(void) pageChanged{
+-(void) updateLayout{
+    [self setFace:[navBarFaces objectAtIndex:_navBar.page]];
     if(_navBar.page == 0){
-        [self setFlat:nil];
+        [[_navBar backButton] setHidden:YES];
+        [[_navBar forwardButton] setHidden:YES];
         [(GeodesicRoom*)_room setHideGeodesic:YES];
     }
     if(_navBar.page == 1){
-        [self setFlat:controls];
+        [[_navBar backButton] setHidden:NO];
+        [[_navBar forwardButton] setHidden:NO];
         [(GeodesicRoom*)_room setHideGeodesic:NO];
     }
     if(_navBar.page == 2){
-        [self setFlat:nil];
         [(GeodesicRoom*)_room setHideGeodesic:YES];
     }
+}
+
+
+#pragma mark-DELEGATES
+
+-(void) makeNewDomePressed{
+    NSLog(@"makenewdome delegate pressed");
+    [_navBar setPage:1];
+}
+
+-(void) loadDomePressed{
+    
+}
+
+-(void) pageChanged{
+    [self updateLayout];
     NSLog(@"changing page, %d", _navBar.page);
 }
 

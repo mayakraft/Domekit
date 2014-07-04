@@ -32,7 +32,7 @@
     [[self view] addSubview:_titleLabel];
     
     _numPages = 4;
-    [self setTitles:@[@"FILE", @"MAKE", @"ASSEMBLY", @"SHARE"]];
+    [self setTitles:@[@"", @"MAKE", @"ASSEMBLY", @"SHARE"]];
 }
 
 +(instancetype) navBar{
@@ -42,6 +42,13 @@
         
     }
     return navBar;
+}
+
+-(void) setPage:(NSInteger)page{
+    if(page < 0 || page >= _numPages) return;
+    _page = page;
+    [[self delegate] pageChanged];
+    [self setNeedsLayout];
 }
 
 -(void) setTitles:(NSArray *)titles{

@@ -1,4 +1,4 @@
-#import "Flat.h"
+#import "Face.h"
 
 @protocol NavBarDelegate <NSObject>
 @optional
@@ -9,7 +9,7 @@
 @end
 
 
-@interface NavBar : Flat
+@interface NavBar : Face
 
 @property id <NavBarDelegate> delegate;
 
