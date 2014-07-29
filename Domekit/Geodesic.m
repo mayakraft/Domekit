@@ -25,8 +25,8 @@
 
 -(void) setup{
     _polyhedraType = 1;
-    _frequency = 1;
-    _geo = icosahedron(1);
+    _frequency = 3;
+    _geo = icosahedron(3);
     _mesh = makeMeshTriangles(&_geo, 0.85);
 }
 

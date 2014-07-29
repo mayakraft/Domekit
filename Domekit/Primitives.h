@@ -7,8 +7,8 @@
 
 -(void) drawRect:(CGRect)rect;
 -(void) drawRectOutline:(CGRect)rect;
--(void) drawHexagons;
--(void) drawHexLines;
+-(void) drawHexagon;
+-(void) drawHexagonOutline;
 
 -(void) drawRect:(CGRect)rect WithRotation:(float)degrees;
 

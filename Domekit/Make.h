@@ -8,11 +8,16 @@
 -(void) auxiliaryDraw;  // for scroll view
 @end
 
-@interface Make : Face <UIScrollViewDelegate>
+
+@interface Make : Face
 
 @property id <MakeDelegate> delegate;
 
-@property UISlider *slider;
-@property UIScrollView *scrollView;
+@property float radioBarPosition;
+
+@property UILabel *titleLabel;
+@property NSMutableArray *numberLabels;
+@property UIButton *button1;
+@property UIButton *button2;
 
 @end

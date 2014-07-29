@@ -17,7 +17,6 @@ void set_color(float* color, float* color_ref){
 
     CMMotionManager *motionManager;
     
-    File *file;
     Make *make;
     NSArray *navBarFaces;
 }
@@ -53,24 +52,17 @@ void set_color(float* color, float* color_ref){
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
         [self setGeodesic:[Geodesic room]];
         [self setNavBar:[NavBar navBar]];
-        
-        [_geodesic setHideGeodesic:YES];
-        
+                
         // setup FACE control layers
         make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [make setDelegate:self];
-        file = [[File alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        [file setDelegate:self];
         
-        navBarFaces = @[file,
-                        make,
+        navBarFaces = @[make,
                         [[Face alloc] init],
                         [[Face alloc] init]];
         
-
         [self setBackgroundColor:whiteColor];
         [self updateLayout];
-        
     }
     return self;
 }
@@ -236,16 +228,17 @@ void set_color(float* color, float* color_ref){
 //-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
 //    if(_userInteractionEnabled){ }
 //}
-//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){ }
-//}
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"here");
+    if(_userInteractionEnabled){ }
+}
 
 -(void) updateLayout{
     [self setFace:[navBarFaces objectAtIndex:_navBar.page]];
     if(_navBar.page == 0){
         [[_navBar backButton] setHidden:YES];
         [[_navBar forwardButton] setHidden:YES];
-        [_geodesic setHideGeodesic:YES];
+        [_geodesic setHideGeodesic:NO];
     }
     if(_navBar.page == 1){
         [[_navBar backButton] setHidden:NO];
