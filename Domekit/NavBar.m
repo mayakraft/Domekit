@@ -32,7 +32,7 @@
     [[self view] addSubview:_titleLabel];
     
     _numPages = 4;
-    [self setTitles:@[@"", @"MAKE", @"ASSEMBLY", @"SHARE"]];
+    [self setTitles:@[@"", @"MAKE", @"ASSEMBLE", @"SHARE"]];
 }
 
 +(instancetype) navBar{

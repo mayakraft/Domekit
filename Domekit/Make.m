@@ -1,5 +1,7 @@
 #import "Make.h"
 #import "HitTestView.h"
+#import "GLScrollView.h"
+#import "UIViewSubclass.h"
 
 typedef enum{
     hotspotBackArrow,
@@ -18,21 +20,27 @@ typedef enum{
 -(void)startDisplayLinkIfNeeded{
     if(!displayLink){
         displayLink = [CADisplayLink displayLinkWithTarget:_delegate selector:@selector(auxiliaryDraw)];
-        [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:UITrackingRunLoopMode];
+        [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     }
 }
 
 -(void) stopDisplayLink{
-    [displayLink invalidate];
+    if(displayLink)
+        [displayLink invalidate];
     displayLink = nil;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    _scrollView.contentOffset = scrollView.contentOffset;
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     [self startDisplayLinkIfNeeded];
 }
 -(void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    if(!decelerate)
+    if(!decelerate){
         [self stopDisplayLink];
+    }
 }
 -(void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     [self stopDisplayLink];
@@ -58,20 +66,28 @@ typedef enum{
                                                                  self.view.bounds.size.height*.75,
                                                                  pageW,
                                                                  self.view.bounds.size.height*.25)];
-    [_scrollView setDelegate:self];
+//    [_scrollView setDelegate:self];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [_scrollView setContentSize:CGSizeMake(pageW * numPages,
                                            self.view.bounds.size.height*.25)];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setClipsToBounds:NO];
-    _scrollView.delaysContentTouches = NO;
-    [_scrollView setPagingEnabled:YES];
-    HitTestView *hitTestView = [[HitTestView alloc] initWithFrame:CGRectMake(0,
-                                                                             self.view.bounds.size.height*.75,
-                                                                             self.view.bounds.size.width,
-                                                                             self.view.bounds.size.height*.25) View:_scrollView];
-    [self.view addSubview:hitTestView];
+//    _scrollView.delaysContentTouches = NO;
+//    [_scrollView setPagingEnabled:YES];
+//    [_scrollView setUserInteractionEnabled:NO];
+    [_scrollView setGestureRecognizers:nil];
+    
+    
+//    [_scrollView setHidden:YES];
+    
+//    HitTestView *hitTestView = [[HitTestView alloc] initWithFrame:CGRectMake(0,
+//                                                                             self.view.bounds.size.height*.75,
+//                                                                             self.view.bounds.size.width,
+//                                                                             self.view.bounds.size.height*.25) View:_scrollView];
+//    [self.view addSubview:hitTestView];
+    
+
     [self.view addSubview:_scrollView];
     
     // background views
@@ -105,8 +121,8 @@ typedef enum{
                                                                        _scrollView.bounds.size.height*.9)];
     [icosaButton setBackgroundColor:[UIColor clearColor]];
     
-    [icosaButton setTitle:@"✿" forState:UIControlStateNormal];
-    [octaButton setTitle:@"◆" forState:UIControlStateNormal];
+    [icosaButton setTitle:@"5" forState:UIControlStateNormal];
+    [octaButton setTitle:@"4" forState:UIControlStateNormal];
     [icosaButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [octaButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [[icosaButton titleLabel] setFont:[UIFont systemFontOfSize:40]];
@@ -158,6 +174,36 @@ typedef enum{
     [sizeLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:28]];
     [sizeLabel setTextColor:[UIColor whiteColor]];
     [_scrollView addSubview:sizeLabel];
+    
+    
+    
+    /// CONTROL LAYER
+    
+    GLScrollView *controlView = [[GLScrollView alloc] initWithFrame:CGRectMake(margin,
+                                                                               self.view.bounds.size.height*.75,
+                                                                               pageW,
+                                                                               self.view.bounds.size.height*.25)];//[_scrollView frame]];
+    [controlView setBackgroundColor:[UIColor clearColor]];
+    [controlView setContentSize:CGSizeMake(pageW * numPages,
+                                           self.view.bounds.size.height*.25)];
+//    [controlView setShowsHorizontalScrollIndicator:NO];
+//    [controlView setShowsVerticalScrollIndicator:NO];
+//    controlView.delaysContentTouches = NO;
+    // FUUUUUU
+    // here's the problem
+    // all of this would work, the dummy view forwarding touches to controlView (a scrollview) except this delaysContentTouches does not recognize to delay for objects which are not inside of itself. since it is a dummy scrollview. the other stuff is contained inside the real scrollview
+    
+    [controlView setPagingEnabled:YES];
+    [controlView setDelegate:self];
+    [controlView setHidden:YES];
+    [self.view addSubview:controlView];
+    
+    UIViewSubclass *dummyView = [[UIViewSubclass alloc] initWithFrame:CGRectMake(0,
+                                                                 self.view.bounds.size.height*.75,
+                                                                 self.view.bounds.size.width,
+                                                                 self.view.bounds.size.height*.25)];
+    [dummyView addGestureRecognizer:controlView.panGestureRecognizer];
+    [self.view addSubview:dummyView];
 }
 
 -(void) sliderChanged{

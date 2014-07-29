@@ -17,7 +17,7 @@
     self = [super init];
     if(self){
         _frame = frame;
-        _view = [[UIView alloc] initWithFrame:frame];
+        _view = [[GLKView alloc] initWithFrame:frame];
 //        _elements = [[NSMutableArray alloc] init];
         width = _frame.size.width;
         height = _frame.size.height;

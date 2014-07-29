@@ -1,6 +1,6 @@
 #import "Primitives.h"
 #import "Hotspot.h"
-
+#import <GLKit/GLKit.h>
 //@protocol FaceDelegate <NSObject>
 //
 //@optional
@@ -11,7 +11,7 @@
 
 //@property id <FaceDelegate> delegate;
 
-@property UIView *view;   // attach Apple or other user interface elements
+@property GLKView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;
 
 //@property NSMutableArray *elements;   // add all user interface elements here after creating

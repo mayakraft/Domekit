@@ -5,7 +5,3 @@
 # dependency
 
 [geodesic geometry](https://github.com/robbykraft/Geodesic)
-
-# assistance
-
-design @mfelix

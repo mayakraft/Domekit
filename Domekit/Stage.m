@@ -279,7 +279,7 @@ void set_color(float* color, float* color_ref){
 
 -(void) pageChanged{
     [self updateLayout];
-    NSLog(@"changing page, %d", _navBar.page);
+    NSLog(@"changing page, %ld", (long)_navBar.page);
 }
 
 -(void) frequencySliderChanged:(int)value{
