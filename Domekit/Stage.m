@@ -58,8 +58,8 @@ void set_color(float* color, float* color_ref){
         [make setDelegate:self];
         
         navBarFaces = @[make,
-                        [[Face alloc] init],
-                        [[Face alloc] init]];
+                        [[Curtain alloc] init],
+                        [[Curtain alloc] init]];
         
         [self setBackgroundColor:whiteColor];
         [self updateLayout];
@@ -151,12 +151,12 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) setFace:(Face *)face{
-    if(_face)
-        [[_face view] removeFromSuperview];
-    _face = face;
+-(void) setCurtain:(Curtain *)curtain{
+    if(_curtain)
+        [[_curtain view] removeFromSuperview];
+    _curtain = curtain;
 //    [_flat setDelegate:self];
-    [self.view addSubview:_face.view];     // add a screen's view or its UI elements won't show
+    [self.view addSubview:_curtain.view];     // add a screen's view or its UI elements won't show
     if(_navBar)
         [self.view bringSubviewToFront:_navBar.view];
 }
@@ -203,7 +203,6 @@ void set_color(float* color, float* color_ref){
         glMultMatrixf(_deviceAttitude.m);
     
     glDisable(GL_LIGHTING);
-//    glDisable(GL_CULL_FACE);
     glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
     
     glEnable(GL_CULL_FACE);
@@ -212,8 +211,8 @@ void set_color(float* color, float* color_ref){
     if(_geodesic)
         [_geodesic draw];
     
-    if(_face)
-        [_face draw];
+    if(_curtain)
+        [_curtain draw];
     
     if(_navBar)
         [_navBar draw];
@@ -222,19 +221,27 @@ void set_color(float* color, float* color_ref){
 
 }
 
-//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){ }
-//}
-//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){ }
-//}
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesBegan:touches withEvent:event];
+    }
+}
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesMoved:touches withEvent:event];
+    }
+}
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"here");
-    if(_userInteractionEnabled){ }
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesEnded:touches withEvent:event];
+    }
 }
 
 -(void) updateLayout{
-    [self setFace:[navBarFaces objectAtIndex:_navBar.page]];
+    [self setCurtain:[navBarFaces objectAtIndex:_navBar.page]];
     if(_navBar.page == 0){
         [[_navBar backButton] setHidden:YES];
         [[_navBar forwardButton] setHidden:YES];
@@ -276,7 +283,6 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) frequencySliderChanged:(int)value{
-    NSLog(@"new %d geodesic", value);
     [_geodesic setFrequency:value];
 }
 

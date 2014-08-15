@@ -1,17 +1,21 @@
 #import <OpenGLES/ES1/gl.h>
-#import "Face.h"
+#import "Curtain.h"
 
-@interface Face (){
+@interface Curtain (){
     float _aspectRatio;
     float width, height;
 }
 @end
 
-@implementation Face
+@implementation Curtain
 
 -(id) init{
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
 }
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
 
 -(id) initWithFrame:(CGRect)frame{
     self = [super init];

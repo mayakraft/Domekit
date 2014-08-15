@@ -1,15 +1,19 @@
 #import "Primitives.h"
 #import "Hotspot.h"
 #import <GLKit/GLKit.h>
-//@protocol FaceDelegate <NSObject>
+//@protocol CurtainDelegate <NSObject>
 //
 //@optional
 //
 //@end
 
-@interface Face : Primitives
+@interface Curtain : Primitives
 
-//@property id <FaceDelegate> delegate;
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+
+//@property id <CurtainDelegate> delegate;
 
 @property GLKView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;

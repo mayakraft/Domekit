@@ -36,38 +36,6 @@
     glPopMatrix();
 }
 
--(void)drawHexagon{
-    static const GLfloat hexFan[] = {
-        0.0f, 0.0f,
-        -.5f, -.8660254f,
-        -1.0f, 0.0f,
-        -.5f, .8660254f,
-        .5f, .8660254f,
-        1.0f, 0.0f,
-        .5f, -.8660254f,
-        -.5f, -.8660254f
-    };
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, hexFan);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
-
--(void) drawHexagonOutline{
-    static const GLfloat hexVertices[] = {
-        -.5f, -.8660254f,
-        -1.0f, 0.0f,
-        -.5f, .8660254f,
-        .5f, .8660254f,
-        1.0f, 0.0f,
-        .5f, -.8660254f
-    };
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
-    glDrawArrays(GL_LINE_LOOP, 0, 6);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
-
 -(void)drawPentagon{
     static const GLfloat pentFan[] = {
         0.0f, 0.0f,
@@ -94,6 +62,34 @@
     };
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, pentVertices);
+    glDrawArrays(GL_LINE_LOOP, 0, 6);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+-(void)drawHexagon{
+    static const GLfloat hexFan[] = {
+        0.0f, 0.0f,
+        -.5f, -.8660254f,
+        -1.0f, 0.0f,
+        -.5f, .8660254f,
+        .5f, .8660254f,
+        1.0f, 0.0f,
+        .5f, -.8660254f,
+        -.5f, -.8660254f
+    };
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, hexFan);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+-(void) drawHexagonOutline{
+    static const GLfloat hexVertices[] = {
+        -.5f, -.8660254f, -1.0f, 0.0f, -.5f, .8660254f,
+        .5f, .8660254f,    1.0f, 0.0f,  .5f, -.8660254f
+    };
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
     glDrawArrays(GL_LINE_LOOP, 0, 6);
     glDisableClientState(GL_VERTEX_ARRAY);
 }

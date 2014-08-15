@@ -1,4 +1,4 @@
-#import "Face.h"
+#import "Curtain.h"
 
 @protocol NavBarDelegate <NSObject>
 @optional
@@ -9,15 +9,15 @@
 @end
 
 
-@interface NavBar : Face
+@interface NavBar : Curtain
 
 @property id <NavBarDelegate> delegate;
 
-@property UILabel *titleLabel;
+//@property UILabel *titleLabel;
 @property UIButton *forwardButton;
 @property UIButton *backButton;
 
-@property (nonatomic) NSArray *titles;
+//@property (nonatomic) NSArray *titles;
 
 @property (nonatomic) NSInteger page;
 @property (nonatomic) NSInteger numPages;

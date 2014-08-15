@@ -25,8 +25,8 @@
 
 -(void) setup{
     _polyhedraType = 1;
-    _frequency = 3;
-    _geo = icosahedron(3);
+    _frequency = 1;
+    _geo = icosahedron(1);
     _mesh = makeMeshTriangles(&_geo, 0.85);
 }
 
@@ -43,6 +43,19 @@
         [self makeIcosahedron];
     else
         [self makeOctahedron];
+    
+    [self logGeodesic];
+}
+
+-(void) logGeodesic{
+    if(_polyhedraType)
+        NSLog(@"new %dV icosahedral geodesic", _frequency);
+    else
+        NSLog(@"new %dV octahedral geodesic", _frequency);
+    NSLog(@" - points: %d", _geo.numPoints);
+    NSLog(@" - lines: %d", _geo.numLines);
+    NSLog(@" - faces: %d", _geo.numFaces);
+    NSLog(@" - meridians: %d", _geo.numMeridians);
 }
 
 -(void) setPolyhedraType:(BOOL)polyhedraType{

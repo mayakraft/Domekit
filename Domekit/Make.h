@@ -1,4 +1,5 @@
-#import "Face.h"
+#import "Curtain.h"
+#import "UIScrollViewSubclass.h"
 
 @protocol MakeDelegate <NSObject>
 @required
@@ -9,9 +10,11 @@
 @end
 
 
-@interface Make : Face
+@interface Make : Curtain <UIGestureRecognizerDelegate>
 
 @property id <MakeDelegate> delegate;
+
+@property NSInteger page;
 
 @property float radioBarPosition;
 

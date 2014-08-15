@@ -2,7 +2,7 @@
 #import <GLKit/GLKit.h>
 #import <CoreMotion/CoreMotion.h>
 #import "Room.h"
-#import "Face.h"
+#import "Curtain.h"
 #import "NavBar.h"
 #import "common.c"
 #import "Geodesic.h"
@@ -16,7 +16,7 @@
 @interface Stage : GLKViewController <NavBarDelegate, MakeDelegate>//<AnimationDelegate>
 
 @property (nonatomic) Geodesic *geodesic; // ROOMS   (3D ENVIRONMENTS)
-@property (nonatomic) Face *face;         // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) Curtain *curtain;         // SCREENS (ORTHOGRAPHIC LAYERS)
 @property (nonatomic) NavBar *navBar;     // SCREENS (ORTHOGRAPHIC LAYERS)
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR

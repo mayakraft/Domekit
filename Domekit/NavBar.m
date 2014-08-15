@@ -25,14 +25,14 @@
 
     [[self view] addSubview:_backButton];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
-    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [_titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
-    [_titleLabel setTextColor:[UIColor blackColor]];
-    [[self view] addSubview:_titleLabel];
+//    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
+//    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+//    [_titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
+//    [_titleLabel setTextColor:[UIColor blackColor]];
+//    [[self view] addSubview:_titleLabel];
     
     _numPages = 4;
-    [self setTitles:@[@"", @"MAKE", @"ASSEMBLE", @"SHARE"]];
+//    [self setTitles:@[@"", @"MAKE", @"ASSEMBLE", @"SHARE"]];
 }
 
 +(instancetype) navBar{
@@ -51,16 +51,16 @@
     [self setNeedsLayout];
 }
 
--(void) setTitles:(NSArray *)titles{
-    _titles = titles;
-    _numPages = [_titles count];
-    [self setNeedsLayout];
-}
+//-(void) setTitles:(NSArray *)titles{
+//    _titles = titles;
+//    _numPages = [_titles count];
+//    [self setNeedsLayout];
+//}
 
--(void) setNeedsLayout{
-    if(self.page >= 0 && self.page < [_titles count])
-        [_titleLabel setText:[_titles objectAtIndex:self.page]];
-}
+//-(void) setNeedsLayout{
+//    if(self.page >= 0 && self.page < [_titles count])
+//        [_titleLabel setText:[_titles objectAtIndex:self.page]];
+//}
 
 -(void) backButtonPressed{
     if(self.page <= 0) return;

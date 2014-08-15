@@ -7,6 +7,8 @@
 
 -(void) drawRect:(CGRect)rect;
 -(void) drawRectOutline:(CGRect)rect;
+-(void) drawPentagon;
+-(void) drawPentagonOutline;
 -(void) drawHexagon;
 -(void) drawHexagonOutline;
 
