@@ -1,5 +1,7 @@
 #import "Stage.h"
 
+#import "Geodesic.h"
+
 void set_color(float* color, float* color_ref){
     color[0] = color_ref[0];
     color[1] = color_ref[1];
@@ -9,16 +11,15 @@ void set_color(float* color, float* color_ref){
 
 @interface Stage (){
     
-    NSDate      *start;
-    BOOL        orientToDevice;
-    BOOL        _userInteractionEnabled;
-    float       _aspectRatio;
-    float       _fieldOfView;
-
-    CMMotionManager *motionManager;
+    NSDate   *start;
+    BOOL     orientToDevice;
+    BOOL     _userInteractionEnabled;
+    float    _aspectRatio;
+    float    _fieldOfView;
     
-    Make *make;
-    NSArray *navBarFaces;
+    Geodesic *_geodesic;
+    
+    CMMotionManager *motionManager;
 }
 
 @property (readonly)  NSTimeInterval elapsedSeconds;
@@ -32,37 +33,25 @@ void set_color(float* color, float* color_ref){
 
 #pragma mark-SETTERS
 
-//+(instancetype) StageWithRoom:(Room*)room Face:(Face*)face NavBar:(NavBar*)navBar{
-//    Stage *stage = [[Stage alloc] init];
-//    if(stage){
-//        if(![stage view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
-//        [stage setRoom:room];
-//        [stage setFlat:flat];
-//        [stage setNavBar:navBar];
-//        [stage setup];
-//    }
-//    return stage;
-//}
-
 -(id) init{
     self = [super init];
     if(self){
         [self setup];
 
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
-        [self setGeodesic:[Geodesic room]];
-        [self setNavBar:[NavBar navBar]];
-                
-        // setup FACE control layers
-        make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        _geodesic = [Geodesic room];
+        [self addRoom:_geodesic];
+
+        NavBar *navBar = [NavBar navBar];
+        [navBar setDelegate:self];
+        [self addCurtain:navBar];
+
+        Make *make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [make setDelegate:self];
-        
-        navBarFaces = @[make,
-                        [[Curtain alloc] init],
-                        [[Curtain alloc] init]];
-        
+        [self addCurtain:make];
+
         [self setBackgroundColor:whiteColor];
-        [self updateLayout];
+//        [self updateLayout];
     }
     return self;
 }
@@ -75,6 +64,8 @@ void set_color(float* color, float* color_ref){
     _userInteractionEnabled = true;
     orientToDevice = true;
     _backgroundColor = calloc(4, sizeof(float));
+    _rooms = [NSArray array];
+    _curtains = [NSArray array];
     [self initDeviceOrientation];
 }
 
@@ -136,7 +127,6 @@ void set_color(float* color, float* color_ref){
         motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
         [motionManager startDeviceMotionUpdates];
 //        [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:UITrackingRunLoopMode];
-
     }
     else{
 //        _deviceAttitude = GLKQuaternionIdentity;
@@ -151,21 +141,50 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) setCurtain:(Curtain *)curtain{
-    if(_curtain)
-        [[_curtain view] removeFromSuperview];
-    _curtain = curtain;
-//    [_flat setDelegate:self];
-    [self.view addSubview:_curtain.view];     // add a screen's view or its UI elements won't show
-    if(_navBar)
-        [self.view bringSubviewToFront:_navBar.view];
+-(void) addCurtain:(Curtain *)curtain{
+    _curtains = [_curtains arrayByAddingObject:curtain];
+    [self.view addSubview:curtain.view];
 }
 
--(void) setNavBar:(NavBar *)navBar{
-    _navBar = navBar;
-    [_navBar setDelegate:self];
-    [self.view addSubview:_navBar.view];
+-(void) addRoom:(Room *)room{
+    _rooms = [_rooms arrayByAddingObject:room];
 }
+
+-(void) removeCurtains:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_curtains];
+    for(Curtain *curtain in objects){
+        if([array containsObject:curtain]){
+            [array removeObject:curtain];
+        }
+    }
+    _curtains = [NSArray arrayWithArray:array];
+}
+
+-(void) removeRooms:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_rooms];
+    for(Room *room in objects){
+        if([array containsObject:room]){
+            [array removeObject:room];
+        }
+    }
+    _rooms = [NSArray arrayWithArray:array];
+}
+
+//-(void) setCurtain:(Curtain *)curtain{
+//    if(_curtain)
+//        [[_curtain view] removeFromSuperview];
+//    _curtain = curtain;
+////    [_flat setDelegate:self];
+//    [self.view addSubview:_curtain.view];     // add a screen's view or its UI elements won't show
+//    if(_navBar)
+//        [self.view bringSubviewToFront:_navBar.view];
+//}
+
+//-(void) setNavBar:(NavBar *)navBar{
+//    _navBar = navBar;
+//    [_navBar setDelegate:self];
+//    [self.view addSubview:_navBar.view];
+//}
 
 // called before draw function
 -(void) update{
@@ -208,54 +227,61 @@ void set_color(float* color, float* color_ref){
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     
-    if(_geodesic)
-        [_geodesic draw];
+//    if(_geodesic)
+//        [_geodesic draw];
+//    if(_curtain)
+//        [_curtain draw];
+//    if(_navBar)
+//        [_navBar draw];
+    if(_rooms)
+        for(Room *room in _rooms)
+            [room draw];
     
-    if(_curtain)
-        [_curtain draw];
-    
-    if(_navBar)
-        [_navBar draw];
+    if(_curtains)
+        for (Curtain *curtain in _curtains)
+            [curtain draw];
     
     glPopMatrix();
-
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesBegan:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesBegan:touches withEvent:event];
     }
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesMoved:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesMoved:touches withEvent:event];
     }
 }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesEnded:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesEnded:touches withEvent:event];
     }
 }
 
--(void) updateLayout{
-    [self setCurtain:[navBarFaces objectAtIndex:_navBar.page]];
-    if(_navBar.page == 0){
-        [[_navBar backButton] setHidden:YES];
-        [[_navBar forwardButton] setHidden:YES];
-        [_geodesic setHideGeodesic:NO];
-    }
-    if(_navBar.page == 1){
-        [[_navBar backButton] setHidden:NO];
-        [[_navBar forwardButton] setHidden:NO];
-        [_geodesic setHideGeodesic:NO];
-    }
-    if(_navBar.page == 2){
-        [_geodesic setHideGeodesic:YES];
-    }
-}
+//-(void) updateLayout{
+//    [self setCurtain:[navBarFaces objectAtIndex:_navBar.page]];
+//    if(_navBar.page == 0){
+////        [[_navBar backButton] setHidden:YES];
+////        [[_navBar forwardButton] setHidden:YES];
+//        [_geodesic setHideGeodesic:NO];
+//    }
+//    if(_navBar.page == 1){
+////        [[_navBar backButton] setHidden:NO];
+////        [[_navBar forwardButton] setHidden:NO];
+//        [_geodesic setHideGeodesic:NO];
+//    }
+//    if(_navBar.page == 2){
+//        [_geodesic setHideGeodesic:YES];
+//    }
+//}
 
 
 #pragma mark-DELEGATES
@@ -270,7 +296,7 @@ void set_color(float* color, float* color_ref){
 
 -(void) makeNewDomePressed{
     NSLog(@"makenewdome delegate pressed");
-    [_navBar setPage:1];
+//    [_navBar setPage:1];
 }
 
 -(void) loadDomePressed{
@@ -278,8 +304,8 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) pageChanged{
-    [self updateLayout];
-    NSLog(@"changing page, %ld", (long)_navBar.page);
+//    [self updateLayout];
+//    NSLog(@"changing page, %ld", (long)_navBar.page);
 }
 
 -(void) frequencySliderChanged:(int)value{

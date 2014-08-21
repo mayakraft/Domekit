@@ -7,4 +7,6 @@
 -(void) setup;  // implement these
 -(void) draw;   // in your subclass
 
+@property NSInteger tag;
+
 @end

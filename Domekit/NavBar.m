@@ -25,11 +25,12 @@
 
     [[self view] addSubview:_backButton];
     
-//    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
-//    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-//    [_titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
-//    [_titleLabel setTextColor:[UIColor blackColor]];
-//    [[self view] addSubview:_titleLabel];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
+    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [_titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
+    [_titleLabel setTextColor:[UIColor blackColor]];
+    [_titleLabel setText:@"here"];
+    [[self view] addSubview:_titleLabel];
     
     _numPages = 4;
 //    [self setTitles:@[@"", @"MAKE", @"ASSEMBLE", @"SHARE"]];

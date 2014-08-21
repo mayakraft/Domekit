@@ -13,7 +13,7 @@
 
 @property id <NavBarDelegate> delegate;
 
-//@property UILabel *titleLabel;
+@property UILabel *titleLabel;
 @property UIButton *forwardButton;
 @property UIButton *backButton;
 

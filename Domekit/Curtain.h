@@ -18,6 +18,8 @@
 @property GLKView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;
 
+@property NSInteger tag;
+
 //@property NSMutableArray *elements;   // add all user interface elements here after creating
 //@property (nonatomic) NSArray *hotspots;
 //-(void) hideElements;                 // so that this function will work

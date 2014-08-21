@@ -21,6 +21,7 @@
 		D505716E1961DACA00DDC70D /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */; };
 		D505716F1961DACA00DDC70D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */; };
 		D506C2431988CAE3003F9D4A /* UIScrollViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D506C2421988CAE3003F9D4A /* UIScrollViewSubclass.m */; };
+		D527E08719A55FC80092CA64 /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E08619A55FC80092CA64 /* Script.m */; };
 		D5D3BD6A19629EA7000912FC /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6919629EA7000912FC /* Animation.m */; };
 		D5D3BD6E1962A2B6000912FC /* Geodesic.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6D1962A2B6000912FC /* Geodesic.m */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,8 @@
 		D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		D506C2411988CAE3003F9D4A /* UIScrollViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollViewSubclass.h; sourceTree = "<group>"; };
 		D506C2421988CAE3003F9D4A /* UIScrollViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScrollViewSubclass.m; sourceTree = "<group>"; };
+		D527E08519A55FC80092CA64 /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		D527E08619A55FC80092CA64 /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
 		D5D3BD6319629721000912FC /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geodesic.c; path = ../../Geodesic/geodesic.c; sourceTree = "<group>"; };
 		D5D3BD6419629721000912FC /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geodesic.h; path = ../../Geodesic/geodesic.h; sourceTree = "<group>"; };
 		D5D3BD6519629721000912FC /* geomesh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geomesh.c; path = ../../Geodesic/geomesh.c; sourceTree = "<group>"; };
@@ -125,13 +128,7 @@
 			children = (
 				D505712D1961D79400DDC70D /* AppDelegate.h */,
 				D505712E1961D79400DDC70D /* AppDelegate.m */,
-				D505714C1961D7B000DDC70D /* Stage.h */,
-				D505714D1961D7B000DDC70D /* Stage.m */,
-				D50571461961D7B000DDC70D /* NavBar.h */,
-				D50571471961D7B000DDC70D /* NavBar.m */,
-				D50571641961D83800DDC70D /* Interfaces */,
-				D5138358196644F1009A54AE /* Rooms */,
-				D50571621961D81500DDC70D /* StageKit */,
+				D5535F78199D9F260038E67B /* StageKit */,
 				D5D3BD6719629725000912FC /* Geodesic */,
 				D50571301961D79400DDC70D /* Images.xcassets */,
 				D50571291961D79400DDC70D /* Supporting Files */,
@@ -167,21 +164,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D50571621961D81500DDC70D /* StageKit */ = {
+		D50571621961D81500DDC70D /* Superclass */ = {
 			isa = PBXGroup;
 			children = (
 				D505714A1961D7B000DDC70D /* Room.h */,
 				D505714B1961D7B000DDC70D /* Room.m */,
 				D50571591961D7E900DDC70D /* Curtain.h */,
 				D505715A1961D7E900DDC70D /* Curtain.m */,
-				D50571631961D82C00DDC70D /* StageKit Tools */,
 			);
-			name = StageKit;
+			name = Superclass;
 			sourceTree = "<group>";
 		};
 		D50571631961D82C00DDC70D /* StageKit Tools */ = {
 			isa = PBXGroup;
 			children = (
+				D50571621961D81500DDC70D /* Superclass */,
 				D50571541961D7E900DDC70D /* common.c */,
 				D50571481961D7B000DDC70D /* Primitives.h */,
 				D50571491961D7B000DDC70D /* Primitives.m */,
@@ -197,6 +194,10 @@
 		D50571641961D83800DDC70D /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				D5D3BD6C1962A2B6000912FC /* Geodesic.h */,
+				D5D3BD6D1962A2B6000912FC /* Geodesic.m */,
+				D50571461961D7B000DDC70D /* NavBar.h */,
+				D50571471961D7B000DDC70D /* NavBar.m */,
 				D50571551961D7E900DDC70D /* Make.h */,
 				D50571561961D7E900DDC70D /* Make.m */,
 				D506C2441988CAE7003F9D4A /* UIKit */,
@@ -213,13 +214,17 @@
 			name = UIKit;
 			sourceTree = "<group>";
 		};
-		D5138358196644F1009A54AE /* Rooms */ = {
+		D5535F78199D9F260038E67B /* StageKit */ = {
 			isa = PBXGroup;
 			children = (
-				D5D3BD6C1962A2B6000912FC /* Geodesic.h */,
-				D5D3BD6D1962A2B6000912FC /* Geodesic.m */,
+				D505714C1961D7B000DDC70D /* Stage.h */,
+				D505714D1961D7B000DDC70D /* Stage.m */,
+				D527E08519A55FC80092CA64 /* Script.h */,
+				D527E08619A55FC80092CA64 /* Script.m */,
+				D50571641961D83800DDC70D /* Interfaces */,
+				D50571631961D82C00DDC70D /* StageKit Tools */,
 			);
-			name = Rooms;
+			name = StageKit;
 			sourceTree = "<group>";
 		};
 		D5D3BD6719629725000912FC /* Geodesic */ = {
@@ -342,6 +347,7 @@
 				D50571611961D7E900DDC70D /* Hotspot.m in Sources */,
 				D506C2431988CAE3003F9D4A /* UIScrollViewSubclass.m in Sources */,
 				D505714E1961D7B000DDC70D /* NavBar.m in Sources */,
+				D527E08719A55FC80092CA64 /* Script.m in Sources */,
 				D505715E1961D7E900DDC70D /* Make.m in Sources */,
 				D5D3BD6A19629EA7000912FC /* Animation.m in Sources */,
 				D505712F1961D79400DDC70D /* AppDelegate.m in Sources */,
