@@ -31,32 +31,166 @@ void set_color(float* color, float* color_ref){
 
 @implementation Stage
 
-#pragma mark-SETTERS
-
 -(id) init{
     self = [super init];
     if(self){
         [self setup];
-
+        
         if(![self view]) NSLog(@"POTENTIAL PROBLEM, Stage.view not created in time");
         _geodesic = [Geodesic room];
         [self addRoom:_geodesic];
-
-        NavBar *navBar = [NavBar navBar];
-        [navBar setDelegate:self];
-        [self addCurtain:navBar];
-
+        
         Make *make = [[Make alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [make setDelegate:self];
         [self addCurtain:make];
-
+        
+        NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height*.15)];
+        [navBar setDelegate:self];
+        [self addCurtain:navBar];
+        
         [self setBackgroundColor:whiteColor];
-//        [self updateLayout];
     }
     return self;
 }
 
-#pragma mark-SETTERS
+
+// called before draw function
+-(void) update{
+    _elapsedSeconds = -[start timeIntervalSinceNow];
+//    [self animationHandler];
+    
+    if([motionManager isDeviceMotionAvailable]){
+        CMRotationMatrix m = motionManager.deviceMotion.attitude.rotationMatrix;
+        float s = 2.33;
+        _deviceAttitude = GLKMatrix4MakeLookAt(m.m31 * s, m.m32 * s, m.m33 * s, 0, 0, 0, m.m21, m.m22, m.m23);
+    }
+}
+
+-(void) auxiliaryDraw{
+    [self update];
+    [(GLKView*)self.view display];
+}
+
+-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
+
+    glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
+    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
+    
+    glMatrixMode(GL_MODELVIEW);
+    
+    glLoadIdentity();
+    glPushMatrix();
+    
+    if(orientToDevice)
+        glMultMatrixf(_deviceAttitude.m);
+    
+    glDisable(GL_LIGHTING);
+    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    
+    if(_rooms)
+        for(Room *room in _rooms)
+            [room draw];
+    
+    if(_curtains)
+        for (Curtain *curtain in _curtains)
+            [curtain draw];
+    
+    glPopMatrix();
+}
+
+#pragma mark- TOUCHES
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesBegan:touches withEvent:event];
+    }
+}
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesMoved:touches withEvent:event];
+    }
+}
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesEnded:touches withEvent:event];
+    }
+}
+
+#pragma mark-DELEGATES
+
+-(void) octahedronButtonPressed{
+    [_geodesic setPolyhedraType:0];
+}
+
+-(void) icosahedronButtonPressed{
+    [_geodesic setPolyhedraType:1];
+}
+
+-(void) makeNewDomePressed{
+    NSLog(@"makenewdome delegate pressed");
+//    [_navBar setPage:1];
+}
+
+-(void) loadDomePressed{
+    
+}
+
+// NAVIGATION CONTROLLER
+
+-(void) transitionFrom:(unsigned short)fromScene To:(unsigned short)toScene Tween:(float)t{
+    NSLog(@"delegate transition:%d-%d, %f",fromScene, toScene, t);
+}
+
+-(void) pageTurnBack:(NSInteger)page{
+    [_script gotoScene:page withDuration:1.0];
+}
+
+-(void) pageTurnForward:(NSInteger)page{
+    [_script gotoScene:page withDuration:1.0];
+}
+
+//-(void) pageChanged{
+//    [self updateLayout];
+//    NSLog(@"changing page, %ld", (long)_navBar.page);
+//}
+
+-(void) frequencySliderChanged:(int)value{
+    [_geodesic setFrequency:value];
+}
+
+// animate transition delegates from SceneController
+
+//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
+
+-(void) transitionIntoMakeFrequency {
+//    [self changeCameraAnimationState:animationOrthoToPerspective];
+}
+-(void) transitionIntoMakeCrop{
+//    [self changeCameraAnimationState:animationPerspectiveToOrtho];
+}
+-(void) transitionIntoMakeScale{
+//    [self changeCameraAnimationState:animationPerspectiveToOrtho];
+}
+
+// transitionIntoSimulator
+// [self changeCameraAnimationState:animationPerspectiveToInside];
+
+
+#pragma mark- SETUP
 
 -(void) setup{
     NSLog(@"setup");
@@ -66,6 +200,8 @@ void set_color(float* color, float* color_ref){
     _backgroundColor = calloc(4, sizeof(float));
     _rooms = [NSArray array];
     _curtains = [NSArray array];
+    _script = [[SceneController alloc] init];
+    [_script setDelegate:self];
     [self initDeviceOrientation];
 }
 
@@ -85,7 +221,7 @@ void set_color(float* color, float* color_ref){
 
 -(void)initOpenGL{
     NSLog(@"initOpenGL");
-
+    
     float width, height;
     if([UIApplication sharedApplication].statusBarOrientation > 2){
         width = [[UIScreen mainScreen] bounds].size.height;
@@ -94,7 +230,7 @@ void set_color(float* color, float* color_ref){
         width = [[UIScreen mainScreen] bounds].size.width;
         height = [[UIScreen mainScreen] bounds].size.height;
     }
-
+    
     _aspectRatio = width/height;
     _fieldOfView = 60;
     
@@ -142,11 +278,13 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) addCurtain:(Curtain *)curtain{
+    if(!_curtains) _curtains = [NSArray array];
     _curtains = [_curtains arrayByAddingObject:curtain];
     [self.view addSubview:curtain.view];
 }
 
 -(void) addRoom:(Room *)room{
+    if(!_rooms) _rooms = [NSArray array];
     _rooms = [_rooms arrayByAddingObject:room];
 }
 
@@ -186,85 +324,6 @@ void set_color(float* color, float* color_ref){
 //    [self.view addSubview:_navBar.view];
 //}
 
-// called before draw function
--(void) update{
-    _elapsedSeconds = -[start timeIntervalSinceNow];
-//    [self animationHandler];
-    
-    if([motionManager isDeviceMotionAvailable]){
-        CMRotationMatrix m = motionManager.deviceMotion.attitude.rotationMatrix;
-        float s = 2.33;
-        _deviceAttitude = GLKMatrix4MakeLookAt(m.m31 * s, m.m32 * s, m.m33 * s, 0, 0, 0, m.m21, m.m22, m.m23);
-    }
-}
-
--(void) auxiliaryDraw{
-    [self update];
-    [(GLKView*)self.view display];
-}
-
--(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
-
-    glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
-    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-    
-    glMatrixMode(GL_MODELVIEW);
-    
-    glLoadIdentity();
-    glPushMatrix();
-    
-    if(orientToDevice)
-        glMultMatrixf(_deviceAttitude.m);
-    
-    glDisable(GL_LIGHTING);
-    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    
-//    if(_geodesic)
-//        [_geodesic draw];
-//    if(_curtain)
-//        [_curtain draw];
-//    if(_navBar)
-//        [_navBar draw];
-    if(_rooms)
-        for(Room *room in _rooms)
-            [room draw];
-    
-    if(_curtains)
-        for (Curtain *curtain in _curtains)
-            [curtain draw];
-    
-    glPopMatrix();
-}
-
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesBegan:touches withEvent:event];
-    }
-}
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesMoved:touches withEvent:event];
-    }
-}
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesEnded:touches withEvent:event];
-    }
-}
 
 //-(void) updateLayout{
 //    [self setCurtain:[navBarFaces objectAtIndex:_navBar.page]];
@@ -283,62 +342,6 @@ void set_color(float* color, float* color_ref){
 //    }
 //}
 
-
-#pragma mark-DELEGATES
-
--(void) octahedronButtonPressed{
-    [_geodesic setPolyhedraType:0];
-}
-
--(void) icosahedronButtonPressed{
-    [_geodesic setPolyhedraType:1];
-}
-
--(void) makeNewDomePressed{
-    NSLog(@"makenewdome delegate pressed");
-//    [_navBar setPage:1];
-}
-
--(void) loadDomePressed{
-    
-}
-
--(void) pageChanged{
-//    [self updateLayout];
-//    NSLog(@"changing page, %ld", (long)_navBar.page);
-}
-
--(void) frequencySliderChanged:(int)value{
-    [_geodesic setFrequency:value];
-}
-
--(void) pageTurnBack:(NSInteger)page{
-//    NSLog(@"(%ld) Back button pressed", (long)page);
-//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//    if(page == 1)
-//        [self changeCameraAnimationState:animationOrthoToPerspective];
-//    if(page == 4)
-//        [self changeCameraAnimationState:animationInsideToPerspective];
-//    if (page-1 == 2)
-//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//    if (page-1 == 4)
-//        [self changeCameraAnimationState:animationPerspectiveToInside];
-//    [self setScene:page-1];
-}
-
--(void) pageTurnForward:(NSInteger)page{
-//    NSLog(@"(%ld) Forward button pressed", (long)page);
-//    if(page == 2)
-//        [self changeCameraAnimationState:animationOrthoToPerspective];
-//    if(page == 4)
-//        [self changeCameraAnimationState:animationInsideToPerspective];
-//    if (page+1 == 1)
-//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//    if (page+1 == 4)
-//        [self changeCameraAnimationState:animationPerspectiveToInside];
-//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//    [self setScene:page+1];
-}
 
 //-(void) setScene:(int)scene{
 //    //    reset_lighting();

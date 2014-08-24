@@ -21,7 +21,7 @@
     [_backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_backButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [_backButton setTitle:@"◀︎" forState:UIControlStateNormal];
-    [[_backButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+    [[_backButton titleLabel] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
 
     [[self view] addSubview:_backButton];
     
@@ -48,7 +48,7 @@
 -(void) setPage:(NSInteger)page{
     if(page < 0 || page >= _numPages) return;
     _page = page;
-    [[self delegate] pageChanged];
+//    [[self delegate] pageChanged];
     [self setNeedsLayout];
 }
 
@@ -63,20 +63,19 @@
 //        [_titleLabel setText:[_titles objectAtIndex:self.page]];
 //}
 
+
 -(void) backButtonPressed{
-    if(self.page <= 0) return;
-    self.page--;
-    [[self delegate] pageTurnBack:self.page];
-    [[self delegate] pageChanged];
+    if(_page <= 0) return;
+    _page--;
+    [[self delegate] pageTurnBack:_page];
     [self setNeedsLayout];
 }
 
 -(void) forwardButtonPressed{
-    if(self.page >= _numPages-1) return;
-    self.page++;
-    [[self delegate] pageTurnForward:self.page];
-    [[self delegate] pageChanged];
+    if(_page >= _numPages-1) return;
+    _page++;
     [self setNeedsLayout];
+    [[self delegate] pageTurnForward:_page];
 }
 
 @end

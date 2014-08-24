@@ -5,10 +5,8 @@
 #import "Curtain.h"
 #import "common.c"
 //#import "lights.c"
+#import "SceneController.h"  // Stage.h ?
 
-#import "Script.h"
-
-// FACES
 #import "Make.h"
 #import "NavBar.h"
 
@@ -19,19 +17,18 @@
 // do not subclass viewDidLoad
 // if your curtain has a protocol, make sure you manually set the delegate
 //
-//
 
-@interface Stage : GLKViewController <NavBarDelegate, MakeDelegate>//<AnimationDelegate>
+@interface Stage : GLKViewController <SceneTransitionDelegate, NavBarDelegate, MakeDelegate>//<AnimationDelegate>
 
-@property (nonatomic) NSArray *rooms;
-@property (nonatomic) NSArray *curtains;
+@property SceneController *script;
 
--(void) addRoom:(Room*)room;            // ROOMS   (3D ENVIRONMENTS)
--(void) addCurtain:(Curtain*)curtain;   // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) NSArray *rooms;     // ROOMS   (3D ENVIRONMENTS)
+@property (nonatomic) NSArray *curtains;  // SCREENS (ORTHOGRAPHIC LAYERS)
+
+-(void) addRoom:(Room*)room;
+-(void) addCurtain:(Curtain*)curtain;
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
-
-@property (nonatomic) unsigned short scene;
 
 -(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;
