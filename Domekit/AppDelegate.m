@@ -8,8 +8,11 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "SWRevealViewController.h"
+#import "RearTableViewController.h"
+#import "NavigationController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <SWRevealViewControllerDelegate>
 
 @end
 
@@ -19,10 +22,27 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
     ViewController *viewController = [[ViewController alloc] init];
-    self.window.rootViewController = viewController;
+    NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];
+    
+    RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+    SWRevealViewController *mainRevealController =
+    [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navController];
+    
+    mainRevealController.rearViewRevealWidth = 260;
+    mainRevealController.rearViewRevealOverdraw = 120;
+    mainRevealController.bounceBackOnOverdraw = NO;
+    mainRevealController.stableDragOnOverdraw = YES;
+    [mainRevealController setFrontViewPosition:FrontViewPositionLeft];
+    
+    mainRevealController.delegate = self;
+
+    self.window.rootViewController = mainRevealController;
 //    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
+
     return YES;
 }
 

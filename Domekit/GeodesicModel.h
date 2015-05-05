@@ -9,13 +9,16 @@
 #import <Foundation/Foundation.h>
 #include "OpenGL/mesh.h"
 
+//
+// Obj-C wrapper for the C-struct geodesic geometry object
+//
+
 typedef enum : NSUInteger {
     ICOSAHEDRON_SEED,
     OCTAHEDRON_SEED,
     TETRAHEDRON_SEED,
 } PolyhedronSeed;
 
-// Obj-C wrapper for the C-struct geodesic geometry object
 @interface GeodesicModel : NSObject
 
 -(id) initWithFrequency:(unsigned int)frequency;  // Assumes Icosahedron

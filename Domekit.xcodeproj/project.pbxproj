@@ -18,6 +18,10 @@
 		D5B360EB1AF67DA0006F33B9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B360EA1AF67DA0006F33B9 /* GLKit.framework */; };
 		D5B360ED1AF67DA7006F33B9 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */; };
 		D5B360F11AF7B5AE006F33B9 /* GeodesicView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */; };
+		D5F918261AF914D400564114 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F918251AF914D400564114 /* NavigationController.m */; };
+		D5F9182A1AF9162600564114 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F918291AF9162600564114 /* SWRevealViewController.m */; };
+		D5F9182D1AF916E200564114 /* RearTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F9182C1AF916E200564114 /* RearTableViewController.m */; };
+		D5F9182F1AF91B6300564114 /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F9182E1AF91B6300564114 /* reveal-icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +71,13 @@
 		D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		D5B360EF1AF7B5AE006F33B9 /* GeodesicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicView.h; sourceTree = "<group>"; };
 		D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicView.m; sourceTree = "<group>"; };
+		D5F918241AF914D400564114 /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
+		D5F918251AF914D400564114 /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
+		D5F918281AF9162600564114 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		D5F918291AF9162600564114 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		D5F9182B1AF916E200564114 /* RearTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RearTableViewController.h; sourceTree = "<group>"; };
+		D5F9182C1AF916E200564114 /* RearTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RearTableViewController.m; sourceTree = "<group>"; };
+		D5F9182E1AF91B6300564114 /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reveal-icon.png"; path = "../reveal-icon.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,12 +157,12 @@
 			children = (
 				D5B360C31AF67B58006F33B9 /* AppDelegate.h */,
 				D5B360C41AF67B58006F33B9 /* AppDelegate.m */,
-				D5B360C61AF67B58006F33B9 /* ViewController.h */,
-				D5B360C71AF67B58006F33B9 /* ViewController.m */,
-				D5B360EF1AF7B5AE006F33B9 /* GeodesicView.h */,
-				D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */,
-				D5B360E51AF67C70006F33B9 /* GeodesicModel.h */,
-				D5B360E61AF67C70006F33B9 /* GeodesicModel.m */,
+				D5F918241AF914D400564114 /* NavigationController.h */,
+				D5F918251AF914D400564114 /* NavigationController.m */,
+				D5F918231AF914B700564114 /* Controllers */,
+				D5F918211AF914A800564114 /* Views */,
+				D5F918221AF914B000564114 /* Models */,
+				D5F918271AF9162600564114 /* 3rdParty */,
 				D5B360CC1AF67B58006F33B9 /* Images.xcassets */,
 				D5B360CE1AF67B58006F33B9 /* LaunchScreen.xib */,
 				D5B360C01AF67B58006F33B9 /* Info.plist */,
@@ -195,6 +206,45 @@
 				D5B360E81AF67D99006F33B9 /* OpenGLES.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D5F918211AF914A800564114 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5B360EF1AF7B5AE006F33B9 /* GeodesicView.h */,
+				D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		D5F918221AF914B000564114 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D5B360E51AF67C70006F33B9 /* GeodesicModel.h */,
+				D5B360E61AF67C70006F33B9 /* GeodesicModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		D5F918231AF914B700564114 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D5B360C61AF67B58006F33B9 /* ViewController.h */,
+				D5B360C71AF67B58006F33B9 /* ViewController.m */,
+				D5F9182B1AF916E200564114 /* RearTableViewController.h */,
+				D5F9182C1AF916E200564114 /* RearTableViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D5F918271AF9162600564114 /* 3rdParty */ = {
+			isa = PBXGroup;
+			children = (
+				D5F9182E1AF91B6300564114 /* reveal-icon.png */,
+				D5F918281AF9162600564114 /* SWRevealViewController.h */,
+				D5F918291AF9162600564114 /* SWRevealViewController.m */,
+			);
+			path = 3rdParty;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +330,7 @@
 			files = (
 				D5B360D01AF67B58006F33B9 /* LaunchScreen.xib in Resources */,
 				D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */,
+				D5F9182F1AF91B6300564114 /* reveal-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,9 +348,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5F9182A1AF9162600564114 /* SWRevealViewController.m in Sources */,
 				D5B360F11AF7B5AE006F33B9 /* GeodesicView.m in Sources */,
 				D5B360E71AF67C70006F33B9 /* GeodesicModel.m in Sources */,
 				D5B360C81AF67B58006F33B9 /* ViewController.m in Sources */,
+				D5F918261AF914D400564114 /* NavigationController.m in Sources */,
+				D5F9182D1AF916E200564114 /* RearTableViewController.m in Sources */,
 				D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */,
 				D5B360C21AF67B58006F33B9 /* main.m in Sources */,
 			);

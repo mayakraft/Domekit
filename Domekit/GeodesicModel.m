@@ -21,9 +21,9 @@
         return nil;
     self = [super init];
     if(self){
-        if(solid == TETRAHEDRON_SEED)
-            _geo = tetrahedronSphere(frequency);
-        else if(solid == OCTAHEDRON_SEED)
+//        if(solid == TETRAHEDRON_SEED)
+//            _geo = tetrahedronSphere(frequency);
+        if(solid == OCTAHEDRON_SEED)
             _geo = octahedronSphere(frequency);
         else
             _geo = icosahedronSphere(frequency);
@@ -42,9 +42,9 @@
 
 
 -(void) rebuildPolyhedra{
-    if(_solid == TETRAHEDRON_SEED)
-        [self makeTetrahedron];
-    else if(_solid == OCTAHEDRON_SEED)
+//    if(_solid == TETRAHEDRON_SEED)
+//        [self makeTetrahedron];
+    if(_solid == OCTAHEDRON_SEED)
         [self makeOctahedron];
     else
         [self makeIcosahedron];
@@ -74,9 +74,9 @@
     [self rebuildPolyhedra];
 }
 
--(void) makeTetrahedron{
-    #warning incomplete
-}
+//-(void) makeTetrahedron{
+//    #warning incomplete
+//}
 
 -(void)makeIcosahedron{
     deleteGeodesicSphere(&_geo);

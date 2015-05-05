@@ -14,13 +14,12 @@
 @implementation GeodesicView
 
 - (void)drawRect:(CGRect)rect {
-    static GLfloat whiteColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    static GLfloat clearColor[] = {0.0f, 0.0f, 0.0f, 0.0f};
+//    static GLfloat whiteColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+//    static GLfloat clearColor[] = {0.0f, 0.0f, 0.0f, 0.0f};
     glClearColor(1.0f, 1.0f, 1.5f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glPushMatrix(); // begin device orientation
-
 
 //    _attitudeMatrix = GLKMatrix4Multiply([self getDeviceOrientationMatrix], _offsetMatrix);
     
@@ -28,7 +27,6 @@
 //    [sphere execute];
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, clearColor);
 //        [meridians execute];  // semi-transparent texture overlay (15° meridian lines)
-    
 
     static perspective_t POV = POLAR;
     switch(POV){
@@ -48,52 +46,19 @@
             break;
     }
     
-    
-    glDisable(GL_LIGHTING);
-    
+//    glDisable(GL_LIGHTING);
 //    glPushMatrix();
 //        [self drawCheckerboardX:0 Y:0 NumberSquares:4];
 //    glPopMatrix();
     
-    
     glEnable(GL_LIGHTING);
     
     glPushMatrix();
-        glColor4f(0.0, 0.0, 0.0, 1.0);
 //        glTranslatef(0, 0, 1.0f);
         [self drawTriangles];
     glPopMatrix();
-
-    // CHECKERBOARD LANDSCAPE
-//    if(landscape == 0){
-//        float newX = modulusContext(walkX, 2);
-//        float newY = modulusContext(walkY, 2);
-//        glTranslatef(newX, newY, 0);
-//        drawCheckerboard(newX, newY, 8);
-//    }
-//    // 3 DIMENSIONS OF SCATTERED AXES
-//    else if(landscape == 1){
-//        float newX = modulusContext(walkX, 5);
-//        float newY = modulusContext(walkY, 5);
-//        glTranslatef(newX, newY, 0);
-//        drawAxesGrid(newX, newY, 5, 4);
-//    }
-//    else if(landscape == 2){
-//        // float newX = modulusContext(walkX, 3);
-//        // float newY = modulusContext(walkY, 3);
-//        // glTranslatef(walkX, 0, 0);
-//        static double intpart;
-//        float zoom = powf(3,modf(-walkY, &intpart));
-//        drawZoomboard(zoom);
-//    }
-
-//TODO: add any objects here to make them a part of the virtual reality
-//        glPushMatrix();
-//        // object code
-//        glPopMatrix();
     
     glPopMatrix(); // end device orientation
-    [self logMatrix:_attitudeMatrix];
 }
 
 -(void) setGeodesicModel:(GeodesicModel *)geodesicModel{
@@ -112,10 +77,6 @@
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopMatrix();
-}
-
--(void) logMatrix:(GLKMatrix4)m{
-    NSLog(@"\n%.2f, %.2f, %.2f\n%.2f, %.2f, %.2f\n%.2f, %.2f, %.2f\n",m.m00, m.m01, m.m02, m.m10, m.m11, m.m12, m.m20, m.m21, m.m22);
 }
 
 #pragma mark- OPENGL
