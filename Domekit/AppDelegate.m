@@ -2,27 +2,26 @@
 //  AppDelegate.m
 //  Domekit
 //
-//  Created by Robby on 6/30/14.
-//  Copyright (c) 2014 Robby. All rights reserved.
+//  Created by Robby on 5/3/15.
+//  Copyright (c) 2015 Robby. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "Stage.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
-            
 
 @end
 
 @implementation AppDelegate
-            
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    Stage *stage = [[Stage alloc] init];
-    self.window.rootViewController = stage;
-    self.window.backgroundColor = [UIColor blackColor];
+    ViewController *viewController = [[ViewController alloc] init];
+    self.window.rootViewController = viewController;
+//    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     return YES;
 }

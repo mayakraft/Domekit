@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  ViewController.h
 //  Domekit
 //
 //  Created by Robby on 5/3/15.
@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface ViewController : GLKViewController
 
 
 @end

@@ -7,95 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D505712C1961D79400DDC70D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D505712B1961D79400DDC70D /* main.m */; };
-		D505712F1961D79400DDC70D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D505712E1961D79400DDC70D /* AppDelegate.m */; };
-		D50571311961D79400DDC70D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D50571301961D79400DDC70D /* Images.xcassets */; };
-		D505713D1961D79400DDC70D /* DomekitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D505713C1961D79400DDC70D /* DomekitTests.m */; };
-		D505714E1961D7B000DDC70D /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D50571471961D7B000DDC70D /* NavBar.m */; };
-		D505714F1961D7B000DDC70D /* Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D50571491961D7B000DDC70D /* Primitives.m */; };
-		D50571501961D7B000DDC70D /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D505714B1961D7B000DDC70D /* Room.m */; };
-		D50571511961D7B000DDC70D /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D505714D1961D7B000DDC70D /* Stage.m */; };
-		D505715E1961D7E900DDC70D /* Make.m in Sources */ = {isa = PBXBuildFile; fileRef = D50571561961D7E900DDC70D /* Make.m */; };
-		D50571601961D7E900DDC70D /* Curtain.m in Sources */ = {isa = PBXBuildFile; fileRef = D505715A1961D7E900DDC70D /* Curtain.m */; };
-		D50571611961D7E900DDC70D /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D505715C1961D7E900DDC70D /* Hotspot.m */; };
-		D505716E1961DACA00DDC70D /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */; };
-		D505716F1961DACA00DDC70D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */; };
-		D506C2431988CAE3003F9D4A /* UIScrollViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D506C2421988CAE3003F9D4A /* UIScrollViewSubclass.m */; };
-		D527E08719A55FC80092CA64 /* SceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E08619A55FC80092CA64 /* SceneController.m */; };
-		D5D3BD6A19629EA7000912FC /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6919629EA7000912FC /* Animation.m */; };
-		D5D3BD6E1962A2B6000912FC /* Geodesic.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D3BD6D1962A2B6000912FC /* Geodesic.m */; };
+		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
+		D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C41AF67B58006F33B9 /* AppDelegate.m */; };
+		D5B360C81AF67B58006F33B9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C71AF67B58006F33B9 /* ViewController.m */; };
+		D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B360CC1AF67B58006F33B9 /* Images.xcassets */; };
+		D5B360D01AF67B58006F33B9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B360CE1AF67B58006F33B9 /* LaunchScreen.xib */; };
+		D5B360DC1AF67B58006F33B9 /* DomekitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360DB1AF67B58006F33B9 /* DomekitTests.m */; };
+		D5B360E71AF67C70006F33B9 /* GeodesicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360E61AF67C70006F33B9 /* GeodesicModel.m */; };
+		D5B360E91AF67D9A006F33B9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B360E81AF67D99006F33B9 /* OpenGLES.framework */; };
+		D5B360EB1AF67DA0006F33B9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B360EA1AF67DA0006F33B9 /* GLKit.framework */; };
+		D5B360ED1AF67DA7006F33B9 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */; };
+		D5B360F11AF7B5AE006F33B9 /* GeodesicView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D50571371961D79400DDC70D /* PBXContainerItemProxy */ = {
+		D5B360D61AF67B58006F33B9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D505711E1961D79400DDC70D /* Project object */;
+			containerPortal = D5B360B41AF67B58006F33B9 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D50571251961D79400DDC70D;
-			remoteInfo = Domekit;
-		};
-		D58ECFAE19639AF0009C8391 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D505711E1961D79400DDC70D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D50571251961D79400DDC70D;
+			remoteGlobalIDString = D5B360BB1AF67B58006F33B9;
 			remoteInfo = Domekit;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D50571261961D79400DDC70D /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D505712A1961D79400DDC70D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D505712B1961D79400DDC70D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D505712D1961D79400DDC70D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D505712E1961D79400DDC70D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D50571301961D79400DDC70D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D50571361961D79400DDC70D /* DomekitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomekitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D505713B1961D79400DDC70D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D505713C1961D79400DDC70D /* DomekitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DomekitTests.m; sourceTree = "<group>"; };
-		D50571461961D7B000DDC70D /* NavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavBar.h; sourceTree = "<group>"; };
-		D50571471961D7B000DDC70D /* NavBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBar.m; sourceTree = "<group>"; };
-		D50571481961D7B000DDC70D /* Primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives.h; sourceTree = "<group>"; };
-		D50571491961D7B000DDC70D /* Primitives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Primitives.m; sourceTree = "<group>"; };
-		D505714A1961D7B000DDC70D /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
-		D505714B1961D7B000DDC70D /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
-		D505714C1961D7B000DDC70D /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
-		D505714D1961D7B000DDC70D /* Stage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stage.m; sourceTree = "<group>"; };
-		D50571521961D7B600DDC70D /* lights.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lights.c; sourceTree = "<group>"; };
-		D50571541961D7E900DDC70D /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
-		D50571551961D7E900DDC70D /* Make.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Make.h; sourceTree = "<group>"; };
-		D50571561961D7E900DDC70D /* Make.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Make.m; sourceTree = "<group>"; };
-		D50571591961D7E900DDC70D /* Curtain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curtain.h; sourceTree = "<group>"; };
-		D505715A1961D7E900DDC70D /* Curtain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Curtain.m; sourceTree = "<group>"; };
-		D505715B1961D7E900DDC70D /* Hotspot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotspot.h; sourceTree = "<group>"; };
-		D505715C1961D7E900DDC70D /* Hotspot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hotspot.m; sourceTree = "<group>"; };
-		D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		D506C2411988CAE3003F9D4A /* UIScrollViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollViewSubclass.h; sourceTree = "<group>"; };
-		D506C2421988CAE3003F9D4A /* UIScrollViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScrollViewSubclass.m; sourceTree = "<group>"; };
-		D527E08519A55FC80092CA64 /* SceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneController.h; sourceTree = "<group>"; };
-		D527E08619A55FC80092CA64 /* SceneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneController.m; sourceTree = "<group>"; };
-		D5D3BD6319629721000912FC /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geodesic.c; path = ../../Geodesic/geodesic.c; sourceTree = "<group>"; };
-		D5D3BD6419629721000912FC /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geodesic.h; path = ../../Geodesic/geodesic.h; sourceTree = "<group>"; };
-		D5D3BD6519629721000912FC /* geomesh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = geomesh.c; path = ../../Geodesic/geomesh.c; sourceTree = "<group>"; };
-		D5D3BD6619629721000912FC /* geomesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = geomesh.h; path = ../../Geodesic/geomesh.h; sourceTree = "<group>"; };
-		D5D3BD6819629EA7000912FC /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
-		D5D3BD6919629EA7000912FC /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animation.m; sourceTree = "<group>"; };
-		D5D3BD6C1962A2B6000912FC /* Geodesic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geodesic.h; sourceTree = "<group>"; };
-		D5D3BD6D1962A2B6000912FC /* Geodesic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Geodesic.m; sourceTree = "<group>"; };
-		D5F77E78198621D3002C6C3B /* platonic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = platonic.c; path = ../../Geodesic/platonic.c; sourceTree = "<group>"; };
-		D5F77E791986224A002C6C3B /* platonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = platonic.h; path = ../../Geodesic/platonic.h; sourceTree = "<group>"; };
+		D5619A131AF904830027A801 /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = geodesic.c; sourceTree = "<group>"; };
+		D5619A141AF904830027A801 /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geodesic.h; sourceTree = "<group>"; };
+		D5619A151AF904830027A801 /* makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		D5619A161AF904830027A801 /* noise.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
+		D5619A171AF904830027A801 /* noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise.h; sourceTree = "<group>"; };
+		D5619A191AF904830027A801 /* mesh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mesh.c; sourceTree = "<group>"; };
+		D5619A1A1AF904830027A801 /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
+		D5619A1B1AF904830027A801 /* webgl.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = webgl.html; sourceTree = "<group>"; };
+		D5619A1C1AF904830027A801 /* picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture.png; sourceTree = "<group>"; };
+		D5619A1D1AF904830027A801 /* platonic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = platonic.c; sourceTree = "<group>"; };
+		D5619A1E1AF904830027A801 /* platonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platonic.h; sourceTree = "<group>"; };
+		D5619A1F1AF904830027A801 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		D5619A201AF904830027A801 /* render */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = render; sourceTree = "<group>"; };
+		D5619A211AF904830027A801 /* render.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		D5619A221AF904830027A801 /* tween.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tween.c; sourceTree = "<group>"; };
+		D5619A231AF904830027A801 /* world */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = world; sourceTree = "<group>"; };
+		D5619A241AF904830027A801 /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
+		D5B360BC1AF67B58006F33B9 /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B360C01AF67B58006F33B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5B360C11AF67B58006F33B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D5B360C31AF67B58006F33B9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D5B360C41AF67B58006F33B9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D5B360C61AF67B58006F33B9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		D5B360C71AF67B58006F33B9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		D5B360CC1AF67B58006F33B9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D5B360CF1AF67B58006F33B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		D5B360D51AF67B58006F33B9 /* DomekitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomekitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B360DA1AF67B58006F33B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5B360DB1AF67B58006F33B9 /* DomekitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DomekitTests.m; sourceTree = "<group>"; };
+		D5B360E51AF67C70006F33B9 /* GeodesicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicModel.h; sourceTree = "<group>"; };
+		D5B360E61AF67C70006F33B9 /* GeodesicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicModel.m; sourceTree = "<group>"; };
+		D5B360E81AF67D99006F33B9 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		D5B360EA1AF67DA0006F33B9 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		D5B360EF1AF7B5AE006F33B9 /* GeodesicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicView.h; sourceTree = "<group>"; };
+		D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D50571231961D79400DDC70D /* Frameworks */ = {
+		D5B360B91AF67B58006F33B9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5B360ED1AF67DA7006F33B9 /* CoreMotion.framework in Frameworks */,
+				D5B360EB1AF67DA0006F33B9 /* GLKit.framework in Frameworks */,
+				D5B360E91AF67D9A006F33B9 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D50571331961D79400DDC70D /* Frameworks */ = {
+		D5B360D21AF67B58006F33B9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -105,151 +90,123 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D505711D1961D79400DDC70D = {
+		D5619A121AF904830027A801 /* Geodesic */ = {
 			isa = PBXGroup;
 			children = (
-				D50571281961D79400DDC70D /* Domekit */,
-				D50571391961D79400DDC70D /* DomekitTests */,
-				D50571271961D79400DDC70D /* Products */,
+				D5619A131AF904830027A801 /* geodesic.c */,
+				D5619A141AF904830027A801 /* geodesic.h */,
+				D5619A151AF904830027A801 /* makefile */,
+				D5619A161AF904830027A801 /* noise.c */,
+				D5619A171AF904830027A801 /* noise.h */,
+				D5619A181AF904830027A801 /* OpenGL */,
+				D5619A1C1AF904830027A801 /* picture.png */,
+				D5619A1D1AF904830027A801 /* platonic.c */,
+				D5619A1E1AF904830027A801 /* platonic.h */,
+				D5619A1F1AF904830027A801 /* readme.md */,
+				D5619A201AF904830027A801 /* render */,
+				D5619A211AF904830027A801 /* render.c */,
+				D5619A221AF904830027A801 /* tween.c */,
+				D5619A231AF904830027A801 /* world */,
+				D5619A241AF904830027A801 /* world.c */,
+			);
+			name = Geodesic;
+			path = ../../Geodesic;
+			sourceTree = "<group>";
+		};
+		D5619A181AF904830027A801 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				D5619A191AF904830027A801 /* mesh.c */,
+				D5619A1A1AF904830027A801 /* mesh.h */,
+				D5619A1B1AF904830027A801 /* webgl.html */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		D5B360B31AF67B58006F33B9 = {
+			isa = PBXGroup;
+			children = (
+				D5B360BE1AF67B58006F33B9 /* Domekit */,
+				D5B360D81AF67B58006F33B9 /* DomekitTests */,
+				D5B360BD1AF67B58006F33B9 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D50571271961D79400DDC70D /* Products */ = {
+		D5B360BD1AF67B58006F33B9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D50571261961D79400DDC70D /* Domekit.app */,
-				D50571361961D79400DDC70D /* DomekitTests.xctest */,
+				D5B360BC1AF67B58006F33B9 /* Domekit.app */,
+				D5B360D51AF67B58006F33B9 /* DomekitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D50571281961D79400DDC70D /* Domekit */ = {
+		D5B360BE1AF67B58006F33B9 /* Domekit */ = {
 			isa = PBXGroup;
 			children = (
-				D505712D1961D79400DDC70D /* AppDelegate.h */,
-				D505712E1961D79400DDC70D /* AppDelegate.m */,
-				D5535F78199D9F260038E67B /* StageKit */,
-				D5D3BD6719629725000912FC /* Geodesic */,
-				D50571301961D79400DDC70D /* Images.xcassets */,
-				D50571291961D79400DDC70D /* Supporting Files */,
+				D5B360C31AF67B58006F33B9 /* AppDelegate.h */,
+				D5B360C41AF67B58006F33B9 /* AppDelegate.m */,
+				D5B360C61AF67B58006F33B9 /* ViewController.h */,
+				D5B360C71AF67B58006F33B9 /* ViewController.m */,
+				D5B360EF1AF7B5AE006F33B9 /* GeodesicView.h */,
+				D5B360F01AF7B5AE006F33B9 /* GeodesicView.m */,
+				D5B360E51AF67C70006F33B9 /* GeodesicModel.h */,
+				D5B360E61AF67C70006F33B9 /* GeodesicModel.m */,
+				D5B360CC1AF67B58006F33B9 /* Images.xcassets */,
+				D5B360CE1AF67B58006F33B9 /* LaunchScreen.xib */,
+				D5B360C01AF67B58006F33B9 /* Info.plist */,
+				D5619A121AF904830027A801 /* Geodesic */,
+				D5B360EE1AF67DDA006F33B9 /* Frameworks */,
+				D5B360BF1AF67B58006F33B9 /* Supporting Files */,
 			);
 			path = Domekit;
 			sourceTree = "<group>";
 		};
-		D50571291961D79400DDC70D /* Supporting Files */ = {
+		D5B360BF1AF67B58006F33B9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D505716C1961DACA00DDC70D /* Montserrat-Bold.ttf */,
-				D505716D1961DACA00DDC70D /* Montserrat-Regular.ttf */,
-				D505712A1961D79400DDC70D /* Info.plist */,
-				D505712B1961D79400DDC70D /* main.m */,
+				D5B360C11AF67B58006F33B9 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D50571391961D79400DDC70D /* DomekitTests */ = {
+		D5B360D81AF67B58006F33B9 /* DomekitTests */ = {
 			isa = PBXGroup;
 			children = (
-				D505713C1961D79400DDC70D /* DomekitTests.m */,
-				D505713A1961D79400DDC70D /* Supporting Files */,
+				D5B360DB1AF67B58006F33B9 /* DomekitTests.m */,
+				D5B360D91AF67B58006F33B9 /* Supporting Files */,
 			);
 			path = DomekitTests;
 			sourceTree = "<group>";
 		};
-		D505713A1961D79400DDC70D /* Supporting Files */ = {
+		D5B360D91AF67B58006F33B9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D505713B1961D79400DDC70D /* Info.plist */,
+				D5B360DA1AF67B58006F33B9 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D50571621961D81500DDC70D /* Superclass */ = {
+		D5B360EE1AF67DDA006F33B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D505714A1961D7B000DDC70D /* Room.h */,
-				D505714B1961D7B000DDC70D /* Room.m */,
-				D50571591961D7E900DDC70D /* Curtain.h */,
-				D505715A1961D7E900DDC70D /* Curtain.m */,
+				D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */,
+				D5B360EA1AF67DA0006F33B9 /* GLKit.framework */,
+				D5B360E81AF67D99006F33B9 /* OpenGLES.framework */,
 			);
-			name = Superclass;
-			sourceTree = "<group>";
-		};
-		D50571631961D82C00DDC70D /* StageKit Tools */ = {
-			isa = PBXGroup;
-			children = (
-				D50571621961D81500DDC70D /* Superclass */,
-				D50571541961D7E900DDC70D /* common.c */,
-				D50571481961D7B000DDC70D /* Primitives.h */,
-				D50571491961D7B000DDC70D /* Primitives.m */,
-				D50571521961D7B600DDC70D /* lights.c */,
-				D505715B1961D7E900DDC70D /* Hotspot.h */,
-				D505715C1961D7E900DDC70D /* Hotspot.m */,
-				D5D3BD6819629EA7000912FC /* Animation.h */,
-				D5D3BD6919629EA7000912FC /* Animation.m */,
-			);
-			name = "StageKit Tools";
-			sourceTree = "<group>";
-		};
-		D50571641961D83800DDC70D /* Interfaces */ = {
-			isa = PBXGroup;
-			children = (
-				D5D3BD6C1962A2B6000912FC /* Geodesic.h */,
-				D5D3BD6D1962A2B6000912FC /* Geodesic.m */,
-				D50571461961D7B000DDC70D /* NavBar.h */,
-				D50571471961D7B000DDC70D /* NavBar.m */,
-				D50571551961D7E900DDC70D /* Make.h */,
-				D50571561961D7E900DDC70D /* Make.m */,
-				D506C2441988CAE7003F9D4A /* UIKit */,
-			);
-			name = Interfaces;
-			sourceTree = "<group>";
-		};
-		D506C2441988CAE7003F9D4A /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				D506C2411988CAE3003F9D4A /* UIScrollViewSubclass.h */,
-				D506C2421988CAE3003F9D4A /* UIScrollViewSubclass.m */,
-			);
-			name = UIKit;
-			sourceTree = "<group>";
-		};
-		D5535F78199D9F260038E67B /* StageKit */ = {
-			isa = PBXGroup;
-			children = (
-				D505714C1961D7B000DDC70D /* Stage.h */,
-				D505714D1961D7B000DDC70D /* Stage.m */,
-				D527E08519A55FC80092CA64 /* SceneController.h */,
-				D527E08619A55FC80092CA64 /* SceneController.m */,
-				D50571641961D83800DDC70D /* Interfaces */,
-				D50571631961D82C00DDC70D /* StageKit Tools */,
-			);
-			name = StageKit;
-			sourceTree = "<group>";
-		};
-		D5D3BD6719629725000912FC /* Geodesic */ = {
-			isa = PBXGroup;
-			children = (
-				D5F77E791986224A002C6C3B /* platonic.h */,
-				D5F77E78198621D3002C6C3B /* platonic.c */,
-				D5D3BD6419629721000912FC /* geodesic.h */,
-				D5D3BD6319629721000912FC /* geodesic.c */,
-				D5D3BD6619629721000912FC /* geomesh.h */,
-				D5D3BD6519629721000912FC /* geomesh.c */,
-			);
-			name = Geodesic;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D50571251961D79400DDC70D /* Domekit */ = {
+		D5B360BB1AF67B58006F33B9 /* Domekit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D50571401961D79400DDC70D /* Build configuration list for PBXNativeTarget "Domekit" */;
+			buildConfigurationList = D5B360DF1AF67B58006F33B9 /* Build configuration list for PBXNativeTarget "Domekit" */;
 			buildPhases = (
-				D50571221961D79400DDC70D /* Sources */,
-				D50571231961D79400DDC70D /* Frameworks */,
-				D50571241961D79400DDC70D /* Resources */,
+				D5B360B81AF67B58006F33B9 /* Sources */,
+				D5B360B91AF67B58006F33B9 /* Frameworks */,
+				D5B360BA1AF67B58006F33B9 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -257,76 +214,76 @@
 			);
 			name = Domekit;
 			productName = Domekit;
-			productReference = D50571261961D79400DDC70D /* Domekit.app */;
+			productReference = D5B360BC1AF67B58006F33B9 /* Domekit.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D50571351961D79400DDC70D /* DomekitTests */ = {
+		D5B360D41AF67B58006F33B9 /* DomekitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D50571431961D79400DDC70D /* Build configuration list for PBXNativeTarget "DomekitTests" */;
+			buildConfigurationList = D5B360E21AF67B58006F33B9 /* Build configuration list for PBXNativeTarget "DomekitTests" */;
 			buildPhases = (
-				D50571321961D79400DDC70D /* Sources */,
-				D50571331961D79400DDC70D /* Frameworks */,
-				D50571341961D79400DDC70D /* Resources */,
+				D5B360D11AF67B58006F33B9 /* Sources */,
+				D5B360D21AF67B58006F33B9 /* Frameworks */,
+				D5B360D31AF67B58006F33B9 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D50571381961D79400DDC70D /* PBXTargetDependency */,
-				D58ECFAF19639AF0009C8391 /* PBXTargetDependency */,
+				D5B360D71AF67B58006F33B9 /* PBXTargetDependency */,
 			);
 			name = DomekitTests;
 			productName = DomekitTests;
-			productReference = D50571361961D79400DDC70D /* DomekitTests.xctest */;
+			productReference = D5B360D51AF67B58006F33B9 /* DomekitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D505711E1961D79400DDC70D /* Project object */ = {
+		D5B360B41AF67B58006F33B9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Robby;
 				TargetAttributes = {
-					D50571251961D79400DDC70D = {
-						CreatedOnToolsVersion = 6.0;
+					D5B360BB1AF67B58006F33B9 = {
+						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 78C98TD784;
 					};
-					D50571351961D79400DDC70D = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = D50571251961D79400DDC70D;
+					D5B360D41AF67B58006F33B9 = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = D5B360BB1AF67B58006F33B9;
 					};
 				};
 			};
-			buildConfigurationList = D50571211961D79400DDC70D /* Build configuration list for PBXProject "Domekit" */;
+			buildConfigurationList = D5B360B71AF67B58006F33B9 /* Build configuration list for PBXProject "Domekit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = D505711D1961D79400DDC70D;
-			productRefGroup = D50571271961D79400DDC70D /* Products */;
+			mainGroup = D5B360B31AF67B58006F33B9;
+			productRefGroup = D5B360BD1AF67B58006F33B9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D50571251961D79400DDC70D /* Domekit */,
-				D50571351961D79400DDC70D /* DomekitTests */,
+				D5B360BB1AF67B58006F33B9 /* Domekit */,
+				D5B360D41AF67B58006F33B9 /* DomekitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D50571241961D79400DDC70D /* Resources */ = {
+		D5B360BA1AF67B58006F33B9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D505716F1961DACA00DDC70D /* Montserrat-Regular.ttf in Resources */,
-				D505716E1961DACA00DDC70D /* Montserrat-Bold.ttf in Resources */,
-				D50571311961D79400DDC70D /* Images.xcassets in Resources */,
+				D5B360D01AF67B58006F33B9 /* LaunchScreen.xib in Resources */,
+				D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D50571341961D79400DDC70D /* Resources */ = {
+		D5B360D31AF67B58006F33B9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -336,51 +293,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D50571221961D79400DDC70D /* Sources */ = {
+		D5B360B81AF67B58006F33B9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D50571511961D7B000DDC70D /* Stage.m in Sources */,
-				D5D3BD6E1962A2B6000912FC /* Geodesic.m in Sources */,
-				D50571601961D7E900DDC70D /* Curtain.m in Sources */,
-				D50571501961D7B000DDC70D /* Room.m in Sources */,
-				D50571611961D7E900DDC70D /* Hotspot.m in Sources */,
-				D506C2431988CAE3003F9D4A /* UIScrollViewSubclass.m in Sources */,
-				D505714E1961D7B000DDC70D /* NavBar.m in Sources */,
-				D527E08719A55FC80092CA64 /* SceneController.m in Sources */,
-				D505715E1961D7E900DDC70D /* Make.m in Sources */,
-				D5D3BD6A19629EA7000912FC /* Animation.m in Sources */,
-				D505712F1961D79400DDC70D /* AppDelegate.m in Sources */,
-				D505712C1961D79400DDC70D /* main.m in Sources */,
-				D505714F1961D7B000DDC70D /* Primitives.m in Sources */,
+				D5B360F11AF7B5AE006F33B9 /* GeodesicView.m in Sources */,
+				D5B360E71AF67C70006F33B9 /* GeodesicModel.m in Sources */,
+				D5B360C81AF67B58006F33B9 /* ViewController.m in Sources */,
+				D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */,
+				D5B360C21AF67B58006F33B9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D50571321961D79400DDC70D /* Sources */ = {
+		D5B360D11AF67B58006F33B9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D505713D1961D79400DDC70D /* DomekitTests.m in Sources */,
+				D5B360DC1AF67B58006F33B9 /* DomekitTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D50571381961D79400DDC70D /* PBXTargetDependency */ = {
+		D5B360D71AF67B58006F33B9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D50571251961D79400DDC70D /* Domekit */;
-			targetProxy = D50571371961D79400DDC70D /* PBXContainerItemProxy */;
-		};
-		D58ECFAF19639AF0009C8391 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D50571251961D79400DDC70D /* Domekit */;
-			targetProxy = D58ECFAE19639AF0009C8391 /* PBXContainerItemProxy */;
+			target = D5B360BB1AF67B58006F33B9 /* Domekit */;
+			targetProxy = D5B360D61AF67B58006F33B9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		D5B360CE1AF67B58006F33B9 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D5B360CF1AF67B58006F33B9 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
-		D505713E1961D79400DDC70D /* Debug */ = {
+		D5B360DD1AF67B58006F33B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -399,9 +354,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -415,14 +372,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				METAL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D505713F1961D79400DDC70D /* Release */ = {
+		D5B360DE1AF67B58006F33B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -440,10 +397,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -451,53 +410,53 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				METAL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		D50571411961D79400DDC70D /* Debug */ = {
+		D5B360E01AF67B58006F33B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-					../Geodesic,
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		D50571421961D79400DDC70D /* Release */ = {
+		D5B360E11AF67B58006F33B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-					../Geodesic,
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		D50571441961D79400DDC70D /* Debug */ = {
+		D5B360E31AF67B58006F33B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Domekit.app/Domekit";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -507,62 +466,58 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = DomekitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Domekit.app/Domekit";
 			};
 			name = Debug;
 		};
-		D50571451961D79400DDC70D /* Release */ = {
+		D5B360E41AF67B58006F33B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Domekit.app/Domekit";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = DomekitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Domekit.app/Domekit";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D50571211961D79400DDC70D /* Build configuration list for PBXProject "Domekit" */ = {
+		D5B360B71AF67B58006F33B9 /* Build configuration list for PBXProject "Domekit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D505713E1961D79400DDC70D /* Debug */,
-				D505713F1961D79400DDC70D /* Release */,
+				D5B360DD1AF67B58006F33B9 /* Debug */,
+				D5B360DE1AF67B58006F33B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D50571401961D79400DDC70D /* Build configuration list for PBXNativeTarget "Domekit" */ = {
+		D5B360DF1AF67B58006F33B9 /* Build configuration list for PBXNativeTarget "Domekit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D50571411961D79400DDC70D /* Debug */,
-				D50571421961D79400DDC70D /* Release */,
+				D5B360E01AF67B58006F33B9 /* Debug */,
+				D5B360E11AF67B58006F33B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D50571431961D79400DDC70D /* Build configuration list for PBXNativeTarget "DomekitTests" */ = {
+		D5B360E21AF67B58006F33B9 /* Build configuration list for PBXNativeTarget "DomekitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D50571441961D79400DDC70D /* Debug */,
-				D50571451961D79400DDC70D /* Release */,
+				D5B360E31AF67B58006F33B9 /* Debug */,
+				D5B360E41AF67B58006F33B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D505711E1961D79400DDC70D /* Project object */;
+	rootObject = D5B360B41AF67B58006F33B9 /* Project object */;
 }
