@@ -117,7 +117,7 @@
     
     cell.selectedBackgroundView = selectionView;
 
-    NSString *title = nil;
+//    NSString *title = nil;
 //    if(indexPath.section == 0)
 //        cell.textLabel.text = title;
 //    else if(indexPath.section == 1)
@@ -141,7 +141,7 @@
 -(void) loadTableSelection:(NSIndexPath*)indexPath{
     _lastSelection = indexPath;
     
-    SWRevealViewController *revealController = self.revealViewController;
+//    SWRevealViewController *revealController = self.revealViewController;
 
 //    UIViewController *front = nil;
 //    if(indexPath.row == 2){

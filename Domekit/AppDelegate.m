@@ -11,6 +11,7 @@
 #import "SWRevealViewController.h"
 #import "RearTableViewController.h"
 #import "NavigationController.h"
+#import "NavigationBar.h"
 
 @interface AppDelegate () <SWRevealViewControllerDelegate>
 
@@ -24,7 +25,9 @@
     // Override point for customization after application launch.
     
     ViewController *viewController = [[ViewController alloc] init];
-    NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];
+//    NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];    
+    UINavigationController *navController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
+    [navController setViewControllers:@[viewController]];
     
     RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
@@ -39,6 +42,7 @@
     
     mainRevealController.delegate = self;
 
+//    self.window.rootViewController = navController;
     self.window.rootViewController = mainRevealController;
 //    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
