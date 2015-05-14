@@ -14,20 +14,26 @@
 #import "NavigationBar.h"
 
 @interface AppDelegate () <SWRevealViewControllerDelegate>
-
+@property ViewController *viewController;
 @end
 
 @implementation AppDelegate
 
+-(void) newIcosahedron{
+    [_viewController setSolidType:0];
+}
+-(void) newOctahedron{
+    [_viewController setSolidType:1];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
-    ViewController *viewController = [[ViewController alloc] init];
+    _viewController = [[ViewController alloc] init];
 //    NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];    
     UINavigationController *navController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
-    [navController setViewControllers:@[viewController]];
+    [navController setViewControllers:@[_viewController]];
     
     RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 

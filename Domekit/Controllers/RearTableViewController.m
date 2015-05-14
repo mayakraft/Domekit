@@ -9,6 +9,8 @@
 #import "RearTableViewController.h"
 #import "SWRevealViewController.h"
 
+#import "AppDelegate.h"
+
 @interface RearTableViewController () {
     NSInteger _previouslySelectedRow;
     UIView *selectionView;
@@ -55,7 +57,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0)
-        return 1;
+        return 2;
     return numberOfSavedDomes;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -117,6 +119,10 @@
     
     cell.selectedBackgroundView = selectionView;
 
+    if(indexPath.row == 0)
+        [cell.textLabel setText:@"Icosahedron"];
+    else if(indexPath.row == 1)
+        [cell.textLabel setText:@"Octahedron"];
 //    NSString *title = nil;
 //    if(indexPath.section == 0)
 //        cell.textLabel.text = title;
@@ -127,6 +133,32 @@
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+//    ViewController *viewController = [[ViewController alloc] init];
+    if(indexPath.row == 0)
+        [(AppDelegate*)[[UIApplication sharedApplication] delegate] newIcosahedron];
+    if(indexPath.row == 1)
+        [(AppDelegate*)[[UIApplication sharedApplication] delegate] newOctahedron];
+
+    
+//    if(indexPath.row == 0)
+//        [viewController setSolidType:0];
+//    if(indexPath.row == 1)
+//        [viewController setSolidType:1];
+    
+    
+//        NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];
+//    UINavigationController *navController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
+//    [navController setViewControllers:@[viewController]];
+    
+//    RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    SWRevealViewController *revealController = self.revealViewController;
+//    SWRevealViewController *mainRevealController = [SWRevealViewController new];
+//    [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navController];
+
+//    [revealController setFrontViewController:[[UINavigationController alloc] initWithRootViewController:viewController]];
+    [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 //    SWRevealViewController *revealController = self.revealViewController;
 //
 //    if(_lastSelection.row == indexPath.row && _lastSelection.section == indexPath.section){

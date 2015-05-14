@@ -10,6 +10,9 @@
 #import <CoreMotion/CoreMotion.h>
 
 #import "ViewController.h"
+
+#import "DiagramViewController.h"
+
 // NAVIGATION BAR
 #import "SWRevealViewController.h"
 #import "ExtendedNavBarView.h"
@@ -20,6 +23,7 @@
 #import "ScaleControlView.h"
 // DATA MODELS
 #import "GeodesicModel.h"
+#import "Animation.h"
 
 
 // this appears to be the best way to grab orientation. if this becomes formalized, just make sure the orientations match
@@ -27,18 +31,44 @@
 
 
 #define NAVBAR_HEIGHT 88
+#define EXT_NAVBAR_HEIGHT 57
 
 @interface ViewController () {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
+    Animation *projectionAnimation;
+    // Bottom screen controls
     FrequencyControlView *frequencyControlView;
     SliceControlView *sliceControlView;
     ScaleControlView *scaleControlView;
+
+//    PolyhedronSeed seedType;
+    
 }
+
+@property (nonatomic) NSUInteger perspective;
 @end
 
 @implementation ViewController
+
+-(id) initWithPolyhedra:(unsigned int)solidType{
+    self = [super init];
+    if(self){
+//        seedType = solidType;
+        _solidType = solidType;
+        geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:_solidType];
+    }
+    return self;
+}
+
+-(id) init{
+    self = [super init];
+    if(self){
+        geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:0];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,15 +77,23 @@
     
     [self initSensors];
     
-    geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:ICOSAHEDRON_SEED];
+//    if(seedType == 0)
+//        [self setTitle:@"1V ICO SPHERE"];
+//    if(seedType == 1)
+//        [self setTitle:@"1V OCTA SPHERE"];
+
+    [self updateTitle];
 
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
+    
+    
     geodesicView = [[GeodesicView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
     [self setView:geodesicView];
     
     [geodesicView setGeodesicModel:geodesicModel];
 
+    
     // For the extended navigation bar effect to work, a few changes
     // must be made to the actual navigation bar.  Some of these changes could
     // be applied in the storyboard but are made in code for clarity.
@@ -72,17 +110,15 @@
     // "Pixel" is a solid white 1x1 image.
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
     
-    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Make" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Make" style:UIBarButtonItemStylePlain target:self action:@selector(makeDiagram)];
     self.navigationItem.rightBarButtonItem = makeButton;
     
-    ExtendedNavBarView *extendedNavBar = [[ExtendedNavBarView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 44)];
+    ExtendedNavBarView *extendedNavBar = [[ExtendedNavBarView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, EXT_NAVBAR_HEIGHT)];
     extendedNavBar.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Frequency", @"Slice", @"Scale"]];
 
     [[extendedNavBar segmentedControl] addTarget:self action:@selector(topMenuChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:extendedNavBar];
 
-    [self setTitle:@"3V DOME"];
-    
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
     CGFloat h = [[UIScreen mainScreen] bounds].size.height - NAVBAR_HEIGHT;
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
@@ -101,7 +137,17 @@
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
 }
+-(void) makeDiagram{
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationDuration:0.55];
+    [self.navigationController pushViewController:[[DiagramViewController alloc] init] animated:YES];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+//    [UIView commitAnimations];
+
+}
 -(void) topMenuChange:(UISegmentedControl*)sender{
+    [self setPerspective:[sender selectedSegmentIndex]];
     if([sender selectedSegmentIndex] == 0){
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
@@ -118,11 +164,32 @@
         [scaleControlView setHidden:NO];
     }
 }
+-(void) setPerspective:(NSUInteger)perspective{
+    _perspective = perspective;
+    if(_perspective == 0)
+        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
+    if(_perspective == 1)
+        [geodesicView setFieldOfView:20];
+    if(_perspective == 2)
+        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
+}
+-(void) updateTitle{
+    if(_solidType == 0)
+        [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] + 1]];
+    if(_solidType == 1)
+        [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] + 1]];
+}
+-(void) setSolidType:(unsigned int)solidType{
+    _solidType = solidType;
+    [geodesicModel setSolid:solidType];
+    [self updateTitle];
+}
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
     unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
-    [geodesicView setGeodesicModel:nil];
+//    [geodesicView setGeodesicModel:nil];
     [geodesicModel setFrequency:frequency];
-    [geodesicView setGeodesicModel:geodesicModel];
+    [self updateTitle];
+//    [geodesicView setGeodesicModel:geodesicModel];
 }
 -(void) sliceControlChange:(UISlider*)sender{
     
@@ -157,7 +224,27 @@
 
 // part of GLKViewController
 - (void)update{
-    [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+    if(_perspective == 0)
+        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+    if(_perspective == 1)
+        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
+    if(_perspective == 2)
+        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+}
+
+-(void) animationHandler:(id)sender{
+//    if(sender == animationPerspectiveToOrtho){
+//        GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, powf(frame,2));
+//        _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+//        [camera dollyZoomFlat:powf(frame,3)];
+//    }
+//    if(sender == animationOrthoToPerspective){
+//        GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+//        GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
+//        GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, powf(frame,2));
+//        _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+//        [camera dollyZoomFlat:powf(1-frame,3)];
+//    }
 }
 
 -(GLKMatrix4) getDeviceOrientationMatrix{

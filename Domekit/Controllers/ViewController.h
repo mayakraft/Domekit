@@ -11,6 +11,9 @@
 
 @interface ViewController : GLKViewController
 
+-(id) initWithPolyhedra:(unsigned int)solidType;
+
+@property (nonatomic) unsigned int solidType;
 
 @end
 

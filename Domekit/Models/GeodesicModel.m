@@ -66,6 +66,7 @@
 }
 
 -(void) setSolid:(PolyhedronSeed)solid{
+    NSLog(@"setting solid type");
     _solid = solid;
     [self rebuildPolyhedra];
 }

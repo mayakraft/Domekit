@@ -23,7 +23,7 @@ typedef enum{
 @interface GeodesicView : GLKView
 
 @property GLfloat aspectRatio;
-@property GLfloat fieldOfView;
+@property (nonatomic) GLfloat fieldOfView;
 
 @property (nonatomic) GLKMatrix4 attitudeMatrix;
 @property GLKMatrix4 projectionMatrix;

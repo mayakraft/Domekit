@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2A1AFD13D4007101ED /* SliceControlView.m */; };
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
+		D55550911AFD381A00113FEF /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550901AFD381A00113FEF /* Animation.m */; };
+		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
 		D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C41AF67B58006F33B9 /* AppDelegate.m */; };
 		D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B360CC1AF67B58006F33B9 /* Images.xcassets */; };
@@ -48,6 +50,10 @@
 		D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleControlView.m; sourceTree = "<group>"; };
 		D52FFC321AFD1540007101ED /* net.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = net.c; sourceTree = "<group>"; };
 		D52FFC331AFD1540007101ED /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
+		D555508F1AFD381A00113FEF /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animation.h; path = ../Controllers/Animation.h; sourceTree = "<group>"; };
+		D55550901AFD381A00113FEF /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Animation.m; path = ../Controllers/Animation.m; sourceTree = "<group>"; };
+		D55550921B006DCA00113FEF /* DiagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramViewController.h; sourceTree = "<group>"; };
+		D55550931B006DCA00113FEF /* DiagramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiagramViewController.m; sourceTree = "<group>"; };
 		D5619A131AF904830027A801 /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = geodesic.c; sourceTree = "<group>"; };
 		D5619A141AF904830027A801 /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geodesic.h; sourceTree = "<group>"; };
 		D5619A161AF904830027A801 /* noise.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
@@ -222,6 +228,8 @@
 				D5DBB4931AFBAD8A002D2EB0 /* NavigationController.m */,
 				D5DBB4961AFBAD8A002D2EB0 /* ViewController.h */,
 				D5DBB4971AFBAD8A002D2EB0 /* ViewController.m */,
+				D55550921B006DCA00113FEF /* DiagramViewController.h */,
+				D55550931B006DCA00113FEF /* DiagramViewController.m */,
 				D5DBB4941AFBAD8A002D2EB0 /* RearTableViewController.h */,
 				D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */,
 			);
@@ -231,6 +239,8 @@
 		D5DBB4981AFBAD8A002D2EB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D555508F1AFD381A00113FEF /* Animation.h */,
+				D55550901AFD381A00113FEF /* Animation.m */,
 				D5DBB4991AFBAD8A002D2EB0 /* GeodesicModel.h */,
 				D5DBB49A1AFBAD8A002D2EB0 /* GeodesicModel.m */,
 			);
@@ -373,8 +383,10 @@
 			files = (
 				D5F9182A1AF9162600564114 /* SWRevealViewController.m in Sources */,
 				D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */,
+				D55550911AFD381A00113FEF /* Animation.m in Sources */,
 				D5DBB4A41AFBAD8A002D2EB0 /* FrequencyControlView.m in Sources */,
 				D5DBB4711AFA6412002D2EB0 /* ExtendedNavBarView.m in Sources */,
+				D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */,
 				D5DBB4A21AFBAD8A002D2EB0 /* ViewController.m in Sources */,
 				D5DBB47B1AFA6ECA002D2EB0 /* NavigationBar.m in Sources */,
 				D5DBB4A01AFBAD8A002D2EB0 /* NavigationController.m in Sources */,
