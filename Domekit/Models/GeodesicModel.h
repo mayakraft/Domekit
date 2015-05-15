@@ -24,10 +24,14 @@ typedef enum : NSUInteger {
 -(id) initWithFrequency:(unsigned int)frequency;  // Assumes Icosahedron
 -(id) initWithFrequency:(unsigned int)frequency Solid:(PolyhedronSeed)solid;
 
+@property (nonatomic) NSArray *slicePoints;
+
 @property (nonatomic) unsigned int frequency;
 @property (nonatomic) PolyhedronSeed solid; // 0:icosahedron  1:octahedron  2:tetrahedron
 
-@property geodesicSphere geo;
+@property geodesicDome geo;
 @property geodesicMeshTriangles mesh;
+//@property geodesicMeshCropPlanes meridiansMesh;
+@property geodesicMeshSlicePoints sliceMeridians;
 
 @end

@@ -38,6 +38,7 @@
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
     Animation *projectionAnimation;
+    
     // Bottom screen controls
     FrequencyControlView *frequencyControlView;
     SliceControlView *sliceControlView;
@@ -152,16 +153,19 @@
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:YES];
+        [geodesicView setShowMeridians:NO];
     }
     else if([sender selectedSegmentIndex] == 1){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
+        [geodesicView setShowMeridians:YES];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:NO];
+        [geodesicView setShowMeridians:NO];
     }
 }
 -(void) setPerspective:(NSUInteger)perspective{
@@ -175,19 +179,21 @@
 }
 -(void) updateTitle{
     if(_solidType == 0)
-        [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] + 1]];
+        [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] ]];
     if(_solidType == 1)
-        [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] + 1]];
+        [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] ]];
 }
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
     [geodesicModel setSolid:solidType];
+    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
     [self updateTitle];
 }
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
     unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
 //    [geodesicView setGeodesicModel:nil];
     [geodesicModel setFrequency:frequency];
+    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
     [self updateTitle];
 //    [geodesicView setGeodesicModel:geodesicModel];
 }
@@ -224,12 +230,14 @@
 
 // part of GLKViewController
 - (void)update{
+    GLKMatrix4 orient = [self getDeviceOrientationMatrix];
+//    orient.m32 = -5.0;
     if(_perspective == 0)
-        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+        [geodesicView setAttitudeMatrix:orient];
     if(_perspective == 1)
         [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
     if(_perspective == 2)
-        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+        [geodesicView setAttitudeMatrix:orient];
 }
 
 -(void) animationHandler:(id)sender{
@@ -261,9 +269,18 @@
                               a.m12, a.m22, a.m32, 0.0f,
                               a.m13, a.m23, a.m33, 0.0f,
                               0.0f , 0.0f , 0.0f , 1.0f);
+//        return GLKMatrix4Make(1.0f, 0.0f, 0.0f, 0.0f,
+//                              0.0f, 1.0f, 0.0f, 0.0f,
+//                              0.0f, 0.0f, 1.0f, 0.0f,
+//                              0.0f , 0.0f , -5.0f , 1.0f);
     }
     else
-        return GLKMatrix4Identity;
+//        return GLKMatrix4Identity;
+        return GLKMatrix4Make(1.0f, 0.0f, 0.0f, 0.0f,
+                              0.0f, 1.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 1.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 1.0f);
+
 }
 
 -(void) logMatrix:(GLKMatrix4)m{

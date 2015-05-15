@@ -30,6 +30,8 @@ typedef enum{
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
 
+@property BOOL showMeridians;
+
 -(void) drawTriangles;
 
 @end

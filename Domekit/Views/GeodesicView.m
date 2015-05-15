@@ -68,6 +68,7 @@
 
 -(void) drawTriangles{
     glPushMatrix();
+    glRotatef(90, 0, 0, 1);
     glScalef(_geodesicModel.mesh.shrink, _geodesicModel.mesh.shrink, _geodesicModel.mesh.shrink);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -77,7 +78,29 @@
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopMatrix();
+    if(_showMeridians){
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_LIGHTING);
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        glPushMatrix();
+        glRotatef(90, 0, 0, 1);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, _geodesicModel.sliceMeridians.points);
+//        glNormalPointer(GL_FLOAT, 0, _geodesicModel.sliceMeridians.numPoints);
+        glDrawArrays(GL_POINTS, 0, _geodesicModel.sliceMeridians.numPoints);
+//        glVertexPointer(3, GL_FLOAT, 0, _geodesicModel.meridiansMesh.glTriangles);
+//        glNormalPointer(GL_FLOAT, 0, _geodesicModel.meridiansMesh.glTriangleNormals);
+//        glDrawArrays(GL_TRIANGLES, 0, _geodesicModel.meridiansMesh.numPlanes*3);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glPopMatrix();
+        glEnable(GL_LIGHTING);
+        glEnable(GL_CULL_FACE);
+    }
 }
+
+
 
 #pragma mark- OPENGL
 
