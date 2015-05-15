@@ -32,6 +32,8 @@ typedef enum{
 
 @property BOOL showMeridians;
 
+@property float sliceAmount;
+
 -(void) drawTriangles;
 
 @end

@@ -198,7 +198,7 @@
 //    [geodesicView setGeodesicModel:geodesicModel];
 }
 -(void) sliceControlChange:(UISlider*)sender{
-    
+    [geodesicView setSliceAmount:sender.value];
 }
 -(void) scaleControlChange:(UISlider*)sender{
     
