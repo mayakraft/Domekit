@@ -26,6 +26,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic) NSArray *slicePoints;
 
+@property (nonatomic) NSArray *lineClassLengths;
+
 @property (nonatomic) unsigned int frequency;
 @property (nonatomic) PolyhedronSeed solid; // 0:icosahedron  1:octahedron  2:tetrahedron
 
