@@ -7,7 +7,6 @@
 //
 
 #import "DiagramViewController.h"
-
 #import "EquidistantAzimuthView.h"
 
 
@@ -15,23 +14,16 @@
 {
     int polaris, octantis;
     NSArray *colorTable;
+    EquidistantAzimuthView *equidistantAzimuthView;
 }
 
 @end
 
 @implementation DiagramViewController
 
--(id) init{
-    self = [super init];
-    if(self){
-        _scale = defaultScale;
-        _lineWidth = defaultLineWidth;
-    }
-    return self;
-}
-
 -(void) setGeodesicModel:(GeodesicModel *)geodesicModel{
     _geodesicModel = geodesicModel;
+    [equidistantAzimuthView setGeodesic:_geodesicModel];
     [self getLengthOrder];
 }
 
@@ -84,11 +76,11 @@
 //    [self.view addSubview:azimuthView];
     
     
-    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    [EAGLContext setCurrentContext:context];
-    
-    EquidistantAzimuthView *view = [[EquidistantAzimuthView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
-    [self setView:view];
+    equidistantAzimuthView = [[EquidistantAzimuthView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [equidistantAzimuthView setColorTable:colorTable];
+    [equidistantAzimuthView setGeodesic:_geodesicModel];
+    [self setView:equidistantAzimuthView];
+    [self.view setNeedsDisplay];
     
 //    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:nil action:NULL];
 //    self.navigationItem.rightBarButtonItem = makeButton;

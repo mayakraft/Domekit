@@ -6,8 +6,18 @@
 //  Copyright (c) 2015 Robby. All rights reserved.
 //
 
-#import <GLKit/GLKit.h>
+#import <UIKit/UIKit.h>
+#import "GeodesicModel.h"
 
-@interface EquidistantAzimuthView : GLKView
+#define defaultLineWidth 3
+#define defaultScale 28
+
+@interface EquidistantAzimuthView : UIView
+@property (nonatomic, weak) GeodesicModel *geodesic;
+
+@property (nonatomic) double scale;
+@property (nonatomic) double lineWidth;
+
+@property (weak) NSArray *colorTable;
 
 @end

@@ -6,20 +6,12 @@
 //  Copyright (c) 2015 Robby. All rights reserved.
 //
 
-#import <GLKit/GLKit.h>
+#import <UIKit/UIKit.h>
 #import "GeodesicModel.h"
 
-
-#define defaultLineWidth 1
-#define defaultScale 28
-
-
-@interface DiagramViewController : GLKViewController
+@interface DiagramViewController : UIViewController
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
-
-@property (nonatomic) double scale;
-@property (nonatomic) double lineWidth;
 
 -(NSArray*) getLengthOrder;
 

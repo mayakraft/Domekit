@@ -19,7 +19,6 @@
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
-    NSLog(@"This is getting called");
     self.backgroundColor = [UIColor whiteColor];
     // Use the layer shadow to draw a one pixel hairline under this view.
     [self.layer setShadowOffset:CGSizeMake(0, 1.0f/UIScreen.mainScreen.scale)];

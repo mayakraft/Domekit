@@ -142,7 +142,9 @@
 //    [UIView beginAnimations:nil context:NULL];
 //    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 //    [UIView setAnimationDuration:0.55];
-    [self.navigationController pushViewController:[[DiagramViewController alloc] init] animated:YES];
+    DiagramViewController *dVC = [[DiagramViewController alloc] init];
+    [dVC setGeodesicModel:geodesicModel];
+    [self.navigationController pushViewController:dVC animated:YES];
 //    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
 //    [UIView commitAnimations];
 
