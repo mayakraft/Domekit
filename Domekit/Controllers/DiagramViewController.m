@@ -24,24 +24,24 @@
 -(void) setGeodesicModel:(GeodesicModel *)geodesicModel{
     _geodesicModel = geodesicModel;
     [equidistantAzimuthView setGeodesic:_geodesicModel];
-    [self getLengthOrder];
+//    [self getLengthOrder];
 }
 
 
--(NSArray*) getLengthOrder
-{
-    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithCapacity:_geodesicModel.lineClassLengths.count];
-    int i, j, index;
-    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
-    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++){
-        index = 0;
-        for(j = 0; j < _geodesicModel.lineClassLengths.count; j++){
-            if(i!=j && [_geodesicModel.lineClassLengths[i] doubleValue] > [_geodesicModel.lineClassLengths[j] doubleValue]) index++;
-        }
-        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
-    }
-    return [[NSArray alloc] initWithArray:lengthOrder];
-}
+//-(NSArray*) getLengthOrder
+//{
+//    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithCapacity:_geodesicModel.lineClassLengths.count];
+//    int i, j, index;
+//    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
+//    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++){
+//        index = 0;
+//        for(j = 0; j < _geodesicModel.lineClassLengths.count; j++){
+//            if(i!=j && [_geodesicModel.lineClassLengths[i] doubleValue] > [_geodesicModel.lineClassLengths[j] doubleValue]) index++;
+//        }
+//        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
+//    }
+//    return [[NSArray alloc] initWithArray:lengthOrder];
+//}
 
 
 - (void)viewDidLoad {

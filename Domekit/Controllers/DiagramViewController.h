@@ -13,6 +13,6 @@
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
 
--(NSArray*) getLengthOrder;
+//-(NSArray*) getLengthOrder;
 
 @end

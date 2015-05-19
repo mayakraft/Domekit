@@ -46,7 +46,6 @@
 {
     if(!_geodesic) {NSLog(@"Gonna return, no geodesic"); return;}
     if(!_colorTable) {NSLog(@"Gonna return, no colors"); return;}
-    NSLog(@"WE MADE IT WE'RE GONNA DO IT");
     
 //    imageForContext = [[UIImage alloc] init];
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -63,7 +62,7 @@
     
     //NSArray *lengthOrder = [[NSArray alloc] initWithArray:[self getLengthOrder]];
     
-    // FIND THE LOWEST POINT, stretch radius of circle (SCALE) to accomodate
+//     FIND THE LOWEST POINT, stretch radius of circle (SCALE) to accomodate
 //    for(count = 0; count < dome.points_.count; count++)
 //    {
 //        if( count != octantis &&[dome.invisiblePoints_[count] boolValue] == FALSE)
@@ -96,8 +95,8 @@
     {
         //if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] < colorTable.count-1)
         //    [(UIColor*)colorTable[[lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue]] setStroke];
-        if( [ _geodesic.lineClass[count] integerValue] < _colorTable.count-1)
-            [(UIColor*)_colorTable[ [_geodesic.lineClass[count] integerValue]] setStroke];
+        if( [ _geodesic.lineLengthTypes[count] integerValue] < _colorTable.count-1)
+            [(UIColor*)_colorTable[ [_geodesic.lineLengthTypes[count] integerValue]] setStroke];
         else
             [(UIColor*)_colorTable[_colorTable.count-1] setStroke];
         
