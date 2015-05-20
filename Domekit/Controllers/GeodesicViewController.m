@@ -9,7 +9,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import <CoreMotion/CoreMotion.h>
 
-#import "ViewController.h"
+#import "GeodesicViewController.h"
 
 #import "DiagramViewController.h"
 
@@ -33,7 +33,7 @@
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
 
-@interface ViewController () {
+@interface GeodesicViewController () {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
@@ -48,7 +48,7 @@
 @property (nonatomic) NSUInteger perspective;
 @end
 
-@implementation ViewController
+@implementation GeodesicViewController
 
 -(id) initWithPolyhedra:(unsigned int)solidType{
     self = [super init];
@@ -120,7 +120,8 @@
 //    [UIView setAnimationDuration:0.55];
     DiagramViewController *dVC = [[DiagramViewController alloc] init];
     [geodesicModel makeLineClasses];
-    [dVC setMaterials:@{@"lines" : [geodesicModel lineLengthValues]}];
+    [dVC setMaterials:@{@"lines" : [geodesicModel lineLengthValues],
+                        @"lineQuantities" : [geodesicModel lineTypeQuantities]}];
     [dVC setTitle:[self title]];
     [dVC setGeodesicModel:geodesicModel];
     
@@ -157,9 +158,11 @@
     if(_perspective == 1)
         [geodesicView setFieldOfView:20];
     if(_perspective == 2)
-        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
+        [geodesicView setFieldOfView:20];
 }
 -(void) updateTitle{
+//    [[[self navigationController] navigationBar] setBarStyle:UIBarStyleDefault];
+    [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     if(_solidType == 0)
         [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] ]];
     if(_solidType == 1)
@@ -227,6 +230,14 @@
 //    _lookAltitude = asinf(_lookVector.y);
 }
 
+-(void) setOrientationSensorsEnabled:(BOOL)orientationSensorsEnabled{
+    _orientationSensorsEnabled = orientationSensorsEnabled;
+    if(_orientationSensorsEnabled)
+        [motionManager startDeviceMotionUpdates];
+    else
+        [motionManager stopDeviceMotionUpdates];
+}
+
 -(void) initSensors{
     motionManager = [[CMMotionManager alloc] init];
     [motionManager startDeviceMotionUpdates];
@@ -234,14 +245,14 @@
 
 // part of GLKViewController
 - (void)update{
-    GLKMatrix4 orient = [self getDeviceOrientationMatrix];
-//    orient.m32 = -5.0;
-    if(_perspective == 0)
-        [geodesicView setAttitudeMatrix:orient];
+    if(_perspective == 0){
+        //    orient.m32 = -5.0;
+        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+    }
     if(_perspective == 1)
         [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
     if(_perspective == 2)
-        [geodesicView setAttitudeMatrix:orient];
+        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
 }
 
 -(void) animationHandler:(id)sender{

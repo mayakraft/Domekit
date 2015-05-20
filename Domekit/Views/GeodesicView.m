@@ -65,7 +65,6 @@
     _geodesicModel = geodesicModel;
 }
 
-
 -(void) drawTriangles{
     glPushMatrix();
     glRotatef(-90, 0, 0, 1);

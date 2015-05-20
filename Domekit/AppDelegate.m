@@ -7,52 +7,79 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
+#import "GeodesicViewController.h"
 #import "SWRevealViewController.h"
 #import "RearTableViewController.h"
 #import "NavigationController.h"
 #import "NavigationBar.h"
+#import "PreferencesTableViewController.h"
 
 @interface AppDelegate () <SWRevealViewControllerDelegate>
-@property ViewController *viewController;
+@property SWRevealViewController *revealController;
+@property UINavigationController *geodesicNavigationController;
+@property GeodesicViewController *geodesicViewController;
 @end
 
 @implementation AppDelegate
 
+-(void) firstRunTime{
+    [[NSUserDefaults standardUserDefaults] setObject:@"feet" forKey:@"units"];
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
+    [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"precision"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 -(void) newIcosahedron{
-    [_viewController setSolidType:0];
+    if(![[_revealController frontViewController] isEqual:_geodesicNavigationController])
+        [_revealController setFrontViewController:_geodesicNavigationController];
+    [_geodesicViewController setSolidType:0];
+    [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 -(void) newOctahedron{
-    [_viewController setSolidType:1];
+    if(![[_revealController frontViewController] isEqual:_geodesicNavigationController])
+        [_revealController setFrontViewController:_geodesicNavigationController];
+    [_geodesicViewController setSolidType:1];
+    [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+}
+-(void) openPreferences{
+    UINavigationController *preferencesNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
+    [preferencesNavigationController setViewControllers:@[[[PreferencesTableViewController alloc] initWithStyle:UITableViewStyleGrouped]]];
+    [_revealController setFrontViewController:preferencesNavigationController];
+    [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+}
+
+-(void) updateUserPreferencesAcrossApp{
+    BOOL enabled = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"] boolValue];
+    [_geodesicViewController setOrientationSensorsEnabled:enabled];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+
+    // first runtime.
+    // no preferences. make preferences for the first time.
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
+        [self firstRunTime];
+    }
     
-    _viewController = [[ViewController alloc] init];
-//    NavigationController *navController = [[NavigationController alloc] initWithRootViewController:viewController];    
-    UINavigationController *navController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
-    [navController setViewControllers:@[_viewController]];
+    _geodesicViewController = [[GeodesicViewController alloc] init];
+    _geodesicNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
+    [_geodesicNavigationController setViewControllers:@[_geodesicViewController]];
     
     RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
-    SWRevealViewController *mainRevealController =
-    [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navController];
+    _revealController =
+    [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:_geodesicNavigationController];
+    _revealController.rearViewRevealWidth = 260;
+    _revealController.rearViewRevealOverdraw = 120;
+    _revealController.bounceBackOnOverdraw = NO;
+    _revealController.stableDragOnOverdraw = YES;
+    _revealController.delegate = self;
+    [_revealController setFrontViewPosition:FrontViewPositionLeft];
     
-    mainRevealController.rearViewRevealWidth = 260;
-    mainRevealController.rearViewRevealOverdraw = 120;
-    mainRevealController.bounceBackOnOverdraw = NO;
-    mainRevealController.stableDragOnOverdraw = YES;
-    [mainRevealController setFrontViewPosition:FrontViewPositionLeft];
-    
-    mainRevealController.delegate = self;
-
-//    self.window.rootViewController = navController;
-    self.window.rootViewController = mainRevealController;
-//    self.window.backgroundColor = [UIColor blackColor];
+    self.window.rootViewController = _revealController;
     [self.window makeKeyAndVisible];
-
     return YES;
 }
 

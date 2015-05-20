@@ -27,9 +27,10 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSArray *slicePoints;
 @property (nonatomic) NSArray *faceAltitudeCountsCumulative;
 
--(void) makeLineClasses;  // fill these two arrays below
+-(void) makeLineClasses;  // fill these three arrays below, THEY WILL BE EMPTY OTHERWISE
 @property (nonatomic) NSArray *lineLengthValues;
 @property (nonatomic) NSArray *lineLengthTypes;
+@property (nonatomic) NSArray *lineTypeQuantities;
 
 @property (nonatomic) unsigned int frequency;
 @property (nonatomic) PolyhedronSeed solid; // 0:icosahedron  1:octahedron  2:tetrahedron

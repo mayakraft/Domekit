@@ -34,22 +34,53 @@
 
 -(void) setMaterials:(NSDictionary *)materials{
     _materials = materials;
+    NSLog(@"MATERIALS INVOLVED:\n%@",materials);
     [self.tableView reloadData];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[_materials objectForKey:@"lines"] count];
+    if(section == 0)
+        return [[_materials objectForKey:@"lines"] count];
+    else if(section == 1)
+        return [[_materials objectForKey:@"points"] count];
+    return 0;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2;
+}
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if(section == 0)
+        return @"Struts";
+    else if(section == 1)
+        return @"Joints";
+    else
+        return @"";
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] init];
+    MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MaterialsCell"];
     NSArray *lines = [_materials objectForKey:@"lines"];
     if([lines count]){
-        [[cell textLabel] setText:[NSString stringWithFormat:@"%@",[lines objectAtIndex:indexPath.row]]];
+        // format strut length
+        float length = [[lines objectAtIndex:indexPath.row] floatValue];
+        [[cell textLabel] setText:[NSString stringWithFormat:@"%f ft",length]];
+
+        UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(10, 18, 64, 8)];
+        if(indexPath.row < [colorTable count])
+            [colorBar setBackgroundColor:[colorTable objectAtIndex:indexPath.row]];
+        else
+            [colorBar setBackgroundColor:[UIColor grayColor]];
+        [cell addSubview:colorBar];
+
+        NSArray *lineQuantities = [_materials objectForKey:@"lineQuantities"];
+        if([lineQuantities count]){
+            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"× %@",[lineQuantities objectAtIndex:indexPath.row]]];
+        }
     }
     return cell;
+}
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 
@@ -76,7 +107,7 @@
                   [UIColor colorWithRed:0 green:0.8 blue:0 alpha:1.0],  //green
                   [UIColor colorWithRed:0.53 green:0 blue:0.8 alpha:1.0],  //purple
                   [UIColor colorWithRed:1 green:0.66 blue:0 alpha:1.0],   //orange
-                  [UIColor colorWithRed:0 green:0.66 blue:0.66 alpha:1.0], //teal
+                  [UIColor colorWithRed:0 green:0.575 blue:0.7 alpha:1.0], //teal
                   [UIColor colorWithRed:0.88 green:0.88 blue:0 alpha:1.0],  //gold
                   [UIColor colorWithRed:0.86 green:0 blue:0.73 alpha:1.0],  //pink
                   [UIColor colorWithRed:0.66 green:.88 blue:0 alpha:1.0],  // lime green
@@ -103,19 +134,24 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+#define ZOOM 4
     
-    equidistantAzimuthView = [[EquidistantAzimuthView alloc] initWithFrame:CGRectMake(0, 0, size.width * 2, (size.width + EXT_NAVBAR_HEIGHT) * 2)];
+    equidistantAzimuthView = [[EquidistantAzimuthView alloc] initWithFrame:CGRectMake(0, 0, size.width * ZOOM, (size.width + EXT_NAVBAR_HEIGHT) * ZOOM)];
     [equidistantAzimuthView setColorTable:colorTable];
     [equidistantAzimuthView setGeodesic:_geodesicModel];
     [equidistantAzimuthView setBackgroundColor:[UIColor whiteColor]];
 
     UIScrollView *diagramScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.width + EXT_NAVBAR_HEIGHT)];
-    [diagramScrollview setContentSize:CGSizeMake(size.width * 2, (size.width + EXT_NAVBAR_HEIGHT) * 2)];
-    [diagramScrollview setZoomScale:.5];
+    [diagramScrollview setContentSize:CGSizeMake(size.width * ZOOM, (size.width + EXT_NAVBAR_HEIGHT) * ZOOM)];
+//    [diagramScrollview setZoomScale:.5];
+    [diagramScrollview setDelegate:self];
+    [diagramScrollview setMaximumZoomScale:1.0];
+    [diagramScrollview setMinimumZoomScale:.25];
+    [diagramScrollview setZoomScale:0.25];
     [diagramScrollview addSubview:equidistantAzimuthView];
     [self.view addSubview:diagramScrollview];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44) style:UITableViewStylePlain];
 //    [self setTableView:tableView];
     [self.view addSubview:self.tableView];
     [self.tableView setDataSource:self];
@@ -131,6 +167,10 @@
     self.navigationItem.leftBarButtonItem = backButton;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+-(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return equidistantAzimuthView;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -78,7 +78,7 @@
 //    }
 //    else scale = _scale/(2.5);
     
-    scale = _scale*4;///(2.5);
+    scale = _scale*16;///(2.5);
     
     [[UIColor colorWithWhite:0.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, _lineWidth);
@@ -111,7 +111,7 @@
                 angle = atan2(_geodesic.geo.g.points[index1*3+2],      //  try changing these
                               _geodesic.geo.g.points[index1*3+1]);     //
                 yOffset = asin(-_geodesic.geo.g.points[index1*3+0]) / (M_PI/2) + 1;
-        NSLog(@"YOFF: %f",yOffset);
+//        NSLog(@"YOFF: %f",yOffset);
                 
 //                if(yOffset > 1.63)
 //                    fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;

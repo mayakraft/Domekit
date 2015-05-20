@@ -11,6 +11,8 @@
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
 		D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */; };
 		D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */; };
+		D53B9C641B0C202D008E5014 /* PreferencesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */; };
+		D53B9C671B0C9BF3008E5014 /* PreferencesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */; };
 		D55550911AFD381A00113FEF /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550901AFD381A00113FEF /* Animation.m */; };
 		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
@@ -28,7 +30,7 @@
 		D5DBB47B1AFA6ECA002D2EB0 /* NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB47A1AFA6ECA002D2EB0 /* NavigationBar.m */; };
 		D5DBB4A01AFBAD8A002D2EB0 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB4931AFBAD8A002D2EB0 /* NavigationController.m */; };
 		D5DBB4A11AFBAD8A002D2EB0 /* RearTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */; };
-		D5DBB4A21AFBAD8A002D2EB0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB4971AFBAD8A002D2EB0 /* ViewController.m */; };
+		D5DBB4A21AFBAD8A002D2EB0 /* GeodesicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB4971AFBAD8A002D2EB0 /* GeodesicViewController.m */; };
 		D5DBB4A31AFBAD8A002D2EB0 /* GeodesicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB49A1AFBAD8A002D2EB0 /* GeodesicModel.m */; };
 		D5DBB4A41AFBAD8A002D2EB0 /* FrequencyControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB49D1AFBAD8A002D2EB0 /* FrequencyControlView.m */; };
 		D5DBB4A51AFBAD8A002D2EB0 /* GeodesicView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB49F1AFBAD8A002D2EB0 /* GeodesicView.m */; };
@@ -56,6 +58,10 @@
 		D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquidistantAzimuthView.m; sourceTree = "<group>"; };
 		D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialsListTableViewCell.h; sourceTree = "<group>"; };
 		D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaterialsListTableViewCell.m; sourceTree = "<group>"; };
+		D53B9C621B0C202D008E5014 /* PreferencesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesTableViewController.h; sourceTree = "<group>"; };
+		D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesTableViewController.m; sourceTree = "<group>"; };
+		D53B9C651B0C9BF3008E5014 /* PreferencesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesTableViewCell.h; sourceTree = "<group>"; };
+		D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesTableViewCell.m; sourceTree = "<group>"; };
 		D555508F1AFD381A00113FEF /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animation.h; path = ../Controllers/Animation.h; sourceTree = "<group>"; };
 		D55550901AFD381A00113FEF /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Animation.m; path = ../Controllers/Animation.m; sourceTree = "<group>"; };
 		D55550921B006DCA00113FEF /* DiagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramViewController.h; sourceTree = "<group>"; };
@@ -94,8 +100,8 @@
 		D5DBB4931AFBAD8A002D2EB0 /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		D5DBB4941AFBAD8A002D2EB0 /* RearTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RearTableViewController.h; sourceTree = "<group>"; };
 		D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RearTableViewController.m; sourceTree = "<group>"; };
-		D5DBB4961AFBAD8A002D2EB0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D5DBB4971AFBAD8A002D2EB0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		D5DBB4961AFBAD8A002D2EB0 /* GeodesicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicViewController.h; sourceTree = "<group>"; };
+		D5DBB4971AFBAD8A002D2EB0 /* GeodesicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicViewController.m; sourceTree = "<group>"; };
 		D5DBB4991AFBAD8A002D2EB0 /* GeodesicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeodesicModel.h; sourceTree = "<group>"; };
 		D5DBB49A1AFBAD8A002D2EB0 /* GeodesicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicModel.m; sourceTree = "<group>"; };
 		D5DBB49C1AFBAD8A002D2EB0 /* FrequencyControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrequencyControlView.h; sourceTree = "<group>"; };
@@ -127,6 +133,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D53B9C611B0C0CE9008E5014 /* Dome Edit Controls */ = {
+			isa = PBXGroup;
+			children = (
+				D5DBB49C1AFBAD8A002D2EB0 /* FrequencyControlView.h */,
+				D5DBB49D1AFBAD8A002D2EB0 /* FrequencyControlView.m */,
+				D52FFC291AFD13D4007101ED /* SliceControlView.h */,
+				D52FFC2A1AFD13D4007101ED /* SliceControlView.m */,
+				D52FFC2C1AFD13E3007101ED /* ScaleControlView.h */,
+				D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */,
+			);
+			name = "Dome Edit Controls";
+			sourceTree = "<group>";
+		};
 		D5619A121AF904830027A801 /* Geodesic */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,12 +251,14 @@
 			children = (
 				D5DBB4921AFBAD8A002D2EB0 /* NavigationController.h */,
 				D5DBB4931AFBAD8A002D2EB0 /* NavigationController.m */,
-				D5DBB4961AFBAD8A002D2EB0 /* ViewController.h */,
-				D5DBB4971AFBAD8A002D2EB0 /* ViewController.m */,
+				D5DBB4961AFBAD8A002D2EB0 /* GeodesicViewController.h */,
+				D5DBB4971AFBAD8A002D2EB0 /* GeodesicViewController.m */,
 				D55550921B006DCA00113FEF /* DiagramViewController.h */,
 				D55550931B006DCA00113FEF /* DiagramViewController.m */,
 				D5DBB4941AFBAD8A002D2EB0 /* RearTableViewController.h */,
 				D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */,
+				D53B9C621B0C202D008E5014 /* PreferencesTableViewController.h */,
+				D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -260,14 +281,11 @@
 				D5DBB49F1AFBAD8A002D2EB0 /* GeodesicView.m */,
 				D53B9C5B1B089ED7008E5014 /* EquidistantAzimuthView.h */,
 				D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */,
-				D5DBB49C1AFBAD8A002D2EB0 /* FrequencyControlView.h */,
-				D5DBB49D1AFBAD8A002D2EB0 /* FrequencyControlView.m */,
-				D52FFC291AFD13D4007101ED /* SliceControlView.h */,
-				D52FFC2A1AFD13D4007101ED /* SliceControlView.m */,
-				D52FFC2C1AFD13E3007101ED /* ScaleControlView.h */,
-				D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */,
 				D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */,
 				D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */,
+				D53B9C651B0C9BF3008E5014 /* PreferencesTableViewCell.h */,
+				D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */,
+				D53B9C611B0C0CE9008E5014 /* Dome Edit Controls */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -397,16 +415,18 @@
 				D5DBB4A41AFBAD8A002D2EB0 /* FrequencyControlView.m in Sources */,
 				D5DBB4711AFA6412002D2EB0 /* ExtendedNavBarView.m in Sources */,
 				D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */,
-				D5DBB4A21AFBAD8A002D2EB0 /* ViewController.m in Sources */,
+				D5DBB4A21AFBAD8A002D2EB0 /* GeodesicViewController.m in Sources */,
 				D5DBB47B1AFA6ECA002D2EB0 /* NavigationBar.m in Sources */,
 				D5DBB4A01AFBAD8A002D2EB0 /* NavigationController.m in Sources */,
 				D5DBB4A51AFBAD8A002D2EB0 /* GeodesicView.m in Sources */,
 				D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */,
 				D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */,
 				D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */,
+				D53B9C671B0C9BF3008E5014 /* PreferencesTableViewCell.m in Sources */,
 				D5DBB4A11AFBAD8A002D2EB0 /* RearTableViewController.m in Sources */,
 				D5DBB4A31AFBAD8A002D2EB0 /* GeodesicModel.m in Sources */,
 				D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */,
+				D53B9C641B0C202D008E5014 /* PreferencesTableViewController.m in Sources */,
 				D5B360C21AF67B58006F33B9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

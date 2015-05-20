@@ -52,17 +52,22 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0)
         return 2;
-    return numberOfSavedDomes;
+    else if (section == 1)
+        return numberOfSavedDomes;
+    else if(section == 2)
+        return 1;
+    else
+        return 0;
 }
--(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 22;
-}
+//-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    return 22;
+//}
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 1;
 }
@@ -70,20 +75,22 @@
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0)
         return @"New Dome";
-    else
+    else if (section == 1)
         return @"Saved Domes";
+    else
+        return @"Domekit";
 }
 
--(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 44;
-}
+//-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return 44;
+//}
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if(section == 0){
-        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 900, 3)];
-        [v setBackgroundColor:[UIColor whiteColor]];
-        return v;
-    }
+//    if(section == 0){
+//        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 900, 3)];
+//        [v setBackgroundColor:[UIColor whiteColor]];
+//        return v;
+//    }
     return nil;
 }
 
@@ -112,34 +119,37 @@
     
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-
     cell.backgroundColor = [UIColor whiteColor];
-//    cell.textLabel.font = [[Program wide] ul];
-//    cell.textLabel.textColor = [[Program wide] colorDark];
-    
     cell.selectedBackgroundView = selectionView;
 
-    if(indexPath.row == 0)
-        [cell.textLabel setText:@"Icosahedron"];
-    else if(indexPath.row == 1)
-        [cell.textLabel setText:@"Octahedron"];
-//    NSString *title = nil;
-//    if(indexPath.section == 0)
-//        cell.textLabel.text = title;
-//    else if(indexPath.section == 1)
-//        cell.textLabel.text = title;
-    
+    if(indexPath.section == 0){
+        if(indexPath.row == 0)
+            [cell.textLabel setText:@"Icosahedron"];
+        else if(indexPath.row == 1)
+            [cell.textLabel setText:@"Octahedron"];
+    }
+    else if(indexPath.section == 1){
+    }
+    else if(indexPath.section == 2){
+        if(indexPath.row == 0)
+            [cell.textLabel setText:@"Preferences"];
+    }
     return cell;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 //    ViewController *viewController = [[ViewController alloc] init];
-    if(indexPath.row == 0)
-        [(AppDelegate*)[[UIApplication sharedApplication] delegate] newIcosahedron];
-    if(indexPath.row == 1)
-        [(AppDelegate*)[[UIApplication sharedApplication] delegate] newOctahedron];
-
+    if(indexPath.section == 0){
+        if(indexPath.row == 0)
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] newIcosahedron];
+        if(indexPath.row == 1)
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] newOctahedron];
+    }
+    else if(indexPath.section == 2){
+        if(indexPath.row == 0)
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] openPreferences];
+    }
     
 //    if(indexPath.row == 0)
 //        [viewController setSolidType:0];
@@ -153,12 +163,10 @@
     
 //    RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     
-    SWRevealViewController *revealController = self.revealViewController;
 //    SWRevealViewController *mainRevealController = [SWRevealViewController new];
 //    [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navController];
 
 //    [revealController setFrontViewController:[[UINavigationController alloc] initWithRootViewController:viewController]];
-    [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 //    SWRevealViewController *revealController = self.revealViewController;
 //
 //    if(_lastSelection.row == indexPath.row && _lastSelection.section == indexPath.section){

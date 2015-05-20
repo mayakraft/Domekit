@@ -15,5 +15,9 @@
 -(void) newIcosahedron;
 -(void) newOctahedron;
 
+-(void) openPreferences;
+
+-(void) updateUserPreferencesAcrossApp;
+
 @end
 

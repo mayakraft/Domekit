@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-@interface ViewController : GLKViewController
+@interface GeodesicViewController : GLKViewController
 
 -(id) initWithPolyhedra:(unsigned int)solidType;
 
 @property (nonatomic) unsigned int solidType;
+
+@property (nonatomic) BOOL orientationSensorsEnabled;
 
 @end
 

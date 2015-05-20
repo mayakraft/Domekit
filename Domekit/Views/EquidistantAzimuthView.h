@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GeodesicModel.h"
 
-#define defaultLineWidth 3
+#define defaultLineWidth 12
 #define defaultScale 28
 
 @interface EquidistantAzimuthView : UIView

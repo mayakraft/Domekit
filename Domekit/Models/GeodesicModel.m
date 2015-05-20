@@ -80,21 +80,22 @@
 
 -(void) makeLineClasses{
     geodesicAnalysis a = classifyLines(&_geo.g);
-    NSLog(@"part 2, entering");
+    
     NSMutableArray *types = [NSMutableArray array];
     for(int i = 0; i < _geo.g.numLines; i++){
-        printf("%d %d\n",i, a.lineLengthTypes[i]);
         [types addObject:[NSNumber numberWithUnsignedInt:a.lineLengthTypes[i]]];
     }
     _lineLengthTypes = types;
-    
-    NSLog(@"part 2, midway");
 
     NSMutableArray *values = [NSMutableArray array];
     for(int i = 0; i < a.numLineLengths; i++)
         [values addObject:[NSNumber numberWithDouble:a.lineLengthValues[i]]];
     _lineLengthValues = values;
-    NSLog(@"part 2, exiting");
+
+    NSMutableArray *quantites = [NSMutableArray array];
+    for(int i = 0; i < a.numLineLengths; i++)
+        [quantites addObject:[NSNumber numberWithUnsignedInt:a.lineTypesQuantities[i]]];
+    _lineTypeQuantities = quantites;
 }
 
 -(void) logGeodesic{

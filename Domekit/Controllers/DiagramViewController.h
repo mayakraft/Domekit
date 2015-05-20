@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "GeodesicModel.h"
 
-@interface DiagramViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DiagramViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
 
-// collection of (NSArray) keys: lines, lineTypes, colors
+// collection of (NSArray) keys: lines, lineTypes, lineQuantities,
 @property (nonatomic, strong) NSDictionary *materials;
 
 @property UITableView *tableView;
