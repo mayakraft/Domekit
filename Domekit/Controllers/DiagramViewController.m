@@ -8,6 +8,11 @@
 
 #import "DiagramViewController.h"
 #import "EquidistantAzimuthView.h"
+#import "MaterialsListTableViewCell.h"
+
+
+#define NAVBAR_HEIGHT 88
+#define EXT_NAVBAR_HEIGHT 57
 
 
 @interface DiagramViewController () <UIActionSheetDelegate>
@@ -25,6 +30,26 @@
     _geodesicModel = geodesicModel;
     [equidistantAzimuthView setGeodesic:_geodesicModel];
 //    [self getLengthOrder];
+}
+
+-(void) setMaterials:(NSDictionary *)materials{
+    _materials = materials;
+    [self.tableView reloadData];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [[_materials objectForKey:@"lines"] count];
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] init];
+    NSArray *lines = [_materials objectForKey:@"lines"];
+    if([lines count]){
+        [[cell textLabel] setText:[NSString stringWithFormat:@"%@",[lines objectAtIndex:indexPath.row]]];
+    }
+    return cell;
 }
 
 
@@ -69,18 +94,32 @@
     
 
     // Do any additional setup after loading the view.
-    [self setTitle:@"3V 5/9 DIAGRAM"];
+
     
 //    CGSize windowSize = [[UIScreen mainScreen] bounds].size;
 //    EquidistantAzimuthView *azimuthView = [[EquidistantAzimuthView alloc] initWithFrame:CGRectMake(0, (windowSize.height-windowSize.width)*.5, windowSize.width, windowSize.width)];
 //    [self.view addSubview:azimuthView];
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     
-    equidistantAzimuthView = [[EquidistantAzimuthView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    equidistantAzimuthView = [[EquidistantAzimuthView alloc] initWithFrame:CGRectMake(0, 0, size.width * 2, (size.width + EXT_NAVBAR_HEIGHT) * 2)];
     [equidistantAzimuthView setColorTable:colorTable];
     [equidistantAzimuthView setGeodesic:_geodesicModel];
-    [self setView:equidistantAzimuthView];
-    [self.view setNeedsDisplay];
+    [equidistantAzimuthView setBackgroundColor:[UIColor whiteColor]];
+
+    UIScrollView *diagramScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.width + EXT_NAVBAR_HEIGHT)];
+    [diagramScrollview setContentSize:CGSizeMake(size.width * 2, (size.width + EXT_NAVBAR_HEIGHT) * 2)];
+    [diagramScrollview setZoomScale:.5];
+    [diagramScrollview addSubview:equidistantAzimuthView];
+    [self.view addSubview:diagramScrollview];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT) style:UITableViewStylePlain];
+//    [self setTableView:tableView];
+    [self.view addSubview:self.tableView];
+    [self.tableView setDataSource:self];
+    [self.tableView setDelegate:self];
     
 //    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:nil action:NULL];
 //    self.navigationItem.rightBarButtonItem = makeButton;
@@ -112,7 +151,7 @@
 }
 
 -(void) saveButtonPressed{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Share" delegate:self cancelButtonTitle:@"Nope" destructiveButtonTitle:nil otherButtonTitles:@"Email", @"Save Image to Photos", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Nope" destructiveButtonTitle:nil otherButtonTitles:@"Save Dome", @"Save Image to Photos", nil];
     [actionSheet showInView:self.view];
 }
 

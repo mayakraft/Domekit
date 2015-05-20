@@ -25,6 +25,7 @@ typedef enum : NSUInteger {
 -(id) initWithFrequency:(unsigned int)frequency Solid:(PolyhedronSeed)solid;
 
 @property (nonatomic) NSArray *slicePoints;
+@property (nonatomic) NSArray *faceAltitudeCountsCumulative;
 
 -(void) makeLineClasses;  // fill these two arrays below
 @property (nonatomic) NSArray *lineLengthValues;

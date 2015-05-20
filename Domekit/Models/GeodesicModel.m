@@ -60,6 +60,17 @@
     [self logGeodesic];
 }
 
+-(NSArray *)faceAltitudeCountsCumulative{
+    NSMutableArray *counts = [NSMutableArray array];
+    for(int i = 0; i < _geo.numMeridians; i++){
+        if(i == 0)
+            [counts addObject:[NSNumber numberWithUnsignedInt:_geo.faceAltitudeCounts[i]]];
+        else
+            [counts addObject:[NSNumber numberWithUnsignedInt:_geo.faceAltitudeCounts[i] + [counts[i-1] unsignedIntValue]]];
+    }
+    return counts;
+}
+
 -(NSArray*)slicePoints {
     NSMutableArray *points = [NSMutableArray array];
     for(int i = 0 ;i < _geo.numSlicePoints; i++)

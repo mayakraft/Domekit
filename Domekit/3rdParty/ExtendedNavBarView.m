@@ -12,6 +12,48 @@
 
 @implementation ExtendedNavBarView
 
+-(id) init{
+    self = [super init];
+    if(self){
+        
+        CGFloat w = [[UIScreen mainScreen] bounds].size.width;
+        CGFloat h = self.frame.size.height;
+        
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Frequency", @"Slice", @"Scale"]];
+        [_segmentedControl setFrame:CGRectMake((w-_segmentedControl.frame.size.width)*.5, (h-_segmentedControl.frame.size.height)*.5, _segmentedControl.frame.size.width, _segmentedControl.frame.size.height)];
+        [_segmentedControl setSelectedSegmentIndex:0];
+        [self addSubview:_segmentedControl];
+    }
+    return self;
+}
+-(id) initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        
+        CGFloat w = [[UIScreen mainScreen] bounds].size.width;
+        CGFloat h = self.frame.size.height;
+        
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Frequency", @"Slice", @"Scale"]];
+        [_segmentedControl setFrame:CGRectMake((w-_segmentedControl.frame.size.width)*.5, (h-_segmentedControl.frame.size.height)*.5, _segmentedControl.frame.size.width, _segmentedControl.frame.size.height)];
+        [_segmentedControl setSelectedSegmentIndex:0];
+        [self addSubview:_segmentedControl];
+    }
+    return self;
+}
+-(id) initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        
+        CGFloat w = [[UIScreen mainScreen] bounds].size.width;
+        CGFloat h = self.frame.size.height;
+        
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Frequency", @"Slice", @"Scale"]];
+        [_segmentedControl setFrame:CGRectMake((w-_segmentedControl.frame.size.width)*.5, (h-_segmentedControl.frame.size.height)*.5, _segmentedControl.frame.size.width, _segmentedControl.frame.size.height)];
+        [_segmentedControl setSelectedSegmentIndex:0];
+        [self addSubview:_segmentedControl];
+    }
+    return self;
+}
 //| ----------------------------------------------------------------------------
 //  Called when the view is about to be displayed.  May be called more than
 //  once.
@@ -31,12 +73,8 @@
     [self.layer setShadowOpacity:0.25f];
     
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
-    CGFloat h = self.frame.size.height;
-    
+    CGFloat h = self.frame.size.height;    
     [_segmentedControl setFrame:CGRectMake((w-_segmentedControl.frame.size.width)*.5, (h-_segmentedControl.frame.size.height)*.5, _segmentedControl.frame.size.width, _segmentedControl.frame.size.height)];
-//    [segmentedControl setFrame:CGRectMake(w*.1, h*.75, w*.8, h*.05)];
-    [_segmentedControl setSelectedSegmentIndex:0];
-    [self addSubview:_segmentedControl];
 }
 
 @end

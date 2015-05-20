@@ -10,6 +10,7 @@
 		D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2A1AFD13D4007101ED /* SliceControlView.m */; };
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
 		D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */; };
+		D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */; };
 		D55550911AFD381A00113FEF /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550901AFD381A00113FEF /* Animation.m */; };
 		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
@@ -53,6 +54,8 @@
 		D52FFC331AFD1540007101ED /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		D53B9C5B1B089ED7008E5014 /* EquidistantAzimuthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquidistantAzimuthView.h; sourceTree = "<group>"; };
 		D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquidistantAzimuthView.m; sourceTree = "<group>"; };
+		D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialsListTableViewCell.h; sourceTree = "<group>"; };
+		D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaterialsListTableViewCell.m; sourceTree = "<group>"; };
 		D555508F1AFD381A00113FEF /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animation.h; path = ../Controllers/Animation.h; sourceTree = "<group>"; };
 		D55550901AFD381A00113FEF /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Animation.m; path = ../Controllers/Animation.m; sourceTree = "<group>"; };
 		D55550921B006DCA00113FEF /* DiagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramViewController.h; sourceTree = "<group>"; };
@@ -263,6 +266,8 @@
 				D52FFC2A1AFD13D4007101ED /* SliceControlView.m */,
 				D52FFC2C1AFD13E3007101ED /* ScaleControlView.h */,
 				D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */,
+				D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */,
+				D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -397,6 +402,7 @@
 				D5DBB4A01AFBAD8A002D2EB0 /* NavigationController.m in Sources */,
 				D5DBB4A51AFBAD8A002D2EB0 /* GeodesicView.m in Sources */,
 				D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */,
+				D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */,
 				D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */,
 				D5DBB4A11AFBAD8A002D2EB0 /* RearTableViewController.m in Sources */,
 				D5DBB4A31AFBAD8A002D2EB0 /* GeodesicModel.m in Sources */,

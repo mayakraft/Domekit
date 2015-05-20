@@ -74,8 +74,10 @@
     glEnableClientState(GL_NORMAL_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, _geodesicModel.mesh.glTriangles);
     glNormalPointer(GL_FLOAT, 0, _geodesicModel.mesh.glTriangleNormals);
-    unsigned int numTri = _sliceAmount * _geodesicModel.mesh.numTriangles;
-    glDrawArrays(GL_TRIANGLES, 0, numTri*3);
+    if(_sliceAmount)
+        glDrawArrays(GL_TRIANGLES, 0, _sliceAmount*3);
+    else
+        glDrawArrays(GL_TRIANGLES, 0, _geodesicModel.mesh.numTriangles*3);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopMatrix();
@@ -222,7 +224,6 @@
     self = [super initWithFrame:frame context:context];
     if (self) {
         [self initOpenGL:context];
-        _sliceAmount = 1.0;
     }
     return self;
 }

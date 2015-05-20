@@ -43,9 +43,6 @@
     FrequencyControlView *frequencyControlView;
     SliceControlView *sliceControlView;
     ScaleControlView *scaleControlView;
-
-//    PolyhedronSeed seedType;
-    
 }
 
 @property (nonatomic) NSUInteger perspective;
@@ -56,7 +53,6 @@
 -(id) initWithPolyhedra:(unsigned int)solidType{
     self = [super init];
     if(self){
-//        seedType = solidType;
         _solidType = solidType;
         geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:_solidType];
     }
@@ -77,17 +73,11 @@
     [self initRevealController];
     
     [self initSensors];
-    
-//    if(seedType == 0)
-//        [self setTitle:@"1V ICO SPHERE"];
-//    if(seedType == 1)
-//        [self setTitle:@"1V OCTA SPHERE"];
 
     [self updateTitle];
 
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
-    
     
     geodesicView = [[GeodesicView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
     [self setView:geodesicView];
@@ -95,28 +85,14 @@
     [geodesicView setGeodesicModel:geodesicModel];
 
     
-    // For the extended navigation bar effect to work, a few changes
-    // must be made to the actual navigation bar.  Some of these changes could
-    // be applied in the storyboard but are made in code for clarity.
-    
-    // Translucency of the navigation bar is disabled so that it matches with
-    // the non-translucent background of the extension view.
     [self.navigationController.navigationBar setTranslucent:NO];
-    
-    // The navigation bar's shadowImage is set to a transparent image.  In
-    // conjunction with providing a custom background image, this removes
-    // the grey hairline at the bottom of the navigation bar.  The
-    // ExtendedNavBarView will draw its own hairline.
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
-    // "Pixel" is a solid white 1x1 image.
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
     
     UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Make" style:UIBarButtonItemStylePlain target:self action:@selector(makeDiagram)];
     self.navigationItem.rightBarButtonItem = makeButton;
     
     ExtendedNavBarView *extendedNavBar = [[ExtendedNavBarView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, EXT_NAVBAR_HEIGHT)];
-    extendedNavBar.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Frequency", @"Slice", @"Scale"]];
-
     [[extendedNavBar segmentedControl] addTarget:self action:@selector(topMenuChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:extendedNavBar];
 
@@ -144,6 +120,8 @@
 //    [UIView setAnimationDuration:0.55];
     DiagramViewController *dVC = [[DiagramViewController alloc] init];
     [geodesicModel makeLineClasses];
+    [dVC setMaterials:@{@"lines" : [geodesicModel lineLengthValues]}];
+    [dVC setTitle:[self title]];
     [dVC setGeodesicModel:geodesicModel];
     
     [self.navigationController pushViewController:dVC animated:YES];
@@ -187,6 +165,16 @@
     if(_solidType == 1)
         [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] ]];
 }
+-(void) updateTitleWithFraction:(unsigned int)numerator Of:(unsigned int)denominator{
+    if(numerator == denominator){
+        [self updateTitle];
+        return;
+    }
+    if(_solidType == 0)
+        [self setTitle:[NSString stringWithFormat:@"%dV %d/%d ICO DOME",[geodesicModel frequency], numerator, denominator]];
+    if(_solidType == 1)
+        [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], numerator, denominator]];
+}
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
     [geodesicModel setSolid:solidType];
@@ -196,13 +184,25 @@
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
     unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
 //    [geodesicView setGeodesicModel:nil];
+    [geodesicView setSliceAmount:0];
+    [[sliceControlView slider] setValue:1.0];
     [geodesicModel setFrequency:frequency];
     NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
     [self updateTitle];
 //    [geodesicView setGeodesicModel:geodesicModel];
 }
 -(void) sliceControlChange:(UISlider*)sender{
-    [geodesicView setSliceAmount:sender.value];
+//TODO: this is happening every frame, even when the frequency isn't changed
+    NSArray *sliceCounts = geodesicModel.faceAltitudeCountsCumulative;
+    int unit = sender.value * (sliceCounts.count - 1);
+    if(unit+1 >= sliceCounts.count){
+        unit = (int)sliceCounts.count - 1;
+        [geodesicView setSliceAmount:0];
+        [self updateTitle];
+        return;
+    }
+    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
+    [self updateTitleWithFraction:unit+1 Of:(int)sliceCounts.count];
 }
 -(void) scaleControlChange:(UISlider*)sender{
     
@@ -269,10 +269,14 @@
 //                              a.m13, a.m23, a.m33, 0.0f,
 //                              -a.m12,-a.m22,-a.m32, 0.0f,
 //                              0.0f , 0.0f , 0.0f , 1.0f);
-        return GLKMatrix4Make(a.m11, a.m21, a.m31, 0.0f,
-                              a.m12, a.m22, a.m32, 0.0f,
-                              a.m13, a.m23, a.m33, 0.0f,
-                              0.0f , 0.0f , 0.0f , 1.0f);
+        return GLKMatrix4Rotate(GLKMatrix4Make(a.m11, a.m21, a.m31, 0.0f,
+                                               a.m12, a.m22, a.m32, 0.0f,
+                                               a.m13, a.m23, a.m33, 0.0f,
+                                               0.0f , 0.0f , 0.0f , 1.0f), M_PI*.5, 1, 0, 0);
+//        return GLKMatrix4Make(a.m11, a.m21, a.m31, 0.0f,
+//                              a.m12, a.m22, a.m32, 0.0f,
+//                              a.m13, a.m23, a.m33, 0.0f,
+//                              0.0f , 0.0f , 0.0f , 1.0f);
 //        return GLKMatrix4Make(1.0f, 0.0f, 0.0f, 0.0f,
 //                              0.0f, 1.0f, 0.0f, 0.0f,
 //                              0.0f, 0.0f, 1.0f, 0.0f,
