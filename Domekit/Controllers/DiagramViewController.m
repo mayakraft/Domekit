@@ -191,14 +191,10 @@
 }
 
 -(void) saveButtonPressed{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Nope" destructiveButtonTitle:nil otherButtonTitles:@"Save Dome", @"Save Image to Photos", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Save to Domekit", @"Save to Photos", @"Email PDF", nil];
     [actionSheet showInView:self.view];
 }
 
--(void) shareButtonPressed{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"PDF Instructions" delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Email", @"Save to Photos", nil];
-    [actionSheet showInView:self.view];
-}
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
 }

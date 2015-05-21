@@ -8,7 +8,7 @@
 
 #import "RearTableViewController.h"
 #import "SWRevealViewController.h"
-
+#import "NewDomeTableViewCell.h"
 #import "AppDelegate.h"
 
 @interface RearTableViewController () {
@@ -57,10 +57,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0)
-        return 2;
+        return 1;
     else if (section == 1)
         return numberOfSavedDomes;
     else if(section == 2)
+        return 1;
+    else if(section == 3)
         return 1;
     else
         return 0;
@@ -68,6 +70,11 @@
 //-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
 //    return 22;
 //}
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0 && indexPath.row == 0)
+        return 100;
+    return 44;
+}
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 1;
 }
@@ -77,8 +84,10 @@
         return @"New Dome";
     else if (section == 1)
         return @"Saved Domes";
-    else
+    else if(section == 2)
         return @"Domekit";
+    else
+        return @"";
 }
 
 //-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -114,10 +123,20 @@
 //}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 0 && indexPath.row == 0){
+        NewDomeTableViewCell *cell = [[NewDomeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"newDomeCell"];
+        [[cell leftButton] addTarget:(AppDelegate*)[[UIApplication sharedApplication] delegate]  action:@selector(newIcosahedron) forControlEvents:UIControlEventTouchUpInside];
+        [[cell rightButton] addTarget:(AppDelegate*)[[UIApplication sharedApplication] delegate]  action:@selector(newOctahedron) forControlEvents:UIControlEventTouchUpInside];
+//        [cell.leftButton setTitle:@"Icosahedron" forState:UIControlStateNormal];
+//        [cell.rightButton setTitle:@"Octahedron" forState:UIControlStateNormal];
+        return cell;
+    }
+
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;// = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
     
     cell.backgroundColor = [UIColor whiteColor];
     cell.selectedBackgroundView = selectionView;
@@ -133,6 +152,8 @@
     else if(indexPath.section == 2){
         if(indexPath.row == 0)
             [cell.textLabel setText:@"Preferences"];
+//        if(indexPath.row == 1)
+//            [cell.textLabel setText:@"About Domes"];
     }
     return cell;
 }
@@ -198,7 +219,7 @@
 //        [revealController setFrontViewController:feed animated:YES];
 //        [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
     }
-    else{
+    else if (indexPath.section == 1){
         if(indexPath.row == 0){
 //            ProfileNavigationController *profileNavController = [[ProfileNavigationController alloc] init];
 //            [revealController setFrontViewController:profileNavController animated:YES];

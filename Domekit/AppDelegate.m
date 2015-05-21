@@ -85,6 +85,7 @@
     
     self.window.rootViewController = _revealController;
     [self.window makeKeyAndVisible];
+    NSLog(@"++++++++++ %ld",(long)[_revealController frontViewPosition]);
     return YES;
 }
 

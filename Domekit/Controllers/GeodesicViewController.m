@@ -29,7 +29,6 @@
 // this appears to be the best way to grab orientation. if this becomes formalized, just make sure the orientations match
 #define DEVICE_ORIENTATION [[UIApplication sharedApplication] statusBarOrientation] //enum  1(NORTH)  2(SOUTH)  3(EAST)  4(WEST)
 
-
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
 
