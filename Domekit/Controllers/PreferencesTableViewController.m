@@ -21,10 +21,13 @@
     [super viewDidLoad];
     
     
-    [self initRevealController];
+//    [self initRevealController];
     
     [self setTitle:@"PREFERENCES"];
-    
+ 
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
+    self.navigationItem.leftBarButtonItem = backButton;
+
     [[[self navigationController] navigationBar] setBarTintColor:[UIColor whiteColor]];
     [[[self navigationController] navigationBar] setBarStyle:UIBarStyleDefault];
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
@@ -35,7 +38,9 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+-(void) backButtonPressed{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 -(void) initRevealController{
     SWRevealViewController *revealController = self.revealViewController;
     //    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
@@ -210,7 +215,7 @@
             [alert show];
         }
     }
-    [(AppDelegate*)[UIApplication sharedApplication] updateUserPreferencesAcrossApp];
+    [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

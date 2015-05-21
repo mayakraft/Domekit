@@ -41,10 +41,15 @@
     [_geodesicViewController setSolidType:1];
     [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
+//-(void) openPreferences{
+//    UINavigationController *preferencesNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
+//    [preferencesNavigationController setViewControllers:@[[[PreferencesTableViewController alloc] initWithStyle:UITableViewStyleGrouped]]];
+//    [_revealController setFrontViewController:preferencesNavigationController];
+//    [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+//}
 -(void) openPreferences{
-    UINavigationController *preferencesNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
-    [preferencesNavigationController setViewControllers:@[[[PreferencesTableViewController alloc] initWithStyle:UITableViewStyleGrouped]]];
-    [_revealController setFrontViewController:preferencesNavigationController];
+    PreferencesTableViewController *preferencesViewcontroller = [[PreferencesTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    [_geodesicViewController.navigationController pushViewController:preferencesViewcontroller animated:NO];
     [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 
