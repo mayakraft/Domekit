@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewDomeTableViewCell : UITableViewCell
+@interface NewDomeTableViewCell : UITableViewCell{
+    UIView *separatorLine;
+}
 @property UIButton *leftButton;
 @property UIButton *rightButton;
 @end

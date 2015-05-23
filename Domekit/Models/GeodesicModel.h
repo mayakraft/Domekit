@@ -1,17 +1,19 @@
+/**
+ * @class Geodesic
+ * @author Robby Kraft
+ * @date 7/1/14
+ *
+ * @availability all
+ *
+ * @discussion Geodesic spheres and sphere slicing into geodesic domes. requires C-language geodesic geometry struct github.com/robbykraft/Geodesic
+ */
+
 //
-//  GeodesicRoom.h
-//  Domekit
-//
-//  Created by Robby on 7/1/14.
-//  Copyright (c) 2014 Robby. All rights reserved.
+// stores all modifications to the sphere too. dome slicing. and drawing of the sliced dome
 //
 
 #import <Foundation/Foundation.h>
 #include "OpenGL/mesh.h"
-
-//
-// Obj-C wrapper for the C-struct geodesic geometry object
-//
 
 typedef enum : NSUInteger {
     ICOSAHEDRON_SEED,
@@ -21,8 +23,31 @@ typedef enum : NSUInteger {
 
 @interface GeodesicModel : NSObject
 
--(id) initWithFrequency:(unsigned int)frequency;  // Assumes Icosahedron
+-(id) initWithFrequency:(unsigned int)frequency;  // assumes an icosahedron
 -(id) initWithFrequency:(unsigned int)frequency Solid:(PolyhedronSeed)solid;
+-(id) initWithFrequency:(unsigned int)frequency Solid:(PolyhedronSeed)solid Crop:(unsigned int)numerator;
+
+@property (nonatomic) unsigned int frequency;
+@property (nonatomic) PolyhedronSeed solid; // 0:icosahedron  1:octahedron  2:tetrahedron
+
+// Crop Sphere:
+// 0.0-1.0, or numerator of the frequencyDenominator
+@property (nonatomic) unsigned int frequencyNumerator; // when this equals frequencyDenominator, the fraction is 1/1, which equals complete sphere
+// how many rows of triangle meridians does this have?
+@property (readonly) unsigned int frequencyDenominator;
+@property (readonly) float domeFraction; // 1 (sphere), .5 (half dome), 0 (nothing left)
+@property (readonly) unsigned int visibleTriangles;
+@property (readonly) float domeFloorDiameter;  // floor diameter (0 to 1) according to slice location
+@property (readonly) float domeHeight;  // floor height (0 to 1) according to slice location
+@property (readonly) float longestStrutLength;  // as a ratio of domeFloorDiameter and domeHeight
+
+// RESET ALL SLICING, return to sphere
+-(void) setSphere;
+
+// for measuring out real-world scale: this number is the radius of the sphere
+// does not change the geometry. does not affect any other numbers.
+// just remembers a number. pretty pointless i suppose
+@property float scale;
 
 @property (nonatomic) NSArray *slicePoints;
 @property (nonatomic) NSArray *faceAltitudeCountsCumulative;
@@ -32,12 +57,13 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSArray *lineLengthTypes;
 @property (nonatomic) NSArray *lineTypeQuantities;
 
-@property (nonatomic) unsigned int frequency;
-@property (nonatomic) PolyhedronSeed solid; // 0:icosahedron  1:octahedron  2:tetrahedron
-
-@property geodesicDome geo;
-@property geodesicMeshTriangles mesh;
-//@property geodesicMeshCropPlanes meridiansMesh;
-@property geodesicMeshSlicePoints sliceMeridians;
+// OpenGL
+-(void) drawTriangles;
+-(void) drawTrianglesSphereOverride;
+// EXPOSE SOME OF THE DATA
+@property float *points;
+@property unsigned short *lines;
+@property unsigned int numPoints;
+@property unsigned int numLines;
 
 @end

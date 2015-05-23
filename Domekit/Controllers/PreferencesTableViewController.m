@@ -105,7 +105,7 @@
         else if(indexPath.row == 2){
             [[cell textLabel] setText:@"Precision"];
             if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-                [[cell detailTextLabel] setText:@"elementary"];
+                [[cell detailTextLabel] setText:@"folk"];
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@2])
                 [[cell detailTextLabel] setText:@"precise"];
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@3])

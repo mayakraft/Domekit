@@ -47,7 +47,7 @@
     [_segmentedControl setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.33, frame.size.width*.8, frame.size.height*.33)];
     if(IPAD){
         
-        [_segmentedControl setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:30]} forState:UIControlStateNormal];
+        [_segmentedControl setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:30]} forState:UIControlStateNormal];
     }
     [_segmentedControl setSelectedSegmentIndex:0];
     [self addSubview:_segmentedControl];

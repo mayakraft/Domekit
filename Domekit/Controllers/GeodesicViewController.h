@@ -15,7 +15,10 @@
 
 @property (nonatomic) unsigned int solidType;
 
+-(void) newPolyhedra:(unsigned int) solidType;
+
 @property (nonatomic) BOOL orientationSensorsEnabled;
 
+@property float sessionScale;
 @end
 

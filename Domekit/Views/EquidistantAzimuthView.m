@@ -86,12 +86,12 @@
     
     int index1, index2;
     int octantis = -1;
-    for(int i = 0; i < _geodesic.geo.g.numPoints; i++){
-        if(_geodesic.geo.g.points[i*3+0] == -1)
+    for(int i = 0; i < _geodesic.numPoints; i++){
+        if(_geodesic.points[i*3+0] == -1)
             octantis = i;
     }
 //    countByOne = 0;
-    for(count = 0; count < _geodesic.geo.g.numLines; count++)
+    for(count = 0; count < _geodesic.numLines; count++)
     {
         //if( [lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue] < colorTable.count-1)
         //    [(UIColor*)colorTable[[lengthOrder[ [dome.lineClass_[countByOne] integerValue] ]integerValue]] setStroke];
@@ -103,14 +103,14 @@
 //        if( [dome.invisibleLines_[count] boolValue] == FALSE)
 //        {
         
-            index1 = _geodesic.geo.g.lines[count*2+0];
-            index2 = _geodesic.geo.g.lines[count*2+1];
+            index1 = _geodesic.lines[count*2+0];
+            index2 = _geodesic.lines[count*2+1];
             if(index1 != octantis && index2 != octantis)
             {
 
-                angle = atan2(_geodesic.geo.g.points[index1*3+2],      //  try changing these
-                              _geodesic.geo.g.points[index1*3+1]);     //
-                yOffset = asin(-_geodesic.geo.g.points[index1*3+0]) / (M_PI/2) + 1;
+                angle = atan2(_geodesic.points[index1*3+2],      //  try changing these
+                              _geodesic.points[index1*3+1]);     //
+                yOffset = asin(-_geodesic.points[index1*3+0]) / (M_PI/2) + 1;
 //        NSLog(@"YOFF: %f",yOffset);
                 
 //                if(yOffset > 1.63)
@@ -121,9 +121,9 @@
                 CGContextBeginPath(context);
                 CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
                                      fisheye*yOffset*cos(angle)*scale+halfHeight);
-                angle = atan2(_geodesic.geo.g.points[index2*3+2],
-                              _geodesic.geo.g.points[index2*3+1]);
-                yOffset = asin(-_geodesic.geo.g.points[index2*3+0]) / (M_PI/2) + 1;
+                angle = atan2(_geodesic.points[index2*3+2],
+                              _geodesic.points[index2*3+1]);
+                yOffset = asin(-_geodesic.points[index2*3+0]) / (M_PI/2) + 1;
                 
 //                if(yOffset > 1.63)
 //                    fisheye = pow((yOffset-1.63)/(lowest-1.63),8)*.25+1;

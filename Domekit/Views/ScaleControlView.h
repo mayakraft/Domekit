@@ -10,4 +10,7 @@
 
 @interface ScaleControlView : UIView
 @property UISlider *slider;
+@property UITextField *floorDiameterTextField;
+@property UITextField *heightTextField;
+@property UITextField *strutTextField;
 @end

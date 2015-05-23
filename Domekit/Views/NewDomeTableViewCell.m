@@ -9,18 +9,25 @@
 #import "NewDomeTableViewCell.h"
 
 #define revealWidth 260
+#define cellHeight 120
+#define MARGIN 5
 
 @implementation NewDomeTableViewCell
 
 -(void) setupButtons{
-    _leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, revealWidth * .5, 100)];
-    _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(revealWidth * .5, 0, revealWidth * .5, 100)];
+    _leftButton = [[UIButton alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, revealWidth * .5-MARGIN*2, cellHeight-MARGIN*2)];
+    _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(revealWidth * .5+MARGIN, MARGIN, revealWidth * .5 - MARGIN*2, cellHeight - MARGIN*2)];
     [_leftButton setTitle:@"Icosahedron" forState:UIControlStateNormal];
     [_rightButton setTitle:@"Octahedron" forState:UIControlStateNormal];
     [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_rightButton setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
+    [_leftButton setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
     [self addSubview:_leftButton];
     [self addSubview:_rightButton];
+    separatorLine = [[UIView alloc] initWithFrame:CGRectMake(revealWidth*.5, MARGIN, 1, cellHeight-MARGIN*2)];
+    [separatorLine setBackgroundColor:[UIColor colorWithRed:0.78 green:0.78 blue:0.8 alpha:1]];
+    [self addSubview:separatorLine];
 }
 
 -(id) init{
@@ -57,8 +64,9 @@
 
 -(void) layoutSubviews{
     [super layoutSubviews];
-    [_leftButton setFrame:CGRectMake(0, 0, revealWidth * .5, 100)];
-    [_rightButton setFrame:CGRectMake(revealWidth * .5, 0, revealWidth * .5, 100)];
+    [_leftButton setFrame:CGRectMake(MARGIN, MARGIN, revealWidth * .5-MARGIN*2, cellHeight-MARGIN*2)];
+    [_rightButton setFrame:CGRectMake(revealWidth * .5+MARGIN, MARGIN, revealWidth * .5 - MARGIN*2, cellHeight - MARGIN*2)];
+    [separatorLine setFrame:CGRectMake(revealWidth*.5, MARGIN, 1, cellHeight-MARGIN*2)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

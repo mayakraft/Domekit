@@ -32,13 +32,13 @@
 -(void) newIcosahedron{
     if(![[_revealController frontViewController] isEqual:_geodesicNavigationController])
         [_revealController setFrontViewController:_geodesicNavigationController];
-    [_geodesicViewController setSolidType:0];
+    [_geodesicViewController newPolyhedra:0];
     [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 -(void) newOctahedron{
     if(![[_revealController frontViewController] isEqual:_geodesicNavigationController])
         [_revealController setFrontViewController:_geodesicNavigationController];
-    [_geodesicViewController setSolidType:1];
+    [_geodesicViewController newPolyhedra:1];
     [_revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 //-(void) openPreferences{

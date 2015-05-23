@@ -45,6 +45,7 @@
 }
 
 @property (nonatomic) NSUInteger perspective;
+@property (weak) UISegmentedControl *topMenu;
 @end
 
 @implementation GeodesicViewController
@@ -73,13 +74,18 @@
     
     [self initSensors];
 
-    [self updateTitle];
+    [self updateUI];
+
+    CGFloat w = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat h = [[UIScreen mainScreen] bounds].size.height - NAVBAR_HEIGHT;
 
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
     
     geodesicView = [[GeodesicView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
     [self setView:geodesicView];
+//    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
+//    [self.view addSubview:geodesicView];
     
     [geodesicView setGeodesicModel:geodesicModel];
 
@@ -94,40 +100,43 @@
     ExtendedNavBarView *extendedNavBar = [[ExtendedNavBarView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, EXT_NAVBAR_HEIGHT)];
     [[extendedNavBar segmentedControl] addTarget:self action:@selector(topMenuChange:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:extendedNavBar];
+    _topMenu = [extendedNavBar segmentedControl];
 
-    CGFloat w = [[UIScreen mainScreen] bounds].size.width;
-    CGFloat h = [[UIScreen mainScreen] bounds].size.height - NAVBAR_HEIGHT;
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
     frequencyControlView = [[FrequencyControlView alloc] initWithFrame:controllerFrame];
+    [frequencyControlView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:frequencyControlView];
     [[frequencyControlView segmentedControl] addTarget:self action:@selector(frequencyControlChange:) forControlEvents:UIControlEventValueChanged];
     
     sliceControlView = [[SliceControlView alloc] initWithFrame:controllerFrame];
+    [sliceControlView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:sliceControlView];
     [[sliceControlView slider] addTarget:self action:@selector(sliceControlChange:) forControlEvents:UIControlEventValueChanged];
 
-    scaleControlView = [[ScaleControlView alloc] initWithFrame:controllerFrame];
+    scaleControlView = [[ScaleControlView alloc] initWithFrame:CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3)];
+    [scaleControlView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:scaleControlView];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
+    [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
+    
+    _sessionScale = 10.0;
 }
+//-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
+//    NSLog(@"drawing");
+//    [geodesicView setNeedsDisplay];
+//}
 -(void) makeDiagram{
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//    [UIView setAnimationDuration:0.55];
     DiagramViewController *dVC = [[DiagramViewController alloc] init];
     [geodesicModel makeLineClasses];
     [dVC setMaterials:@{@"lines" : [geodesicModel lineLengthValues],
                         @"lineQuantities" : [geodesicModel lineTypeQuantities]}];
     [dVC setTitle:[self title]];
     [dVC setGeodesicModel:geodesicModel];
-    
     [self.navigationController pushViewController:dVC animated:YES];
-//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-//    [UIView commitAnimations];
-
 }
 -(void) topMenuChange:(UISegmentedControl*)sender{
     [self setPerspective:[sender selectedSegmentIndex]];
@@ -135,19 +144,19 @@
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:YES];
-        [geodesicView setShowMeridians:NO];
+        [geodesicView setSphereOverride:YES];
     }
     else if([sender selectedSegmentIndex] == 1){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
-        [geodesicView setShowMeridians:YES];
+        [geodesicView setSphereOverride:NO];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:NO];
-        [geodesicView setShowMeridians:NO];
+        [geodesicView setSphereOverride:NO];
     }
 }
 -(void) setPerspective:(NSUInteger)perspective{
@@ -159,56 +168,90 @@
     if(_perspective == 2)
         [geodesicView setFieldOfView:20];
 }
--(void) updateTitle{
-//    [[[self navigationController] navigationBar] setBarStyle:UIBarStyleDefault];
+-(void) updateUI{
+    // update NavBar Title
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
-    if(_solidType == 0)
-        [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] ]];
-    if(_solidType == 1)
-        [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] ]];
-}
--(void) updateTitleWithFraction:(unsigned int)numerator Of:(unsigned int)denominator{
-    if(numerator == denominator){
-        [self updateTitle];
-        return;
+    if([geodesicModel frequencyNumerator] == [geodesicModel frequencyDenominator]){
+        if(_solidType == 0)
+            [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] ]];
+        if(_solidType == 1)
+            [self setTitle:[NSString stringWithFormat:@"%dV OCTA SPHERE",[geodesicModel frequency] ]];
     }
-    if(_solidType == 0)
-        [self setTitle:[NSString stringWithFormat:@"%dV %d/%d ICO DOME",[geodesicModel frequency], numerator, denominator]];
-    if(_solidType == 1)
-        [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], numerator, denominator]];
+    else{
+        if(_solidType == 0)
+            [self setTitle:[NSString stringWithFormat:@"%dV %d/%d ICO DOME",[geodesicModel frequency], [geodesicModel frequencyNumerator], [geodesicModel frequencyDenominator]]];
+        if(_solidType == 1)
+            [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], [geodesicModel frequencyNumerator], [geodesicModel frequencyDenominator]]];
+    }
+    [[scaleControlView floorDiameterTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel domeFloorDiameter] * _sessionScale]];
+    [[scaleControlView heightTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel domeHeight] * _sessionScale]];
+    [[scaleControlView strutTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel longestStrutLength] * _sessionScale]];
 }
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
     [geodesicModel setSolid:solidType];
     NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
-    [self updateTitle];
+    [self updateUI];
+}
+-(void) newPolyhedra:(unsigned int)solidType{
+    _solidType = solidType;
+    [geodesicModel setSolid:solidType];
+    [geodesicModel setFrequency:1];
+    [geodesicModel setSphere];
+    _sessionScale = 10.0;
+    [geodesicView setSphereOverride:YES];
+    // reset top menu
+    [_topMenu setSelectedSegmentIndex:0];
+    [frequencyControlView setHidden:NO];
+    [sliceControlView setHidden:YES];
+    [scaleControlView setHidden:YES];
+    [geodesicView setSphereOverride:YES];
+    [[sliceControlView slider] setValue:1.0];
+    [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
+    [self updateUI];
+
 }
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
     unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
 //    [geodesicView setGeodesicModel:nil];
-    [geodesicView setSliceAmount:0];
     [[sliceControlView slider] setValue:1.0];
     [geodesicModel setFrequency:frequency];
-    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
-    [self updateTitle];
+//    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
+    [self updateUI];
 //    [geodesicView setGeodesicModel:geodesicModel];
+    [geodesicView setNeedsDisplay];
+
 }
 -(void) sliceControlChange:(UISlider*)sender{
 //TODO: this is happening every frame, even when the frequency isn't changed
-    NSArray *sliceCounts = geodesicModel.faceAltitudeCountsCumulative;
-    int unit = sender.value * (sliceCounts.count - 1);
-    if(unit+1 >= sliceCounts.count){
-        unit = (int)sliceCounts.count - 1;
-        [geodesicView setSliceAmount:0];
-        [self updateTitle];
+//    NSArray *sliceCounts = geodesicModel.faceAltitudeCountsCumulative;
+    int unit = sender.value * ([geodesicModel frequencyDenominator] - 1);
+    if(unit+1 >= [geodesicModel frequencyDenominator]){
+        // numerator must be smaller than or equal to denominator
+        [geodesicModel setSphere];
+        [self updateUI];
         return;
     }
-    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
-    [self updateTitleWithFraction:unit+1 Of:(int)sliceCounts.count];
+//    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
+    [geodesicModel setFrequencyNumerator:unit+1];
+    [self updateUI];
 }
 -(void) scaleControlChange:(UISlider*)sender{
-    
+    static float baseScale;
+    if([sender state] == 0)  // touches begin
+        baseScale = _sessionScale;
+    else
+        _sessionScale = baseScale * pow(baseScale,(sender.value - .5));
+    [self updateUI];
 }
+-(void) scaleControlChangeEnd:(UISlider*)sender{
+    [UIView beginAnimations:@"scaleReset" context:nil];
+    [UIView setAnimationDuration:0.15];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [sender setValue:0.5 animated:YES];
+    [UIView commitAnimations];
+}
+
 -(void) initRevealController{
     SWRevealViewController *revealController = self.revealViewController;
 //    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
@@ -245,7 +288,7 @@
 // part of GLKViewController
 - (void)update{
     if(_perspective == 0){
-        //    orient.m32 = -5.0;
+//        orient.m32 = -5.0;
         [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
     }
     if(_perspective == 1)

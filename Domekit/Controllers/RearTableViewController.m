@@ -72,7 +72,7 @@
 //}
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0 && indexPath.row == 0)
-        return 100;
+        return 120;
     return 44;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
