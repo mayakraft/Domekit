@@ -164,9 +164,9 @@
     if(_perspective == 0)
         [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
     if(_perspective == 1)
-        [geodesicView setFieldOfView:20];
+        [geodesicView setFieldOfView:2];
     if(_perspective == 2)
-        [geodesicView setFieldOfView:20];
+        [geodesicView setFieldOfView:2];
 }
 -(void) updateUI{
     // update NavBar Title
@@ -200,6 +200,7 @@
     [geodesicModel setSphere];
     _sessionScale = 10.0;
     [geodesicView setSphereOverride:YES];
+    [self setPerspective:0];
     // reset top menu
     [_topMenu setSelectedSegmentIndex:0];
     [frequencyControlView setHidden:NO];
@@ -292,9 +293,9 @@
         [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
     }
     if(_perspective == 1)
-        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
+        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
     if(_perspective == 2)
-        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -5)];
+        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
 }
 
 -(void) animationHandler:(id)sender{

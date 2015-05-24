@@ -99,7 +99,7 @@
     _domeFloorDiameter = sqrt(1 - pow(2*_domeFraction-1, 2));
     _domeHeight = _domeFraction;
     _longestStrutLength = .1;
-    _visibleTriangles = [[self faceAltitudeCountsCumulative][_frequencyNumerator - 1] unsignedIntValue];
+    _numVisibleTriangles = [[self faceAltitudeCountsCumulative][_frequencyNumerator - 1] unsignedIntValue];
 //    NSArray *sliceCounts = [self faceAltitudeCountsCumulative];
 //    int unit = sender.value * (sliceCounts.count - 1);
 //    if(unit+1 >= sliceCounts.count){
@@ -122,6 +122,24 @@
 
     [self resliceSphere];
     [self logGeodesic];
+}
+
+-(NSDictionary*)visiblePointsAndLines{
+    NSMutableSet *pointIndices = [NSMutableSet set];
+    NSMutableSet *lineIndices = [NSMutableSet set];
+    for(int i = 0; i < _numVisibleTriangles; i++){
+        [pointIndices addObject:@(_geo.g.faces[i*3+0])];
+        [pointIndices addObject:@(_geo.g.faces[i*3+1])];
+        [pointIndices addObject:@(_geo.g.faces[i*3+2])];
+    }
+    for(int i = 0; i < _geo.g.numLines; i++){
+        NSNumber *pt1 = @(_geo.g.lines[i*2+0]);
+        NSNumber *pt2 = @(_geo.g.lines[i*2+1]);
+        if([pointIndices containsObject:pt1] && [pointIndices containsObject:pt2]){
+            [lineIndices addObject:@(i)];
+        }
+    }
+    return @{@"points" : [pointIndices allObjects], @"lines" : [lineIndices allObjects]};
 }
 
 -(NSArray *)faceAltitudeCountsCumulative{
@@ -185,7 +203,7 @@
     glVertexPointer(3, GL_FLOAT, 0, _mesh.glTriangles);
     glNormalPointer(GL_FLOAT, 0, _mesh.glTriangleNormals);
 //    glDrawArrays(GL_TRIANGLES, 0, _geodesicModel.mesh.numTriangles*3);
-    glDrawArrays(GL_TRIANGLES, 0, _visibleTriangles*3);
+    glDrawArrays(GL_TRIANGLES, 0, _numVisibleTriangles*3);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopMatrix();

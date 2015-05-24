@@ -13,11 +13,15 @@
 #define defaultScale 28
 
 @interface EquidistantAzimuthView : UIView
+
 @property (nonatomic, weak) GeodesicModel *geodesic;
 
 @property (nonatomic) double scale;
 @property (nonatomic) double lineWidth;
 
 @property (weak) NSArray *colorTable;
+
+@property NSSet *visiblePointIndices;
+@property NSSet *visibleLineIndices;
 
 @end

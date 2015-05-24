@@ -36,7 +36,7 @@ typedef enum : NSUInteger {
 // how many rows of triangle meridians does this have?
 @property (readonly) unsigned int frequencyDenominator;
 @property (readonly) float domeFraction; // 1 (sphere), .5 (half dome), 0 (nothing left)
-@property (readonly) unsigned int visibleTriangles;
+@property (readonly) unsigned int numVisibleTriangles;
 @property (readonly) float domeFloorDiameter;  // floor diameter (0 to 1) according to slice location
 @property (readonly) float domeHeight;  // floor height (0 to 1) according to slice location
 @property (readonly) float longestStrutLength;  // as a ratio of domeFloorDiameter and domeHeight
@@ -56,6 +56,10 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSArray *lineLengthValues;
 @property (nonatomic) NSArray *lineLengthTypes;
 @property (nonatomic) NSArray *lineTypeQuantities;
+
+// not actual point, line data
+// just indices to point and line indices in the original geodesic object
+-(NSDictionary*)visiblePointsAndLines;  // builds in real time
 
 // OpenGL
 -(void) drawTriangles;
