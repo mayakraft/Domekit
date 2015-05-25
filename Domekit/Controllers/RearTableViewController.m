@@ -13,7 +13,7 @@
 
 @interface RearTableViewController () {
     NSInteger _previouslySelectedRow;
-    UIView *selectionView;
+//    UIView *selectionView;
     NSInteger numberOfSavedDomes;
 }
 
@@ -32,8 +32,8 @@
     //TODO this needs to be dependent on content size
     self.tableView.scrollEnabled = NO;
     
-    selectionView = [[UIView alloc] init];
-    [selectionView setBackgroundColor:[UIColor blueColor]];
+//    selectionView = [[UIView alloc] init];
+//    [selectionView setBackgroundColor:[UIColor blueColor]];
     
 //    [self loadTableSelection:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
@@ -59,7 +59,7 @@
     if(section == 0)
         return 1;
     else if (section == 1)
-        return numberOfSavedDomes;
+        return 1 + [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] count];
     else if(section == 2)
         return 1;
     else if(section == 3)
@@ -139,15 +139,37 @@
     
     
     cell.backgroundColor = [UIColor whiteColor];
-    cell.selectedBackgroundView = selectionView;
+//    cell.selectedBackgroundView = selectionView;
 
     if(indexPath.section == 0){
-        if(indexPath.row == 0)
-            [cell.textLabel setText:@"Icosahedron"];
-        else if(indexPath.row == 1)
-            [cell.textLabel setText:@"Octahedron"];
+//        if(indexPath.row == 0)
+//            [cell.textLabel setText:@"Icosahedron"];
+//        else if(indexPath.row == 1)
+//            [cell.textLabel setText:@"Octahedron"];
     }
     else if(indexPath.section == 1){
+        if(indexPath.row == 0){
+            [cell.textLabel setText:@"+  Save Current Dome"];
+            [cell.textLabel setTextColor:[UIColor colorWithRed:0 green:0.48 blue:1 alpha:1]];
+        }
+        else{
+            NSArray *savedDomes = [[NSUserDefaults standardUserDefaults] objectForKey:@"saved"];
+            NSDictionary *dome = [savedDomes objectAtIndex:indexPath.row-1];
+            NSString *title;
+            NSString *solid = @"";
+            if([[dome objectForKey:@"solid"] isEqualToNumber:@0])
+                solid = @"Icosahedron";
+            else if([[dome objectForKey:@"solid"] isEqualToNumber:@1])
+                solid = @"Octahedron";
+
+            if([[dome objectForKey:@"numerator"] isEqualToNumber:[dome objectForKey:@"denominator"]]){
+                title = [NSString stringWithFormat:@"%@V %@",[dome objectForKey:@"frequency"], solid ];
+            }
+            else{
+                title = [NSString stringWithFormat:@"%@V %@/%@ %@", [dome objectForKey:@"frequency"], [dome objectForKey:@"numerator"], [dome objectForKey:@"denominator"], solid];
+            }
+            [cell.textLabel setText:title];
+        }
     }
     else if(indexPath.section == 2){
         if(indexPath.row == 0)
@@ -167,10 +189,26 @@
         if(indexPath.row == 1)
             [(AppDelegate*)[[UIApplication sharedApplication] delegate] newOctahedron];
     }
+    else if(indexPath.section == 1){
+        if(indexPath.row == 0){
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] storeCurrentDome];
+        }
+        else{
+            NSArray *savedDomes = [[NSUserDefaults standardUserDefaults] objectForKey:@"saved"];
+            NSDictionary *dome = [savedDomes objectAtIndex:indexPath.row-1];
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] loadDome:dome];
+            
+            SWRevealViewController *revealController = [self revealViewController];
+            [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+            [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
+        }
+    }
     else if(indexPath.section == 2){
         if(indexPath.row == 0)
             [(AppDelegate*)[[UIApplication sharedApplication] delegate] openPreferences];
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 //    if(indexPath.row == 0)
 //        [viewController setSolidType:0];

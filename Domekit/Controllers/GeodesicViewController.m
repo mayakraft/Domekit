@@ -9,6 +9,8 @@
 #import <OpenGLES/ES1/gl.h>
 #import <CoreMotion/CoreMotion.h>
 
+#import "AppDelegate.h"
+
 #import "GeodesicViewController.h"
 
 #import "DiagramViewController.h"
@@ -55,16 +57,58 @@
     if(self){
         _solidType = solidType;
         geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:_solidType];
+        [self initSensors];
     }
     return self;
 }
-
 -(id) init{
     self = [super init];
     if(self){
         geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:0];
+        [self initSensors];
     }
     return self;
+}
+-(id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:0];
+        [self initSensors];
+    }
+    return self;
+}
+-(id) initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if(self){
+        geodesicModel = [[GeodesicModel alloc] initWithFrequency:1 Solid:0];
+        [self initSensors];
+    }
+    return self;
+}
+
+-(void) storeCurrentDome{
+    NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
+    NSDictionary *dome = @{
+                           @"solid": @(geodesicModel.solid),
+                           @"frequency":@(geodesicModel.frequency),
+                           @"numerator":@(geodesicModel.frequencyNumerator),
+                           @"denominator":@(geodesicModel.frequencyDenominator),
+                           @"scale":@(_sessionScale)};
+    [saved addObject:dome];
+    NSLog(@"ADDING DOME:\n%@",dome);
+    [[NSUserDefaults standardUserDefaults] setObject:saved forKey:@"saved"];
+    [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
+}
+-(void) loadDome:(NSDictionary *)dome{
+    [geodesicView setGeodesicModel:nil];
+    geodesicModel = [[GeodesicModel alloc] initWithFrequency:[[dome objectForKey:@"frequency"] intValue]
+                                                       Solid:[[dome objectForKey:@"solid"] intValue]
+                                                        Crop:[[dome objectForKey:@"numerator"] intValue]];
+    _sessionScale = [[dome objectForKey:@"scale"] floatValue];
+    [geodesicView setGeodesicModel:geodesicModel];
+    [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
+    float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];
+    [sliceControlView.slider setValue:slicePercent];
 }
 
 - (void)viewDidLoad {
@@ -72,7 +116,8 @@
 
     [self initRevealController];
     
-    [self initSensors];
+    BOOL gyro = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"] boolValue];
+    [self setOrientationSensorsEnabled:gyro];
 
     [self updateUI];
 
@@ -124,6 +169,8 @@
     [scaleControlView setHidden:YES];
     
     _sessionScale = 10.0;
+    
+    [geodesicView setSphereOverride:YES];
 }
 //-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 //    NSLog(@"drawing");
@@ -168,6 +215,70 @@
     if(_perspective == 2)
         [geodesicView setFieldOfView:2];
 }
+-(NSString*) unitifyNumber:(double)f{
+    int precision = [[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] intValue];
+//    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+//    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+//    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+//    else
+    
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet"]){
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%.1f ft", f];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%.3f ft", f];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%.5f ft", f];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"]){
+        int whole = floorf(f);
+        double fraction = f - whole;
+        double inches = fraction * 12;
+        if(whole == 0){
+            if(precision == 1)
+                return [NSString stringWithFormat:@"%.1f in", inches];
+            else if(precision == 2)
+                return [NSString stringWithFormat:@"%.2f in", inches];
+            else if(precision == 3)
+                return [NSString stringWithFormat:@"%.5f in", inches];
+        }
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%d ft %.1f in", whole, inches];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%d ft %.2f in", whole, inches];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%d ft %.5f in", whole, inches];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%.1f m", f];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%.3f m", f];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%.5f m", f];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + millimeters"]){
+        int whole = floorf(f);
+        double fraction = f - whole;
+        double millimeters = fraction * 100;
+        if(whole == 0){
+            if(precision == 1)
+                return [NSString stringWithFormat:@"%.1f mm", millimeters];
+            else if(precision == 2)
+                return [NSString stringWithFormat:@"%.2f mm", millimeters];
+            else if(precision == 3)
+                return [NSString stringWithFormat:@"%.5f mm", millimeters];
+        }
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%d m %.1f mm", whole, millimeters];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%d m %.2f mm", whole, millimeters];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%d m %.5f mm", whole, millimeters];
+    }
+    return [NSString stringWithFormat:@"%f",f];
+}
+
 -(void) updateUI{
     // update NavBar Title
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
@@ -183,9 +294,9 @@
         if(_solidType == 1)
             [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], [geodesicModel frequencyNumerator], [geodesicModel frequencyDenominator]]];
     }
-    [[scaleControlView floorDiameterTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel domeFloorDiameter] * _sessionScale]];
-    [[scaleControlView heightTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel domeHeight] * _sessionScale]];
-    [[scaleControlView strutTextField] setText:[NSString stringWithFormat:@"%f ft", [geodesicModel longestStrutLength] * _sessionScale]];
+    [[scaleControlView floorDiameterTextField] setText:[self unitifyNumber:[geodesicModel domeFloorDiameter] * _sessionScale]];
+    [[scaleControlView heightTextField] setText:[self unitifyNumber:[geodesicModel domeHeight] * _sessionScale]];
+    [[scaleControlView strutTextField] setText:[self unitifyNumber:[geodesicModel longestStrutLength] * _sessionScale]];
 }
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
@@ -283,7 +394,6 @@
 
 -(void) initSensors{
     motionManager = [[CMMotionManager alloc] init];
-    [motionManager startDeviceMotionUpdates];
 }
 
 // part of GLKViewController

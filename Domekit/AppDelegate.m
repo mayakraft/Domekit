@@ -22,11 +22,28 @@
 
 @implementation AppDelegate
 
--(void) firstRunTime{
-    [[NSUserDefaults standardUserDefaults] setObject:@"feet" forKey:@"units"];
-    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
-    [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"precision"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+-(void) checkNSUserDefaults{
+    BOOL flagSwitched = false;
+    
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
+        flagSwitched = true;
+        [[NSUserDefaults standardUserDefaults] setObject:@"feet + inches" forKey:@"units"];
+    }
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"]){
+        flagSwitched = true;
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
+    }
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"precision"]){
+        flagSwitched = true;
+        [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"precision"];
+    }
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"saved"]){
+        flagSwitched = true;
+        [[NSUserDefaults standardUserDefaults] setObject:@[] forKey:@"saved"];
+    }
+    
+    if(flagSwitched)
+        [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void) newIcosahedron{
@@ -56,17 +73,23 @@
 -(void) updateUserPreferencesAcrossApp{
     BOOL enabled = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"] boolValue];
     [_geodesicViewController setOrientationSensorsEnabled:enabled];
+    [_geodesicViewController updateUI];
+    [[(UITableViewController*)[_revealController rearViewController] tableView] reloadData];
+}
+
+-(void) storeCurrentDome{
+    [_geodesicViewController storeCurrentDome];
+}
+-(void) loadDome:(NSDictionary *)dome{
+    [_geodesicViewController loadDome:dome];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-
-    // first runtime.
-    // no preferences. make preferences for the first time.
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
-        [self firstRunTime];
-    }
+    // Override point for customization after application launch.    
+    
+    // important for first runtime.
+    [self checkNSUserDefaults];
     
     _geodesicViewController = [[GeodesicViewController alloc] init];
     _geodesicNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];

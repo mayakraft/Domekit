@@ -19,6 +19,15 @@
     _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(revealWidth * .5+MARGIN, MARGIN, revealWidth * .5 - MARGIN*2, cellHeight - MARGIN*2)];
     [_leftButton setTitle:@"Icosahedron" forState:UIControlStateNormal];
     [_rightButton setTitle:@"Octahedron" forState:UIControlStateNormal];
+    CGPoint center1 = CGPointMake(MARGIN + (revealWidth * .5-MARGIN*2)*.5, MARGIN + (cellHeight-MARGIN*2) * .5);
+    CGPoint center2 = CGPointMake(revealWidth * .5+MARGIN + (revealWidth * .5 - MARGIN*2) * .5, MARGIN + (cellHeight - MARGIN*2)*.5);
+    CGFloat imgSize = cellHeight * .66;
+    UIImageView *ico = [[UIImageView alloc] initWithFrame:CGRectMake(center1.x - imgSize*.5, center1.y-imgSize*.5 - MARGIN*2, imgSize, imgSize)];
+    UIImageView *oct = [[UIImageView alloc] initWithFrame:CGRectMake(center2.x - imgSize*.5, center2.y-imgSize*.5 - MARGIN*2, imgSize, imgSize)];
+    [ico setImage:[UIImage imageNamed:@"icosahedron.png"]];
+    [oct setImage:[UIImage imageNamed:@"octahedron.png"]];
+    [self addSubview:ico];
+    [self addSubview:oct];
     [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_rightButton setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];

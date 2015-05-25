@@ -20,5 +20,11 @@
 @property (nonatomic) BOOL orientationSensorsEnabled;
 
 @property float sessionScale;
+
+-(void) updateUI;
+
+-(void) storeCurrentDome;
+-(void) loadDome:(NSDictionary*)dome;
+
 @end
 

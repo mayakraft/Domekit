@@ -35,6 +35,8 @@
 		D5DBB4A41AFBAD8A002D2EB0 /* FrequencyControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB49D1AFBAD8A002D2EB0 /* FrequencyControlView.m */; };
 		D5DBB4A51AFBAD8A002D2EB0 /* GeodesicView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DBB49F1AFBAD8A002D2EB0 /* GeodesicView.m */; };
 		D5EFDC271B0E0EE5002ADD28 /* NewDomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5EFDC261B0E0EE5002ADD28 /* NewDomeTableViewCell.m */; };
+		D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */ = {isa = PBXBuildFile; fileRef = D5EFDC281B128645002ADD28 /* octahedron.png */; };
+		D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */ = {isa = PBXBuildFile; fileRef = D5EFDC291B128645002ADD28 /* icosahedron.png */; };
 		D5F9182A1AF9162600564114 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F918291AF9162600564114 /* SWRevealViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +113,8 @@
 		D5DBB49F1AFBAD8A002D2EB0 /* GeodesicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeodesicView.m; sourceTree = "<group>"; };
 		D5EFDC251B0E0EE5002ADD28 /* NewDomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewDomeTableViewCell.h; sourceTree = "<group>"; };
 		D5EFDC261B0E0EE5002ADD28 /* NewDomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewDomeTableViewCell.m; sourceTree = "<group>"; };
+		D5EFDC281B128645002ADD28 /* octahedron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = octahedron.png; sourceTree = "<group>"; };
+		D5EFDC291B128645002ADD28 /* icosahedron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icosahedron.png; sourceTree = "<group>"; };
 		D5F918281AF9162600564114 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		D5F918291AF9162600564114 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -299,6 +303,8 @@
 			isa = PBXGroup;
 			children = (
 				D5DBB4731AFA64E4002D2EB0 /* Pixel.png */,
+				D5EFDC281B128645002ADD28 /* octahedron.png */,
+				D5EFDC291B128645002ADD28 /* icosahedron.png */,
 				D5DBB4771AFA6500002D2EB0 /* reveal-icon.png */,
 				D5DBB4751AFA64EA002D2EB0 /* TransparentPixel.png */,
 				D5DBB4791AFA6ECA002D2EB0 /* NavigationBar.h */,
@@ -396,6 +402,8 @@
 				D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */,
 				D5DBB4761AFA64EA002D2EB0 /* TransparentPixel.png in Resources */,
 				D5DBB4741AFA64E4002D2EB0 /* Pixel.png in Resources */,
+				D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */,
+				D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */,
 				D5DBB4781AFA6500002D2EB0 /* reveal-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

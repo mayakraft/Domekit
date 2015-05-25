@@ -19,5 +19,8 @@
 
 -(void) updateUserPreferencesAcrossApp;
 
+-(void) storeCurrentDome;
+-(void) loadDome:(NSDictionary*)dome;
+
 @end
 

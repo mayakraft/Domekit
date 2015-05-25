@@ -114,7 +114,8 @@
     }
     else{
         if(indexPath.row == 0){
-            [[cell textLabel] setText:@"(5) Saved Domes"];
+            NSArray *saved = [[NSUserDefaults standardUserDefaults] objectForKey:@"saved"];
+            [[cell textLabel] setText:[NSString stringWithFormat:@"(%d) Saved Domes", [saved count]]];
         }
         if(indexPath.row == 1){
             [[cell textLabel] setText:@"Clear Saved Domes"];
@@ -135,12 +136,6 @@
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"] ||
             [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"ft + in"] ){
-        [[cell detailTextLabel] setText:@"inches"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"inches" forKey:@"units"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"inches"] ||
-            [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"in"] ){
         [[cell detailTextLabel] setText:@"meters"];
         [[NSUserDefaults standardUserDefaults] setObject:@"meters" forKey:@"units"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -154,12 +149,6 @@
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + millimeters"] ||
             [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"m + mm"]){
-        [[cell detailTextLabel] setText:@"millimeters"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"millimeters" forKey:@"units"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"millimeters"] ||
-            [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"mm"] ){
         [[cell detailTextLabel] setText:@"feet"];
         [[NSUserDefaults standardUserDefaults] setObject:@"feet" forKey:@"units"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -212,14 +201,24 @@
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [self togglePrecision:cell];
         }
-        if(indexPath.row == 3){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+    }
+    else if(indexPath.section == 1){
+        if(indexPath.row == 1){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Erase", nil];
             [alert show];
         }
     }
     [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 1){
+        [[NSUserDefaults standardUserDefaults] setObject:@[] forKey:@"saved"];
+        [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
+        [self.tableView reloadData];
+    }
 }
 
 /*

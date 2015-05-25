@@ -90,10 +90,10 @@
     double lowest = 0;
     double fisheye = 1; // close-to-sphere domes are further extended at their edges to prevent overlapping lines
     
-    CGFloat dashedLine[2] = {0.5,1.5};
+//    CGFloat dashedLine[2] = {0.5,1.5};
     
 
-    float FISHEYE_POINT = 1.63 / 1.902084120116668;
+    float FISHEYE_POINT = 2.0;//0.85699263932702;  // arbitrary
 
     int octantis = 1;
 
@@ -122,10 +122,18 @@
     }
     else scale = _scale/(2.5);
     
+    
+    NSLog(@"FURTHEST: %f",lowest);
+    
+    NSLog(@"Width: %f",rect.size.width);
+    
+    float MARGIN = .9; // percent of screen used
+    scale = rect.size.width*.5 / lowest * MARGIN;
+
+    
     [[UIColor colorWithWhite:0.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, _lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
-    
     
     
     int index1, index2;
@@ -152,12 +160,13 @@
                 angle = atan2(_geodesic.points[index1*3+2],      //  try changing these
                               _geodesic.points[index1*3+1]);     //
                 yOffset = asin(_geodesic.points[index1*3+0]) / (M_PI/2) + 1;
-//        NSLog(@"YOFF: %f",yOffset);
                 
-                if(yOffset > FISHEYE_POINT)
-                    fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
-                else
-                    fisheye = 1;
+//                if(yOffset > FISHEYE_POINT){
+////                    NSLog(@"We have a fisheye: %f",yOffset);
+//                    fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
+//                }
+//                else
+//                    fisheye = 1;
                 
                 CGContextBeginPath(context);
                 CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
@@ -166,10 +175,12 @@
                               _geodesic.points[index2*3+1]);
                 yOffset = asin(_geodesic.points[index2*3+0]) / (M_PI/2) + 1;
                 
-                if(yOffset > FISHEYE_POINT)
-                    fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
-                else
-                    fisheye = 1;
+//                if(yOffset > FISHEYE_POINT){
+////                    NSLog(@"We have a fisheye: %f",yOffset);
+//                    fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
+//                }
+//                else
+//                    fisheye = 1;
                 
                 CGContextAddLineToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
                                         fisheye*yOffset*cos(angle)*scale+halfHeight);
@@ -184,28 +195,38 @@
                     angle = atan2(_geodesic.points[index2*3+2],
                                   _geodesic.points[index2*3+1]);
                     yOffset = asin(_geodesic.points[index2*3+0]) / (M_PI/2) + 1;
-                    if(yOffset > FISHEYE_POINT) fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
-                    else fisheye = 1;
+
+//                    if(yOffset > FISHEYE_POINT){
+////                        NSLog(@"We have a fisheye: %f",yOffset);
+//                        fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
+//                    }
+//                    else
+//                        fisheye = 1;
                 }
                 else//else if(index2 == octantis)
                 {
                     angle = atan2(_geodesic.points[index1*3+2],
                                   _geodesic.points[index1*3+1]);
                     yOffset = asin(_geodesic.points[index1*3+0]) / (M_PI/2) + 1;
-                    if(yOffset > FISHEYE_POINT) fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
-                    else fisheye = 1;
+
+//                    if(yOffset > FISHEYE_POINT){
+////                        NSLog(@"We have a fisheye: %f",yOffset);
+//                        fisheye = pow((yOffset-FISHEYE_POINT)/(lowest-FISHEYE_POINT),8)*.25+1;
+//                    }
+//                    else
+//                        fisheye = 1;
                 }
                 CGContextBeginPath(context);
-                CGContextSetLineDash(context, 0.0f, dashedLine, 2);
-                CGContextSetLineCap(context, kCGLineCapButt);
+//                CGContextSetLineDash(context, 0.0f, dashedLine, 2);
+//                CGContextSetLineCap(context, kCGLineCapButt);
                 CGContextMoveToPoint(context, fisheye*yOffset*sin(angle)*scale+halfWidth,
                                      fisheye*yOffset*cos(angle)*scale+halfHeight);
                 CGContextAddLineToPoint(context, fisheye*2*sin(angle)*scale+halfWidth,
                                         fisheye*2*cos(angle)*scale+halfHeight);
                 CGContextClosePath(context);
                 CGContextDrawPath(context, kCGPathFillStroke);
-                CGContextSetLineDash(context, 0, NULL, 0);
-                CGContextSetLineCap(context, kCGLineCapRound);
+//                CGContextSetLineDash(context, 0, NULL, 0);
+//                CGContextSetLineCap(context, kCGLineCapRound);
             }
         }
     }    
