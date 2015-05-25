@@ -119,6 +119,7 @@
     BOOL gyro = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"] boolValue];
     [self setOrientationSensorsEnabled:gyro];
 
+    _sessionScale = 11.0;
     [self updateUI];
 
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
@@ -149,17 +150,17 @@
 
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
     frequencyControlView = [[FrequencyControlView alloc] initWithFrame:controllerFrame];
-    [frequencyControlView setBackgroundColor:[UIColor whiteColor]];
+    [frequencyControlView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:frequencyControlView];
     [[frequencyControlView segmentedControl] addTarget:self action:@selector(frequencyControlChange:) forControlEvents:UIControlEventValueChanged];
     
     sliceControlView = [[SliceControlView alloc] initWithFrame:controllerFrame];
-    [sliceControlView setBackgroundColor:[UIColor whiteColor]];
+    [sliceControlView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:sliceControlView];
     [[sliceControlView slider] addTarget:self action:@selector(sliceControlChange:) forControlEvents:UIControlEventValueChanged];
 
     scaleControlView = [[ScaleControlView alloc] initWithFrame:CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3)];
-    [scaleControlView setBackgroundColor:[UIColor whiteColor]];
+    [scaleControlView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:scaleControlView];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
@@ -167,8 +168,6 @@
     
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
-    
-    _sessionScale = 10.0;
     
     [geodesicView setSphereOverride:YES];
 }
@@ -180,8 +179,11 @@
     DiagramViewController *dVC = [[DiagramViewController alloc] init];
     [geodesicModel makeLineClasses];
     [dVC setMaterials:@{@"lines" : [geodesicModel lineLengthValues],
-                        @"lineQuantities" : [geodesicModel lineTypeQuantities]}];
+                        @"lineQuantities" : [geodesicModel lineTypeQuantities],
+                        @"points" : [geodesicModel joints]
+                        }];
     [dVC setTitle:[self title]];
+    [dVC setScale:((_sessionScale - 1.0) * .5)];
     [dVC setGeodesicModel:geodesicModel];
     [self.navigationController pushViewController:dVC animated:YES];
 }
@@ -204,6 +206,8 @@
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:NO];
         [geodesicView setSphereOverride:NO];
+        [geodesicModel calculateLongestStrutLength];
+        [self updateUI];
     }
 }
 -(void) setPerspective:(NSUInteger)perspective{
@@ -215,71 +219,9 @@
     if(_perspective == 2)
         [geodesicView setFieldOfView:2];
 }
--(NSString*) unitifyNumber:(double)f{
-    int precision = [[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] intValue];
-//    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-//    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-//    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-//    else
-    
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet"]){
-        if(precision == 1)
-            return [NSString stringWithFormat:@"%.1f ft", f];
-        else if(precision == 2)
-            return [NSString stringWithFormat:@"%.3f ft", f];
-        else if(precision == 3)
-            return [NSString stringWithFormat:@"%.5f ft", f];
-    }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"]){
-        int whole = floorf(f);
-        double fraction = f - whole;
-        double inches = fraction * 12;
-        if(whole == 0){
-            if(precision == 1)
-                return [NSString stringWithFormat:@"%.1f in", inches];
-            else if(precision == 2)
-                return [NSString stringWithFormat:@"%.2f in", inches];
-            else if(precision == 3)
-                return [NSString stringWithFormat:@"%.5f in", inches];
-        }
-        if(precision == 1)
-            return [NSString stringWithFormat:@"%d ft %.1f in", whole, inches];
-        else if(precision == 2)
-            return [NSString stringWithFormat:@"%d ft %.2f in", whole, inches];
-        else if(precision == 3)
-            return [NSString stringWithFormat:@"%d ft %.5f in", whole, inches];
-    }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){
-        if(precision == 1)
-            return [NSString stringWithFormat:@"%.1f m", f];
-        else if(precision == 2)
-            return [NSString stringWithFormat:@"%.3f m", f];
-        else if(precision == 3)
-            return [NSString stringWithFormat:@"%.5f m", f];
-    }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + millimeters"]){
-        int whole = floorf(f);
-        double fraction = f - whole;
-        double millimeters = fraction * 100;
-        if(whole == 0){
-            if(precision == 1)
-                return [NSString stringWithFormat:@"%.1f mm", millimeters];
-            else if(precision == 2)
-                return [NSString stringWithFormat:@"%.2f mm", millimeters];
-            else if(precision == 3)
-                return [NSString stringWithFormat:@"%.5f mm", millimeters];
-        }
-        if(precision == 1)
-            return [NSString stringWithFormat:@"%d m %.1f mm", whole, millimeters];
-        else if(precision == 2)
-            return [NSString stringWithFormat:@"%d m %.2f mm", whole, millimeters];
-        else if(precision == 3)
-            return [NSString stringWithFormat:@"%d m %.5f mm", whole, millimeters];
-    }
-    return [NSString stringWithFormat:@"%f",f];
-}
 
 -(void) updateUI{
+    NSLog(@"updating UI, and session scale is : %f",_sessionScale);
     // update NavBar Title
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     if([geodesicModel frequencyNumerator] == [geodesicModel frequencyDenominator]){
@@ -294,9 +236,10 @@
         if(_solidType == 1)
             [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], [geodesicModel frequencyNumerator], [geodesicModel frequencyDenominator]]];
     }
-    [[scaleControlView floorDiameterTextField] setText:[self unitifyNumber:[geodesicModel domeFloorDiameter] * _sessionScale]];
-    [[scaleControlView heightTextField] setText:[self unitifyNumber:[geodesicModel domeHeight] * _sessionScale]];
-    [[scaleControlView strutTextField] setText:[self unitifyNumber:[geodesicModel longestStrutLength] * _sessionScale]];
+    ;
+    [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
+    [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
+    [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
 }
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
@@ -309,7 +252,7 @@
     [geodesicModel setSolid:solidType];
     [geodesicModel setFrequency:1];
     [geodesicModel setSphere];
-    _sessionScale = 10.0;
+    _sessionScale = 11.0;
     [geodesicView setSphereOverride:YES];
     [self setPerspective:0];
     // reset top menu
@@ -349,11 +292,15 @@
     [self updateUI];
 }
 -(void) scaleControlChange:(UISlider*)sender{
+    float SENSITIVITY = 0.25f;
     static float baseScale;
     if([sender state] == 0)  // touches begin
         baseScale = _sessionScale;
     else
-        _sessionScale = baseScale * pow(baseScale,(sender.value - .5));
+        _sessionScale = baseScale * pow(baseScale,(sender.value - .5) * SENSITIVITY);
+    if(_sessionScale > 1000000.0)
+        _sessionScale = 1000000.0;
+    NSLog(@"%f",_sessionScale);
     [self updateUI];
 }
 -(void) scaleControlChangeEnd:(UISlider*)sender{

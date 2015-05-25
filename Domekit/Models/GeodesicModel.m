@@ -98,7 +98,7 @@
     _domeFraction = (float)_frequencyNumerator / (float)_frequencyDenominator;
     _domeFloorDiameter = sqrt(1 - pow(2*_domeFraction-1, 2));
     _domeHeight = _domeFraction;
-    _longestStrutLength = .1;
+    _longestStrutLength = 0;
     _numVisibleTriangles = [[self faceAltitudeCountsCumulative][_frequencyNumerator - 1] unsignedIntValue];
 //    NSArray *sliceCounts = [self faceAltitudeCountsCumulative];
 //    int unit = sender.value * (sliceCounts.count - 1);
@@ -122,6 +122,28 @@
 
     [self resliceSphere];
     [self logGeodesic];
+}
+
+-(void) calculateLongestStrutLength
+{
+    double distance;
+    double longest = 0;
+    NSSet *lines = [NSSet setWithArray:[[self visiblePointsAndLines] objectForKey:@"lines"]];
+    for(int i = 0; i < _numLines; i+=2)
+    {
+        if([lines containsObject:@(i)])
+        {
+            distance = sqrt(
+                           powf( _points[_lines[i*2+0]* 3+0] - _points[_lines[i*2+1]* 3+0], 2) +
+                           powf( _points[_lines[i*2+0]* 3+1] - _points[_lines[i*2+1]* 3+1], 2) +
+                           powf( _points[_lines[i*2+0]* 3+2] - _points[_lines[i*2+1]* 3+2], 2) );
+            
+            if(longest < distance)
+                longest = distance;
+        }
+    }
+    // length = ratio to dome diameter, which is 1
+    _longestStrutLength = longest * .5;  // (2 * 1.90211)
 }
 
 -(NSDictionary*)visiblePointsAndLines{
@@ -163,21 +185,45 @@
 -(void) makeLineClasses{
     geodesicAnalysis a = classifyLines(&_geo.g);
     
+    NSDictionary *visible = [self visiblePointsAndLines];
+    NSSet *visibleLines = [NSSet setWithArray:[visible objectForKey:@"lines"]];
+    NSSet *visiblePoints = [NSSet setWithArray:[visible objectForKey:@"points"]];
+    
     NSMutableArray *types = [NSMutableArray array];
     for(int i = 0; i < _geo.g.numLines; i++){
         [types addObject:[NSNumber numberWithUnsignedInt:a.lineLengthTypes[i]]];
     }
-    _lineLengthTypes = types;
 
     NSMutableArray *values = [NSMutableArray array];
     for(int i = 0; i < a.numLineLengths; i++)
         [values addObject:[NSNumber numberWithDouble:a.lineLengthValues[i]]];
-    _lineLengthValues = values;
 
+//    NSMutableArray *quantites = [NSMutableArray array];
+//    for(int i = 0; i < a.numLineLengths; i++)
+//        [quantites addObject:[NSNumber numberWithUnsignedInt:a.lineTypesQuantities[i]]];
+
+    
+    unsigned int *lineTypesQuantities = calloc(sizeof(unsigned int), _numLines);
+    for(int i = 0; i < _numLines; i++){
+        if([visibleLines containsObject:@(i)])
+            lineTypesQuantities[[types[i] intValue]]++;
+    }
     NSMutableArray *quantites = [NSMutableArray array];
-    for(int i = 0; i < a.numLineLengths; i++)
-        [quantites addObject:[NSNumber numberWithUnsignedInt:a.lineTypesQuantities[i]]];
+    for(int i = 0; i < _numLines; i++)
+        [quantites addObject:[NSNumber numberWithUnsignedInt:lineTypesQuantities[i]]];
+    
+    free(lineTypesQuantities);
+    
+    _lineLengthTypes = types;
+    _lineLengthValues = values;
     _lineTypeQuantities = quantites;
+    
+    _joints = @[@([visiblePoints count])];
+    
+    NSLog(@"+ + + + + ++ + + + + + + + + ");
+    NSLog(@"types: %ld",_lineLengthTypes.count);
+    NSLog(@"values (%ld): %@",_lineLengthValues.count, _lineLengthValues);
+    NSLog(@"quantities (%ld): %@",_lineTypeQuantities.count, _lineTypeQuantities);
 }
 
 -(void) logGeodesic{

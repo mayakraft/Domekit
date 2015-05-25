@@ -19,6 +19,8 @@
 
 @property (nonatomic) BOOL orientationSensorsEnabled;
 
+// power function, never drops below 1.0
+// so, when actually used, always delivered with (- 1.0) appended
 @property float sessionScale;
 
 -(void) updateUI;

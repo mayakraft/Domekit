@@ -41,6 +41,8 @@ typedef enum : NSUInteger {
 @property (readonly) float domeHeight;  // floor height (0 to 1) according to slice location
 @property (readonly) float longestStrutLength;  // as a ratio of domeFloorDiameter and domeHeight
 
+-(void) calculateLongestStrutLength;
+
 // RESET ALL SLICING, return to sphere
 -(void) setSphere;
 
@@ -56,6 +58,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSArray *lineLengthValues;
 @property (nonatomic) NSArray *lineLengthTypes;
 @property (nonatomic) NSArray *lineTypeQuantities;
+@property NSArray *joints;
 
 // not actual point, line data
 // just indices to point and line indices in the original geodesic object

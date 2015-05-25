@@ -18,4 +18,6 @@
 
 @property UITableView *tableView;
 
+@property float scale;
+
 @end

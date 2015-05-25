@@ -29,8 +29,12 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
     
-    //TODO this needs to be dependent on content size
-    self.tableView.scrollEnabled = NO;
+    if (self.tableView.contentSize.height < self.tableView.frame.size.height) {
+        self.tableView.scrollEnabled = NO;
+    }
+    else {
+        self.tableView.scrollEnabled = YES;
+    }
     
 //    selectionView = [[UIView alloc] init];
 //    [selectionView setBackgroundColor:[UIColor blueColor]];

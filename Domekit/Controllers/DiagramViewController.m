@@ -9,7 +9,7 @@
 #import "DiagramViewController.h"
 #import "EquidistantAzimuthView.h"
 #import "MaterialsListTableViewCell.h"
-
+#import "AppDelegate.h"
 
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
@@ -29,7 +29,6 @@
 -(void) setGeodesicModel:(GeodesicModel *)geodesicModel{
     _geodesicModel = geodesicModel;
     [equidistantAzimuthView setGeodesic:_geodesicModel];
-//    [self getLengthOrder];
 }
 
 -(void) setMaterials:(NSDictionary *)materials{
@@ -58,23 +57,32 @@
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MaterialsCell"];
-    NSArray *lines = [_materials objectForKey:@"lines"];
-    if([lines count]){
-        // format strut length
-        float length = [[lines objectAtIndex:indexPath.row] floatValue];
-        [[cell textLabel] setText:[NSString stringWithFormat:@"%f ft",length]];
-
-        UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(10, 18, 64, 8)];
-        if(indexPath.row < [colorTable count])
-            [colorBar setBackgroundColor:[colorTable objectAtIndex:indexPath.row]];
-        else
-            [colorBar setBackgroundColor:[UIColor grayColor]];
-        [cell addSubview:colorBar];
-
-        NSArray *lineQuantities = [_materials objectForKey:@"lineQuantities"];
-        if([lineQuantities count]){
-            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"× %@",[lineQuantities objectAtIndex:indexPath.row]]];
+    if(indexPath.section == 0){
+        NSArray *lines = [_materials objectForKey:@"lines"];
+        if(indexPath.row < [lines count]){
+            // format strut length
+            float length = [[lines objectAtIndex:indexPath.row] floatValue] * _scale;
+            
+            [[cell textLabel] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:length]];
+            
+            UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(10, 18, 64, 8)];
+            if(indexPath.row < [colorTable count])
+                [colorBar setBackgroundColor:[colorTable objectAtIndex:indexPath.row]];
+            else
+                [colorBar setBackgroundColor:[UIColor grayColor]];
+            [cell addSubview:colorBar];
+            
+            NSArray *lineQuantities = [_materials objectForKey:@"lineQuantities"];
+            if([lineQuantities count]){
+                [[cell detailTextLabel] setText:[NSString stringWithFormat:@"× %@",[lineQuantities objectAtIndex:indexPath.row]]];
+            }
         }
+    }
+    else{
+        [cell.textLabel setText:@""];
+        NSArray *points = [_materials objectForKey:@"points"];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"x %@",[points objectAtIndex:indexPath.row]]];
+ 
     }
     return cell;
 }
@@ -160,8 +168,8 @@
 //    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:nil action:NULL];
 //    self.navigationItem.rightBarButtonItem = makeButton;
 
-    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(saveButtonPressed)];
-    self.navigationItem.rightBarButtonItem = makeButton;
+//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
+//    self.navigationItem.rightBarButtonItem = shareButton;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
     self.navigationItem.leftBarButtonItem = backButton;
@@ -190,10 +198,10 @@
 //    [UIView commitAnimations];
 }
 
--(void) saveButtonPressed{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Save to Photos", @"Email PDF", nil];
-    [actionSheet showInView:self.view];
-}
+//-(void) shareButtonPressed{
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Save to Photos", @"Email PDF", nil];
+//    [actionSheet showInView:self.view];
+//}
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     

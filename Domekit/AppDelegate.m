@@ -45,6 +45,69 @@
     if(flagSwitched)
         [[NSUserDefaults standardUserDefaults] synchronize];
 }
+-(NSString*) unitifyNumber:(double)f{
+    int precision = [[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] intValue];
+    //    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+    //    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+    //    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
+    //    else
+    
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet"]){
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%.1f ft", f];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%.3f ft", f];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%.5f ft", f];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"]){
+        int whole = floorf(f);
+        double fraction = f - whole;
+        double inches = fraction * 12;
+        if(whole == 0){
+            if(precision == 1)
+                return [NSString stringWithFormat:@"%.1f in", inches];
+            else if(precision == 2)
+                return [NSString stringWithFormat:@"%.2f in", inches];
+            else if(precision == 3)
+                return [NSString stringWithFormat:@"%.4f in", inches];
+        }
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%d ft %.0f in", whole, inches];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%d ft %.2f in", whole, inches];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%d ft %.4f in", whole, inches];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%.1f m", f];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%.3f m", f];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%.5f m", f];
+    }
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + centimeters"]){
+        int whole = floorf(f);
+        double fraction = f - whole;
+        double centimeters = fraction * 100;
+        if(whole == 0){
+            if(precision == 1)
+                return [NSString stringWithFormat:@"%.1f cm", centimeters];
+            else if(precision == 2)
+                return [NSString stringWithFormat:@"%.2f cm", centimeters];
+            else if(precision == 3)
+                return [NSString stringWithFormat:@"%.5f cm", centimeters];
+        }
+        if(precision == 1)
+            return [NSString stringWithFormat:@"%d m %.0f cm", whole, centimeters];
+        else if(precision == 2)
+            return [NSString stringWithFormat:@"%d m %.2f cm", whole, centimeters];
+        else if(precision == 3)
+            return [NSString stringWithFormat:@"%d m %.4f cm", whole, centimeters];
+    }
+    return [NSString stringWithFormat:@"%f",f];
+}
 
 -(void) newIcosahedron{
     if(![[_revealController frontViewController] isEqual:_geodesicNavigationController])
@@ -75,6 +138,13 @@
     [_geodesicViewController setOrientationSensorsEnabled:enabled];
     [_geodesicViewController updateUI];
     [[(UITableViewController*)[_revealController rearViewController] tableView] reloadData];
+    UITableView *tableView = [(UITableViewController*)[_revealController rearViewController] tableView];
+    if (tableView.contentSize.height < tableView.frame.size.height) {
+        tableView.scrollEnabled = NO;
+    }
+    else {
+        tableView.scrollEnabled = YES;
+    }
 }
 
 -(void) storeCurrentDome{
@@ -108,7 +178,6 @@
     
     self.window.rootViewController = _revealController;
     [self.window makeKeyAndVisible];
-    NSLog(@"++++++++++ %ld",(long)[_revealController frontViewPosition]);
     return YES;
 }
 

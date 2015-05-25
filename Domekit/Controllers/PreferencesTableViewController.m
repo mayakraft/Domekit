@@ -105,11 +105,11 @@
         else if(indexPath.row == 2){
             [[cell textLabel] setText:@"Precision"];
             if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-                [[cell detailTextLabel] setText:@"folk"];
+                [[cell detailTextLabel] setText:@"elementary"];
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@2])
                 [[cell detailTextLabel] setText:@"precise"];
             else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@3])
-                [[cell detailTextLabel] setText:@"insanely precise"];
+                [[cell detailTextLabel] setText:@"machine level"];
         }
     }
     else{
@@ -143,12 +143,12 @@
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"] ||
             [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"m"] ||
             [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"metric"] ){
-        [[cell detailTextLabel] setText:@"meters + millimeters"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"meters + millimeters" forKey:@"units"];
+        [[cell detailTextLabel] setText:@"meters + centimeters"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"meters + centimeters" forKey:@"units"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + millimeters"] ||
-            [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"m + mm"]){
+    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + centimeters"] ||
+            [[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"m + cm"]){
         [[cell detailTextLabel] setText:@"feet"];
         [[NSUserDefaults standardUserDefaults] setObject:@"feet" forKey:@"units"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -157,7 +157,7 @@
 
 -(void) togglePrecision:(UITableViewCell*)cell{
     if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@2]){
-        [[cell detailTextLabel] setText:@"insanely precise"];
+        [[cell detailTextLabel] setText:@"machine level"];
         [[NSUserDefaults standardUserDefaults] setObject:@3 forKey:@"precision"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }

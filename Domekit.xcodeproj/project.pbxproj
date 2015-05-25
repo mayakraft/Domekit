@@ -288,15 +288,23 @@
 				D5DBB49F1AFBAD8A002D2EB0 /* GeodesicView.m */,
 				D53B9C5B1B089ED7008E5014 /* EquidistantAzimuthView.h */,
 				D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */,
+				D5EFDC2C1B13D0DC002ADD28 /* TableView Cells */,
+				D53B9C611B0C0CE9008E5014 /* Dome Edit Controls */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D5EFDC2C1B13D0DC002ADD28 /* TableView Cells */ = {
+			isa = PBXGroup;
+			children = (
 				D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */,
 				D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */,
 				D53B9C651B0C9BF3008E5014 /* PreferencesTableViewCell.h */,
 				D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */,
 				D5EFDC251B0E0EE5002ADD28 /* NewDomeTableViewCell.h */,
 				D5EFDC261B0E0EE5002ADD28 /* NewDomeTableViewCell.m */,
-				D53B9C611B0C0CE9008E5014 /* Dome Edit Controls */,
 			);
-			path = Views;
+			name = "TableView Cells";
 			sourceTree = "<group>";
 		};
 		D5F918271AF9162600564114 /* 3rdParty */ = {
@@ -568,7 +576,7 @@
 					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -586,7 +594,7 @@
 					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
