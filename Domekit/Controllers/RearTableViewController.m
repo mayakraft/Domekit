@@ -257,7 +257,7 @@
 //    }
     
     if(indexPath.section == 0){
-        NSLog(@"now overwriting front view controller correctly");
+//        NSLog(@"now overwriting front view controller correctly");
 //        [revealController setFrontViewController:feed animated:YES];
 //        [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
     }

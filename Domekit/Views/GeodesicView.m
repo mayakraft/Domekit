@@ -109,7 +109,7 @@
     [(CAEAGLLayer*)self.layer setOpaque:NO];
     _aspectRatio = self.frame.size.width/self.frame.size.height;
     _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
-    NSLog(@"FOV %f",_fieldOfView);
+//    NSLog(@"FOV %f",_fieldOfView);
     [self rebuildProjectionMatrix];
     _attitudeMatrix = GLKMatrix4Identity;
     [self customGL];

@@ -123,9 +123,9 @@
     else scale = _scale/(2.5);
     
     
-    NSLog(@"FURTHEST: %f",lowest);
+//    NSLog(@"FURTHEST: %f",lowest);
     
-    NSLog(@"Width: %f",rect.size.width);
+//    NSLog(@"Width: %f",rect.size.width);
     
     float MARGIN = .9; // percent of screen used
     scale = rect.size.width*.5 / lowest * MARGIN;

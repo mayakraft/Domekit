@@ -95,7 +95,7 @@
                            @"denominator":@(geodesicModel.frequencyDenominator),
                            @"scale":@(_sessionScale)};
     [saved addObject:dome];
-    NSLog(@"ADDING DOME:\n%@",dome);
+//    NSLog(@"ADDING DOME:\n%@",dome);
     [[NSUserDefaults standardUserDefaults] setObject:saved forKey:@"saved"];
     [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
 }
@@ -221,7 +221,7 @@
 }
 
 -(void) updateUI{
-    NSLog(@"updating UI, and session scale is : %f",_sessionScale);
+//    NSLog(@"updating UI, and session scale is : %f",_sessionScale);
     // update NavBar Title
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     if([geodesicModel frequencyNumerator] == [geodesicModel frequencyDenominator]){
@@ -244,7 +244,7 @@
 -(void) setSolidType:(unsigned int)solidType{
     _solidType = solidType;
     [geodesicModel setSolid:solidType];
-    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
+//    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
     [self updateUI];
 }
 -(void) newPolyhedra:(unsigned int)solidType{
@@ -292,7 +292,7 @@
     [self updateUI];
 }
 -(void) scaleControlChange:(UISlider*)sender{
-    float SENSITIVITY = 0.25f;
+    float SENSITIVITY = 0.1f;
     static float baseScale;
     if([sender state] == 0)  // touches begin
         baseScale = _sessionScale;
@@ -300,7 +300,6 @@
         _sessionScale = baseScale * pow(baseScale,(sender.value - .5) * SENSITIVITY);
     if(_sessionScale > 1000000.0)
         _sessionScale = 1000000.0;
-    NSLog(@"%f",_sessionScale);
     [self updateUI];
 }
 -(void) scaleControlChangeEnd:(UISlider*)sender{

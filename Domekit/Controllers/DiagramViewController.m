@@ -33,7 +33,7 @@
 
 -(void) setMaterials:(NSDictionary *)materials{
     _materials = materials;
-    NSLog(@"MATERIALS INVOLVED:\n%@",materials);
+//    NSLog(@"MATERIALS INVOLVED:\n%@",materials);
     [self.tableView reloadData];
 }
 

@@ -115,7 +115,7 @@
     else{
         if(indexPath.row == 0){
             NSArray *saved = [[NSUserDefaults standardUserDefaults] objectForKey:@"saved"];
-            [[cell textLabel] setText:[NSString stringWithFormat:@"(%d) Saved Domes", [saved count]]];
+            [[cell textLabel] setText:[NSString stringWithFormat:@"(%lu) Saved Domes", (unsigned long)[saved count]]];
         }
         if(indexPath.row == 1){
             [[cell textLabel] setText:@"Clear Saved Domes"];
@@ -204,8 +204,10 @@
     }
     else if(indexPath.section == 1){
         if(indexPath.row == 1){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Erase", nil];
-            [alert show];
+            if([[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] count]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Erase", nil];
+                [alert show];
+            }
         }
     }
     [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];

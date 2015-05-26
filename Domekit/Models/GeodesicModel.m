@@ -121,7 +121,7 @@
         [self makeIcosahedron];
 
     [self resliceSphere];
-    [self logGeodesic];
+//    [self logGeodesic];
 }
 
 -(void) calculateLongestStrutLength
@@ -220,10 +220,10 @@
     
     _joints = @[@([visiblePoints count])];
     
-    NSLog(@"+ + + + + ++ + + + + + + + + ");
-    NSLog(@"types: %ld",_lineLengthTypes.count);
-    NSLog(@"values (%ld): %@",_lineLengthValues.count, _lineLengthValues);
-    NSLog(@"quantities (%ld): %@",_lineTypeQuantities.count, _lineTypeQuantities);
+//    NSLog(@"+ + + + + ++ + + + + + + + + ");
+//    NSLog(@"types: %ld",_lineLengthTypes.count);
+//    NSLog(@"values (%ld): %@",_lineLengthValues.count, _lineLengthValues);
+//    NSLog(@"quantities (%ld): %@",_lineTypeQuantities.count, _lineTypeQuantities);
 }
 
 -(void) logGeodesic{
