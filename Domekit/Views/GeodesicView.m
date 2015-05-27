@@ -37,7 +37,7 @@
             break;
             
         case POLAR:
-            glTranslatef(0, 0, -polarRadius);
+            glTranslatef(0, 0, -_cameraRadius);
             glMultMatrixf(_attitudeMatrix.m);
             break;
             
@@ -109,6 +109,7 @@
     [(CAEAGLLayer*)self.layer setOpaque:NO];
     _aspectRatio = self.frame.size.width/self.frame.size.height;
     _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
+    _cameraRadius = polarRadius;
 //    NSLog(@"FOV %f",_fieldOfView);
     [self rebuildProjectionMatrix];
     _attitudeMatrix = GLKMatrix4Identity;

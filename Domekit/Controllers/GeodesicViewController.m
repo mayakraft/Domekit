@@ -25,7 +25,7 @@
 #import "ScaleControlView.h"
 // DATA MODELS
 #import "GeodesicModel.h"
-#import "Animation.h"
+#import "CameraAnimation.h"
 
 
 // this appears to be the best way to grab orientation. if this becomes formalized, just make sure the orientations match
@@ -34,11 +34,10 @@
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
 
-@interface GeodesicViewController () {
+@interface GeodesicViewController () <CameraAnimationDelegate> {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
-    Animation *projectionAnimation;
     
     // Bottom screen controls
     FrequencyControlView *frequencyControlView;
@@ -46,6 +45,7 @@
     ScaleControlView *scaleControlView;
 }
 
+@property CameraAnimation *cameraAnimation;
 @property (nonatomic) NSUInteger perspective;
 @property (weak) UISegmentedControl *topMenu;
 @end
@@ -86,6 +86,10 @@
     return self;
 }
 
+-(void) animationDidStop:(GLKMatrix4)matrix{
+    NSLog(@"Animation Did Stop");
+    _cameraAnimation = nil;
+}
 -(void) storeCurrentDome{
     NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
     NSDictionary *dome = @{
@@ -170,6 +174,8 @@
     [scaleControlView setHidden:YES];
     
     [geodesicView setSphereOverride:YES];
+    
+    NSLog(@"THIS %f",45 + 45 * atanf(geodesicView.aspectRatio));
 }
 //-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 //    NSLog(@"drawing");
@@ -200,6 +206,7 @@
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
         [geodesicView setSphereOverride:NO];
+        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:1.33 Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
@@ -215,9 +222,9 @@
     if(_perspective == 0)
         [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
     if(_perspective == 1)
-        [geodesicView setFieldOfView:2];
+        [geodesicView setFieldOfView:2.122105];
     if(_perspective == 2)
-        [geodesicView setFieldOfView:2];
+        [geodesicView setFieldOfView:2.122105];
 }
 
 -(void) updateUI{
@@ -344,14 +351,27 @@
 
 // part of GLKViewController
 - (void)update{
-    if(_perspective == 0){
-//        orient.m32 = -5.0;
-        [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+    if(_cameraAnimation){
+        [geodesicView setFieldOfView:[_cameraAnimation fieldOfView]];
+        [geodesicView setAttitudeMatrix:[_cameraAnimation matrix]];
+        [geodesicView setCameraRadius:[_cameraAnimation radius]];
     }
-    if(_perspective == 1)
-        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
-    if(_perspective == 2)
-        [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
+    else {
+        if(_perspective == 0){
+//        orient.m32 = -5.0;
+            [geodesicView setCameraRadius:2];
+            [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
+        }
+        else if(_perspective == 1){
+            
+//        () FOV (0.009355): 1.876049
+            [geodesicView setAttitudeMatrix:GLKMatrix4Identity];//GLKMatrix4MakeTranslation(0, 0, -52)];
+//            [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
+        }
+        else if(_perspective == 2)
+            [geodesicView setAttitudeMatrix:GLKMatrix4Identity];
+//            [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -52)]; // 65
+    }
 }
 
 -(void) animationHandler:(id)sender{

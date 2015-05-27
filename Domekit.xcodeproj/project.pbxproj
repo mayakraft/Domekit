@@ -13,7 +13,7 @@
 		D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */; };
 		D53B9C641B0C202D008E5014 /* PreferencesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */; };
 		D53B9C671B0C9BF3008E5014 /* PreferencesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */; };
-		D55550911AFD381A00113FEF /* Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550901AFD381A00113FEF /* Animation.m */; };
+		D54088821B15AEC7003E168C /* CameraAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D54088811B15AEC7003E168C /* CameraAnimation.m */; };
 		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
 		D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C41AF67B58006F33B9 /* AppDelegate.m */; };
@@ -65,6 +65,8 @@
 		D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesTableViewController.m; sourceTree = "<group>"; };
 		D53B9C651B0C9BF3008E5014 /* PreferencesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesTableViewCell.h; sourceTree = "<group>"; };
 		D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesTableViewCell.m; sourceTree = "<group>"; };
+		D54088801B15AEC7003E168C /* CameraAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAnimation.h; sourceTree = "<group>"; };
+		D54088811B15AEC7003E168C /* CameraAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAnimation.m; sourceTree = "<group>"; };
 		D555508F1AFD381A00113FEF /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animation.h; path = ../Controllers/Animation.h; sourceTree = "<group>"; };
 		D55550901AFD381A00113FEF /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Animation.m; path = ../Controllers/Animation.m; sourceTree = "<group>"; };
 		D55550921B006DCA00113FEF /* DiagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramViewController.h; sourceTree = "<group>"; };
@@ -266,6 +268,8 @@
 				D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */,
 				D53B9C621B0C202D008E5014 /* PreferencesTableViewController.h */,
 				D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */,
+				D54088801B15AEC7003E168C /* CameraAnimation.h */,
+				D54088811B15AEC7003E168C /* CameraAnimation.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -432,7 +436,7 @@
 			files = (
 				D5F9182A1AF9162600564114 /* SWRevealViewController.m in Sources */,
 				D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */,
-				D55550911AFD381A00113FEF /* Animation.m in Sources */,
+				D54088821B15AEC7003E168C /* CameraAnimation.m in Sources */,
 				D5DBB4A41AFBAD8A002D2EB0 /* FrequencyControlView.m in Sources */,
 				D5DBB4711AFA6412002D2EB0 /* ExtendedNavBarView.m in Sources */,
 				D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */,
