@@ -31,12 +31,13 @@
     static perspective_t POV = POLAR;
     switch(POV){
         case FPP:
-            glMultMatrixf(_attitudeMatrix.m);
+//            glMultMatrixf(_attitudeMatrix.m);
 //            // raise POV 1.0 above the floor, 1.0 is an arbitrary value
-            glTranslatef(0, 0, -1.0f);
+//            glTranslatef(0, 0, -1.0f);
             break;
             
         case POLAR:
+            glTranslatef(0, 0, -.4);
             glTranslatef(0, 0, -_cameraRadius);
             glMultMatrixf(_attitudeMatrix.m);
             break;

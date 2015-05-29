@@ -26,8 +26,13 @@
 -(id)initWithDuration:(NSTimeInterval)seconds Delegate:(id)delegate OrientationStart:(GLKQuaternion)orientationStart End:(GLKQuaternion)orientationEnd;
 
 
-@property float fieldOfView; // animated
-@property float radius;
+@property double fieldOfView; // animated
+@property double radius;
+
+@property BOOL reverseZoom;
+
+@property GLKQuaternion orientationStart;
+@property GLKQuaternion orientationEnd;
 
 // extra
 // choose an optional start and end time
@@ -35,7 +40,7 @@
 
 // 0.0 to 1.0
 // progress from start to finish
-@property (readonly) float tween;
+@property (readonly) double tween;
 
 @property (readonly) NSDate *startTime;
 @property (readonly) NSDate *endTime;

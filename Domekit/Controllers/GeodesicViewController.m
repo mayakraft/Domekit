@@ -175,7 +175,7 @@
     
     [geodesicView setSphereOverride:YES];
     
-    NSLog(@"THIS %f",45 + 45 * atanf(geodesicView.aspectRatio));
+    [self setPerspective:0];
 }
 //-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 //    NSLog(@"drawing");
@@ -194,7 +194,13 @@
     [self.navigationController pushViewController:dVC animated:YES];
 }
 -(void) topMenuChange:(UISegmentedControl*)sender{
-    [self setPerspective:[sender selectedSegmentIndex]];
+    if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
+        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:.4 Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
+    }
+    if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
+        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:.4 Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        [_cameraAnimation setReverseZoom:YES];
+    }
     if([sender selectedSegmentIndex] == 0){
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
@@ -206,7 +212,6 @@
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
         [geodesicView setSphereOverride:NO];
-        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:1.33 Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
@@ -216,15 +221,19 @@
         [geodesicModel calculateLongestStrutLength];
         [self updateUI];
     }
+    [self setPerspective:[sender selectedSegmentIndex]];
 }
 -(void) setPerspective:(NSUInteger)perspective{
     _perspective = perspective;
-    if(_perspective == 0)
-        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
-    if(_perspective == 1)
-        [geodesicView setFieldOfView:2.122105];
-    if(_perspective == 2)
-        [geodesicView setFieldOfView:2.122105];
+    if(_perspective == 0){
+        [geodesicView setFieldOfView:56.782191];
+        [geodesicView setCameraRadius:2];
+//        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
+    }
+//    if(_perspective == 1)
+//        [geodesicView setFieldOfView:2.122105];
+//    if(_perspective == 2)
+//        [geodesicView setFieldOfView:2.122105];
 }
 
 -(void) updateUI{
@@ -352,14 +361,18 @@
 // part of GLKViewController
 - (void)update{
     if(_cameraAnimation){
-        [geodesicView setFieldOfView:[_cameraAnimation fieldOfView]];
         [geodesicView setAttitudeMatrix:[_cameraAnimation matrix]];
+        [geodesicView setFieldOfView:[_cameraAnimation fieldOfView]];
         [geodesicView setCameraRadius:[_cameraAnimation radius]];
+        if([_cameraAnimation reverseZoom])
+            [_cameraAnimation setOrientationEnd:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        else
+            [_cameraAnimation setOrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
     }
     else {
         if(_perspective == 0){
 //        orient.m32 = -5.0;
-            [geodesicView setCameraRadius:2];
+//            [geodesicView setCameraRadius:2];
             [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
         }
         else if(_perspective == 1){

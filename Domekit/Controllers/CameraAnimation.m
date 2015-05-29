@@ -1,8 +1,6 @@
 #import "CameraAnimation.h"
 
 @interface CameraAnimation ()
-@property GLKQuaternion orientationStart;
-@property GLKQuaternion orientationEnd;
 
 @property float FOVStart;
 @property float FOVEnd;
@@ -11,6 +9,7 @@
 @property float distanceStart;
 @property float distanceEnd;
 
+@property double initHeightAtDist;
 @property NSTimer *durationTimer;
 @end
 
@@ -42,38 +41,59 @@
         _orientationEnd = orientationEnd;
         
         _durationTimer = [NSTimer scheduledTimerWithTimeInterval:_duration target:_delegate selector:@selector(animationDidStop:) userInfo:nil repeats:NO];
+
+        _fieldOfView = 68.087608;//56.782191;
+        _initHeightAtDist = [self FrustumHeightAtDistance:2 -.4];
+        NSLog(@"HEIGHT AT DIST: %f", _initHeightAtDist);
+
     }
     return self;
 }
 
+
+
+// Calculate the frustum height at a given distance from the camera.
+-(double) FrustumHeightAtDistance:(double)distance {
+    return 2.0 * distance * tan(_fieldOfView * 0.5 * M_PI / 180.0);
+}
+
+// Calculate the FOV needed to get a given frustum height at a given distance.
+-(double) FOVForHeightAndDistance:(double)height Distance:(double)distance {
+    return 2 * atan(height * 0.5 / distance) / M_PI * 180.0;
+}
+
 -(GLKMatrix4) matrix{
-    float t = -[_startTime timeIntervalSinceNow]/_duration;
+    double t = -[_startTime timeIntervalSinceNow]/_duration;
+    
+    t = (cos(M_PI - M_PI*t)+1)*.5;
     GLKQuaternion slerp = GLKQuaternionSlerp(_orientationStart, _orientationEnd, t);
 
 //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
 //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;
 
-    t = pow(t, 3);
+    if(_reverseZoom)
+        t = 1.0-t;
+
+    t = pow(t, 5);
+
     [self dollyZoomFlat:t];
 
     return GLKMatrix4MakeWithQuaternion(slerp);
 }
 
--(void) dollyZoomFlat:(float)frame{
+-(void) dollyZoomFlat:(double)frame{
     
-    float _distanceFromOrigin = 2;
-    _radius = _distanceFromOrigin + frame * 50;//50;
+    // Measure the new distance and readjust the FOV accordingly.
+    
+    double _distanceFromOrigin = 2;
+    _radius = _distanceFromOrigin + frame * 50;
 
-    float width = 5.3;
+    double currDistance = _distanceFromOrigin + frame * 50;
     
-    
-    float fov = 2 * atan(width / (2 * (_radius+_distanceFromOrigin)));
-//    _fieldOfView = fov / 3.1415926 * 180.0;
-    _fieldOfView = fov / 3.1415926 * 180.0; //68.087608 * atan( width /(2*_radius));//(1-frame);
-//    _fieldOfView = 2 + 66.087608 * fov;
-    NSLog(@"(%f) FOV (%f): %f",_radius, atan( width /(2*_radius)), _fieldOfView);
-    //    NSLog(@"FOV %f",fov);
-    //    build_projection_matrix(self.frame.origin.x, self.frame.origin.y, (1+IS_RETINA)*self.frame.size.width, (1+IS_RETINA)*self.frame.size.height, fov);
+    _fieldOfView = [self FOVForHeightAndDistance:_initHeightAtDist Distance:currDistance];
+    NSLog(@"%f",_fieldOfView);
+
+    // 68.087608
 }
 
 -(void) animateFrame{
