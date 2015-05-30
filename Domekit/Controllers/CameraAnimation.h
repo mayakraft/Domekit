@@ -27,9 +27,14 @@
 
 
 @property double fieldOfView; // animated
-@property double radius;
 
-@property BOOL reverseZoom;
+@property double radius;
+@property double radiusFix;  // same as above
+
+// SET THIS TRUE
+// TO PLAY ANIMATION IN REVERSE
+@property BOOL reverse;
+
 
 @property GLKQuaternion orientationStart;
 @property GLKQuaternion orientationEnd;

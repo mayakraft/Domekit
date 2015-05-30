@@ -20,6 +20,8 @@
     int polaris, octantis;
     NSArray *colorTable;
     EquidistantAzimuthView *equidistantAzimuthView;
+    UIButton *arrowButton;
+    BOOL tableUp;
 }
 
 @end
@@ -54,6 +56,35 @@
         return @"Joints";
     else
         return @"";
+}
+
+-(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if(section == 1)
+        return nil;
+    UIView *view = [[UIView alloc] init];
+    [view setBackgroundColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, 4, tableView.frame.size.width, 20)];
+    [label setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
+    [label setTextColor:[UIColor blackColor]];
+    [view addSubview:label];
+
+    if(section == 0)
+        [label setText:@"Struts"];
+    else if(section == 1){
+        [label setText:@"Joints"];
+        return view;
+    }
+
+    UIButton *up = [[UIButton alloc] initWithFrame:CGRectMake(tableView.frame.size.width-44, 0, 44, 30)];
+    [up setTitle:@"▲" forState:UIControlStateNormal];
+    [[up titleLabel] setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
+    [[up layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
+    [up addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+    [up setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [view addSubview:up];
+    arrowButton = up;
+
+    return view;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MaterialsCell"];
@@ -175,6 +206,39 @@
     self.navigationItem.leftBarButtonItem = backButton;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+-(void) animateTableUp{
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    [UIView beginAnimations:@"up" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationDuration:0.2];
+    [UIView setAnimationDelegate:self];
+    [self.tableView setFrame:CGRectMake(0, 0, size.width, size.height - 44)];
+    [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(M_PI)];
+    [UIView commitAnimations];
+}
+
+-(void) animateTableDown{
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    [UIView beginAnimations:@"down" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationDelegate:self];
+    [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(0)];
+    [self.tableView setFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44)];
+    [UIView commitAnimations];
+}
+
+-(void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+    if ([anim.description isEqualToString:@"up"]){
+        [arrowButton removeTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+        [arrowButton addTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
+    }
+    if ([anim.description isEqualToString:@"down"]){
+        [arrowButton removeTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
+        [arrowButton addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 -(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{

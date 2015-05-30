@@ -39,6 +39,7 @@
         case POLAR:
             glTranslatef(0, 0, -.4);
             glTranslatef(0, 0, -_cameraRadius);
+            glTranslatef(0, 0, -_cameraRadiusFix);
             glMultMatrixf(_attitudeMatrix.m);
             break;
             

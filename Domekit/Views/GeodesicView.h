@@ -26,6 +26,7 @@ typedef enum{
 @property (nonatomic) float fieldOfView;
 
 @property float cameraRadius;
+@property float cameraRadiusFix;
 
 @property (nonatomic) GLKMatrix4 attitudeMatrix;
 @property GLKMatrix4 projectionMatrix;

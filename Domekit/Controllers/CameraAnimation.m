@@ -44,7 +44,7 @@
 
         _fieldOfView = 68.087608;//56.782191;
         _initHeightAtDist = [self FrustumHeightAtDistance:2 -.4];
-        NSLog(@"HEIGHT AT DIST: %f", _initHeightAtDist);
+//        NSLog(@"HEIGHT AT DIST: %f", _initHeightAtDist);
 
     }
     return self;
@@ -71,10 +71,8 @@
 //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
 //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;
 
-    if(_reverseZoom)
+    if(_reverse)
         t = 1.0-t;
-
-    t = pow(t, 5);
 
     [self dollyZoomFlat:t];
 
@@ -86,12 +84,14 @@
     // Measure the new distance and readjust the FOV accordingly.
     
     double _distanceFromOrigin = 2;
-    _radius = _distanceFromOrigin + frame * 50;
-
-    double currDistance = _distanceFromOrigin + frame * 50;
+    _radius = _distanceFromOrigin + pow(frame, 5) * (50);
+    _radiusFix = 5 * pow(frame, 5);
+//    _radiusFix = 5 * pow((cos(M_PI - M_PI*frame)+1)*.5, 5);
+//    _radiusFix = 5 * pow(acos(frame*2-1)/M_PI, 5);
+//    _radiusFix = 1-_radiusFix;
     
-    _fieldOfView = [self FOVForHeightAndDistance:_initHeightAtDist Distance:currDistance];
-    NSLog(@"%f",_fieldOfView);
+    _fieldOfView = [self FOVForHeightAndDistance:_initHeightAtDist Distance:_radius];
+//    NSLog(@"%f",_radiusFix);
 
     // 68.087608
 }

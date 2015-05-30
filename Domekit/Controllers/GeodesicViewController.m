@@ -87,8 +87,8 @@
 }
 
 -(void) animationDidStop:(GLKMatrix4)matrix{
-    NSLog(@"Animation Did Stop");
     _cameraAnimation = nil;
+    [geodesicView setCameraRadius:[geodesicView cameraRadius]];
 }
 -(void) storeCurrentDome{
     NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
@@ -199,7 +199,7 @@
     }
     if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
         _cameraAnimation = [[CameraAnimation alloc] initWithDuration:.4 Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
-        [_cameraAnimation setReverseZoom:YES];
+        [_cameraAnimation setReverse:YES];
     }
     if([sender selectedSegmentIndex] == 0){
         [frequencyControlView setHidden:NO];
@@ -364,7 +364,8 @@
         [geodesicView setAttitudeMatrix:[_cameraAnimation matrix]];
         [geodesicView setFieldOfView:[_cameraAnimation fieldOfView]];
         [geodesicView setCameraRadius:[_cameraAnimation radius]];
-        if([_cameraAnimation reverseZoom])
+        [geodesicView setCameraRadiusFix:[_cameraAnimation radiusFix]];
+        if([_cameraAnimation reverse])
             [_cameraAnimation setOrientationEnd:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
         else
             [_cameraAnimation setOrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
