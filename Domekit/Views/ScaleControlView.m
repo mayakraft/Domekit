@@ -18,6 +18,7 @@
 @property UILabel *floorLabel;
 @property UILabel *strutLabel;
 @property UIView *whiteOverlay;
+@property (weak) UITextField *selectedTextField;
 @end
 
 
@@ -64,11 +65,17 @@
 
 -(void) setHidden:(BOOL)hidden{
     [super setHidden:hidden];
+    [self enableControls];
     [self endEditing:YES];
 }
 
+-(void) enableControls{
+    [_heightTextField setTextColor:[UIColor blackColor]];
+    [_floorDiameterTextField setTextColor:[UIColor blackColor]];
+    [_strutTextField setTextColor:[UIColor blackColor]];
+    [_slider setEnabled:YES];
+}
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-
     [_slider setEnabled:NO];
 
     [_heightTextField setTextColor:[UIColor lightGrayColor]];
@@ -76,32 +83,25 @@
     [_strutTextField setTextColor:[UIColor lightGrayColor]];
     [textField setTextColor:[UIColor blackColor]];
     
-    NSLog(@"text field should begin editing");
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     return YES;
 }
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    NSLog(@"text field should end editing");
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [self endEditing:YES];
     return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if([textField isEqual:_heightTextField]){
-        [_viewController userInputHeight:[[textField text] floatValue]];
+    if([[textField text] floatValue] > 0.0){
+        if([textField isEqual:_heightTextField])
+            [_viewController userInputHeight:[[textField text] floatValue]];
+        if([textField isEqual:_floorDiameterTextField])
+            [_viewController userInputFloorDiameter:[[textField text] floatValue]];
+        if([textField isEqual:_strutTextField])
+            [_viewController userInputLongestStrut:[[textField text] floatValue]];
     }
-    if([textField isEqual:_floorDiameterTextField]){
-        [_viewController userInputFloorDiameter:[[textField text] floatValue]];
-    }
-    if([textField isEqual:_strutTextField]){
-        [_viewController userInputLongestStrut:[[textField text] floatValue]];
-    }
-    [_heightTextField setTextColor:[UIColor blackColor]];
-    [_floorDiameterTextField setTextColor:[UIColor blackColor]];
-    [_strutTextField setTextColor:[UIColor blackColor]];
-    [_slider setEnabled:YES];
-    NSLog(@"text field should return");
+    [self enableControls];
+    
     [textField resignFirstResponder];
     return YES;
 }
@@ -156,6 +156,9 @@
 //    [_strutTextField setKeyboardType:UIKeyboardTypeDecimalPad];
 //    [_heightTextField setKeyboardType:UIKeyboardTypeDecimalPad];
 //    [_floorDiameterTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+    [_strutTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [_heightTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [_floorDiameterTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
     [_strutTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
     [_heightTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
     [_floorDiameterTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];

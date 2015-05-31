@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MaterialsListTableViewCell : UITableViewCell
-
+@property BOOL indented;
 @end

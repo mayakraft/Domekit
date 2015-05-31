@@ -26,7 +26,8 @@
 
 -(void) layoutSubviews{
     [super layoutSubviews];
-    [self.textLabel setFrame:CGRectMake(88, self.textLabel.frame.origin.y, self.textLabel.frame.size.width, self.textLabel.frame.size.height)];
+    if(_indented)
+        [self.textLabel setFrame:CGRectMake(88, self.textLabel.frame.origin.y, self.textLabel.frame.size.width, self.textLabel.frame.size.height)];
 //    [self.detailTextLabel setFrame:CGRectMake(self.frame.size.width - 88, self.detailTextLabel.frame.origin.y, 88, self.detailTextLabel.frame.size.height)];
 }
 

@@ -40,22 +40,24 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if(section == 0)
+    if(section == 1)
         return [[_materials objectForKey:@"lines"] count];
-    else if(section == 1)
+    else if(section == 2)
         return [[_materials objectForKey:@"points"] count];
+    else if(section == 0)
+        return 2;
     return 0;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if(section == 0)
+    if(section == 1)
         return @"Struts";
-    else if(section == 1)
+    else if(section == 2)
         return @"Joints";
     else
-        return @"";
+        return @"Parts List";
 }
 
 -(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -69,26 +71,38 @@
     [view addSubview:label];
 
     if(section == 0)
-        [label setText:@"Struts"];
-    else if(section == 1){
-        [label setText:@"Joints"];
+        [label setText:@" "];
+    else {
+        if(section == 1)
+            [label setText:@"Struts"];
+        else if(section == 2)
+            [label setText:@"Joints"];
         return view;
     }
 
     UIButton *up = [[UIButton alloc] initWithFrame:CGRectMake(tableView.frame.size.width-44, 0, 44, 30)];
-    [up setTitle:@"▲" forState:UIControlStateNormal];
     [[up titleLabel] setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
+    [up setTitle:@"▲" forState:UIControlStateNormal];
     [[up layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
-    [up addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
     [up setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [view addSubview:up];
     arrowButton = up;
+
+    if(tableUp){
+        [up addTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
+        [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(M_PI)];
+    }
+    else{
+        [up addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+        [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(0)];
+    }
 
     return view;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MaterialsListTableViewCell *cell = [[MaterialsListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"MaterialsCell"];
-    if(indexPath.section == 0){
+    if(indexPath.section == 1){
+        [cell setIndented:YES];
         NSArray *lines = [_materials objectForKey:@"lines"];
         if(indexPath.row < [lines count]){
             // format strut length
@@ -109,11 +123,20 @@
             }
         }
     }
-    else{
+    else if(indexPath.section == 2){
         [cell.textLabel setText:@""];
         NSArray *points = [_materials objectForKey:@"points"];
         [cell.detailTextLabel setText:[NSString stringWithFormat:@"x %@",[points objectAtIndex:indexPath.row]]];
- 
+    }
+    else if(indexPath.section == 0){
+        if(indexPath.row == 0){
+            [cell.textLabel setText:@"Height"];
+            [cell.detailTextLabel setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeHeight] * (_scale * 2)]];
+        }
+        if(indexPath.row == 1){
+            [cell.textLabel setText:@"Floor Diameter"];
+            [cell.detailTextLabel setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeFloorDiameter] * (_scale * 2)]];
+        }
     }
     return cell;
 }
@@ -195,7 +218,9 @@
     [self.view addSubview:self.tableView];
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
-    
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+//    [self.tableView setBackgroundColor:[UIColor clearColor]];
+
 //    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:nil action:NULL];
 //    self.navigationItem.rightBarButtonItem = makeButton;
 
@@ -232,10 +257,12 @@
 
 -(void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
     if ([anim.description isEqualToString:@"up"]){
+        tableUp = true;
         [arrowButton removeTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
         [arrowButton addTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
     }
     if ([anim.description isEqualToString:@"down"]){
+        tableUp = false;
         [arrowButton removeTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
         [arrowButton addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
     }

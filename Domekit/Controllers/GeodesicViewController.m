@@ -232,6 +232,7 @@
     if(_perspective == 0){
         [geodesicView setFieldOfView:56.782191];
         [geodesicView setCameraRadius:2];
+        [geodesicView setCameraRadiusFix:0];
 //        [geodesicView setFieldOfView:45 + 45 * atanf(geodesicView.aspectRatio)];
     }
 //    if(_perspective == 1)
@@ -262,9 +263,22 @@
     [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
 }
 -(void) iOSKeyboardShow{
-    [[scaleControlView floorDiameterTextField] setText:[NSString stringWithFormat:@"%f",[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
-    [[scaleControlView heightTextField] setText:[NSString stringWithFormat:@"%f", [geodesicModel domeHeight] * (_sessionScale - 1.0)]];
-    [[scaleControlView strutTextField] setText:[NSString stringWithFormat:@"%f", [geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc]init];
+    [numberFormatter setFormatterBehavior:NSNumberFormatterBehaviorDefault];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [numberFormatter setMaximumFractionDigits:6];
+
+    float one = [geodesicModel domeHeight] * (_sessionScale - 1.0);
+    float two = [geodesicModel domeFloorDiameter] * (_sessionScale - 1.0);
+    float three = [geodesicModel longestStrutLength] * (_sessionScale - 1.0);
+    
+    NSString *oneString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:one]];
+    NSString *twoString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:two]];
+    NSString *threeString = [numberFormatter stringFromNumber:[NSNumber numberWithFloat:three]];
+
+    [[scaleControlView heightTextField] setText:oneString];
+    [[scaleControlView floorDiameterTextField] setText:twoString];
+    [[scaleControlView strutTextField] setText:threeString];
 }
 -(void) userInputHeight:(float)value{
     _sessionScale = value / [geodesicModel domeHeight] + 1.0;
@@ -303,7 +317,7 @@
     [[sliceControlView slider] setValue:1.0];
     [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
     [self updateUI];
-
+//    [self setPerspective:0];
 }
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
     unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
