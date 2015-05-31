@@ -12,6 +12,15 @@
 
 #define MARGIN 10
 
+@interface ScaleControlView ()
+@property CGRect frame0;
+@property UILabel *heightLabel;
+@property UILabel *floorLabel;
+@property UILabel *strutLabel;
+@property UIView *whiteOverlay;
+@end
+
+
 @implementation ScaleControlView
 
 /*
@@ -25,35 +34,98 @@
 -(id)init{
     self = [super init];
     if(self){
+        [self initUI:UIScreen.mainScreen.bounds];
         if(IPAD)
-            [self initUIForIpad:UIScreen.mainScreen.bounds];
-        else
-            [self initUI:UIScreen.mainScreen.bounds];
+            [self resizeForIpad:UIScreen.mainScreen.bounds];
+        _frame0 = UIScreen.mainScreen.bounds;
     }
     return self;
 }
 -(id) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if(self){
+        [self initUI:UIScreen.mainScreen.bounds];
         if(IPAD)
-            [self initUIForIpad:UIScreen.mainScreen.bounds];
-        else
-            [self initUI:UIScreen.mainScreen.bounds];
+            [self resizeForIpad:UIScreen.mainScreen.bounds];
+        _frame0 = UIScreen.mainScreen.bounds;
     }
     return self;
 }
 -(id) initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
+        [self initUI:frame];
         if(IPAD)
-            [self initUIForIpad:frame];
-        else
-            [self initUI:frame];
+            [self resizeForIpad:frame];
+        _frame0 = frame;
     }
     return self;
 }
 
+-(void) setHidden:(BOOL)hidden{
+    [super setHidden:hidden];
+    [self endEditing:YES];
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+
+    [_slider setEnabled:NO];
+
+    [_heightTextField setTextColor:[UIColor lightGrayColor]];
+    [_floorDiameterTextField setTextColor:[UIColor lightGrayColor]];
+    [_strutTextField setTextColor:[UIColor lightGrayColor]];
+    [textField setTextColor:[UIColor blackColor]];
+    
+    NSLog(@"text field should begin editing");
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    return YES;
+}
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    NSLog(@"text field should end editing");
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self endEditing:YES];
+    return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if([textField isEqual:_heightTextField]){
+        [_viewController userInputHeight:[[textField text] floatValue]];
+    }
+    if([textField isEqual:_floorDiameterTextField]){
+        [_viewController userInputFloorDiameter:[[textField text] floatValue]];
+    }
+    if([textField isEqual:_strutTextField]){
+        [_viewController userInputLongestStrut:[[textField text] floatValue]];
+    }
+    [_heightTextField setTextColor:[UIColor blackColor]];
+    [_floorDiameterTextField setTextColor:[UIColor blackColor]];
+    [_strutTextField setTextColor:[UIColor blackColor]];
+    [_slider setEnabled:YES];
+    NSLog(@"text field should return");
+    [textField resignFirstResponder];
+    return YES;
+}
+-(void)keyboardWillShow:(NSNotification*)notification{
+    CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    [self setFrame:CGRectMake(_frame0.origin.x, _frame0.origin.y - keyboardRect.size.height, _frame0.size.width, _frame0.size.height)];
+    [_whiteOverlay setAlpha:0.95];
+    if(_viewController)
+        [_viewController iOSKeyboardShow];
+}
+-(void)keyboardWillHide:(NSNotification *)notification{
+    [self setFrame:_frame0];
+    [_whiteOverlay setAlpha:0.0];
+    if(_viewController)
+        [_viewController iOSKeyboardHide];
+}
+
 -(void) initUI:(CGRect)frame{
+    
+    _whiteOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, -self.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    [_whiteOverlay setBackgroundColor:[UIColor whiteColor]];
+    [_whiteOverlay setAlpha:0.0];
+    [self addSubview:_whiteOverlay];
+
     _slider = [[UISlider alloc] initWithFrame:CGRectMake(frame.size.width*.1, frame.size.height*.6, frame.size.width*.8, frame.size.height*.4)];
     [_slider setValue:.5];
     [self addSubview:_slider];
@@ -62,12 +134,14 @@
 //    [_heightTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [_heightTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_heightTextField setText:@""];
+    [_heightTextField setDelegate:self];
     [self addSubview:_heightTextField];
 
     _floorDiameterTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.3, frame.size.width*.425, frame.size.height*.15)];
 //    [_floorDiameterTextField setKeyboardType:UIKeyboardTypeDecimalPad];
     [_floorDiameterTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_floorDiameterTextField setText:@""];
+    [_floorDiameterTextField setDelegate:self];
     [self addSubview:_floorDiameterTextField];
 
     
@@ -75,73 +149,48 @@
 //    [_strutTextField setKeyboardType:UIKeyboardTypeDecimalPad];
     [_strutTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_strutTextField setText:@""];
+    [_strutTextField setDelegate:self];
     [self addSubview:_strutTextField];
 
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.15, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
-    [heightLabel setText:@"Height:"];
-    [heightLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
-    [heightLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:heightLabel];
-
-    UILabel *floorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.3, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
-    [floorLabel setText:@"Floor Diameter:"];
-    [floorLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
-    [floorLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:floorLabel];
-
-    UILabel *strutLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.45, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
-    [strutLabel setText:@"Longest Strut:"];
-    [strutLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
-    [strutLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:strutLabel];
     
-    [_heightTextField setEnabled:NO];
-    [_floorDiameterTextField setEnabled:NO];
-    [_strutTextField setEnabled:NO];
+//    [_strutTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+//    [_heightTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+//    [_floorDiameterTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+    [_strutTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+    [_heightTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+    [_floorDiameterTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+ 
+    _heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.15, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
+    [_heightLabel setText:@"Height:"];
+    [_heightLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
+    [_heightLabel setTextAlignment:NSTextAlignmentRight];
+    [self addSubview:_heightLabel];
+
+    _floorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.3, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
+    [_floorLabel setText:@"Floor Diameter:"];
+    [_floorLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
+    [_floorLabel setTextAlignment:NSTextAlignmentRight];
+    [self addSubview:_floorLabel];
+
+    _strutLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.45, frame.size.width*.5 - MARGIN, frame.size.height*.15)];
+    [_strutLabel setText:@"Longest Strut:"];
+    [_strutLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
+    [_strutLabel setTextAlignment:NSTextAlignmentRight];
+    [self addSubview:_strutLabel];
 }
 
--(void) initUIForIpad:(CGRect)frame{
-    _slider = [[UISlider alloc] initWithFrame:CGRectMake(frame.size.width*.1, frame.size.height*.8, frame.size.width*.8, frame.size.height*.2)];
-    [_slider setValue:.5];
-    [self addSubview:_slider];
+-(void) resizeForIpad:(CGRect)frame{
+    [_slider setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.8, frame.size.width*.8, frame.size.height*.2)];
+    [_heightTextField setFrame:CGRectMake(frame.size.width*.5, frame.size.height*.5, frame.size.width*.3, frame.size.height*.1)];
+    [_floorDiameterTextField setFrame:CGRectMake(frame.size.width*.5, frame.size.height*.6, frame.size.width*.3, frame.size.height*.1)];
+    [_strutTextField setFrame:CGRectMake(frame.size.width*.5, frame.size.height*.7, frame.size.width*.3, frame.size.height*.1)];
     
-    _heightTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.5, frame.size.width*.3, frame.size.height*.1)];
-    [_heightTextField setBorderStyle:UITextBorderStyleRoundedRect];
-    [_heightTextField setText:@""];
-    [self addSubview:_heightTextField];
-    
-    _floorDiameterTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.6, frame.size.width*.3, frame.size.height*.1)];
-    [_floorDiameterTextField setBorderStyle:UITextBorderStyleRoundedRect];
-    [_floorDiameterTextField setText:@""];
-    [self addSubview:_floorDiameterTextField];
-    
-    
-    _strutTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.7, frame.size.width*.3, frame.size.height*.1)];
-    [_strutTextField setBorderStyle:UITextBorderStyleRoundedRect];
-    [_strutTextField setText:@""];
-    [self addSubview:_strutTextField];
-    
-    UILabel *heightLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.5, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
-    [heightLabel setText:@"Height:"];
-    [heightLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
-    [heightLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:heightLabel];
-    
-    UILabel *floorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.6, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
-    [floorLabel setText:@"Floor Diameter:"];
-    [floorLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
-    [floorLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:floorLabel];
-    
-    UILabel *strutLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height*.7, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
-    [strutLabel setText:@"Longest Strut:"];
-    [strutLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
-    [strutLabel setTextAlignment:NSTextAlignmentRight];
-    [self addSubview:strutLabel];
-    
-    [_heightTextField setEnabled:NO];
-    [_floorDiameterTextField setEnabled:NO];
-    [_strutTextField setEnabled:NO];
+    [_heightLabel setFrame:CGRectMake(0, frame.size.height*.5, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
+    [_heightLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
+    [_floorLabel setFrame:CGRectMake(0, frame.size.height*.6, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
+    [_floorLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
+    [_strutLabel setFrame:CGRectMake(0, frame.size.height*.7, frame.size.width*.5 - MARGIN, frame.size.height*.1)];
+    [_strutLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:24]];
 }
 
 

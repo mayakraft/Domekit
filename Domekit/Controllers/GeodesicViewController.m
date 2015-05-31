@@ -34,6 +34,8 @@
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
 
+#define ORTHO_ANIM_TIME 0.266f
+
 @interface GeodesicViewController () <CameraAnimationDelegate> {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
@@ -165,6 +167,7 @@
 
     scaleControlView = [[ScaleControlView alloc] initWithFrame:CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3)];
     [scaleControlView setBackgroundColor:[UIColor clearColor]];
+    [scaleControlView setViewController:self];
     [self.view addSubview:scaleControlView];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
@@ -176,6 +179,7 @@
     [geodesicView setSphereOverride:YES];
     
     [self setPerspective:0];
+    [self.view bringSubviewToFront:extendedNavBar];
 }
 //-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 //    NSLog(@"drawing");
@@ -195,10 +199,10 @@
 }
 -(void) topMenuChange:(UISegmentedControl*)sender{
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
-        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:.4 Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
+        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
     }
     if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
-        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:.4 Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
         [_cameraAnimation setReverse:YES];
     }
     if([sender selectedSegmentIndex] == 0){
@@ -253,6 +257,25 @@
             [self setTitle:[NSString stringWithFormat:@"%dV %d/%d OCTA DOME",[geodesicModel frequency], [geodesicModel frequencyNumerator], [geodesicModel frequencyDenominator]]];
     }
     ;
+    [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
+    [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
+    [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+}
+-(void) iOSKeyboardShow{
+    [[scaleControlView floorDiameterTextField] setText:[NSString stringWithFormat:@"%f",[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
+    [[scaleControlView heightTextField] setText:[NSString stringWithFormat:@"%f", [geodesicModel domeHeight] * (_sessionScale - 1.0)]];
+    [[scaleControlView strutTextField] setText:[NSString stringWithFormat:@"%f", [geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+}
+-(void) userInputHeight:(float)value{
+    _sessionScale = value / [geodesicModel domeHeight] + 1.0;
+}
+-(void) userInputFloorDiameter:(float)value{
+    _sessionScale = value / [geodesicModel domeFloorDiameter] + 1.0;
+}
+-(void) userInputLongestStrut:(float)value{
+    _sessionScale = value / [geodesicModel longestStrutLength] + 1.0;
+}
+-(void) iOSKeyboardHide{
     [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
     [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
     [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];

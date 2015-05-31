@@ -66,7 +66,7 @@
     double t = -[_startTime timeIntervalSinceNow]/_duration;
     
     t = (cos(M_PI - M_PI*t)+1)*.5;
-    GLKQuaternion slerp = GLKQuaternionSlerp(_orientationStart, _orientationEnd, t);
+    GLKQuaternion slerp = GLKQuaternionSlerp(_orientationStart, _orientationEnd, powf(t,3));
 
 //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
 //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;
@@ -84,8 +84,8 @@
     // Measure the new distance and readjust the FOV accordingly.
     
     double _distanceFromOrigin = 2;
-    _radius = _distanceFromOrigin + pow(frame, 5) * (50);
-    _radiusFix = 5 * pow(frame, 5);
+    _radius = _distanceFromOrigin + pow(frame, 4) * (50);
+    _radiusFix = 5 * pow(frame, 4);
 //    _radiusFix = 5 * pow((cos(M_PI - M_PI*frame)+1)*.5, 5);
 //    _radiusFix = 5 * pow(acos(frame*2-1)/M_PI, 5);
 //    _radiusFix = 1-_radiusFix;

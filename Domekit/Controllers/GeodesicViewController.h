@@ -28,5 +28,13 @@
 -(void) storeCurrentDome;
 -(void) loadDome:(NSDictionary*)dome;
 
+
+// ALL THIS FOR THE KEYBOARD INPUT OF SCALE
+-(void) iOSKeyboardShow;
+-(void) iOSKeyboardHide;
+-(void) userInputHeight:(float)value;
+-(void) userInputFloorDiameter:(float)value;
+-(void) userInputLongestStrut:(float)value;
+
 @end
 
