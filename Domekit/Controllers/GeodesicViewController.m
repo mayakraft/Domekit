@@ -366,7 +366,9 @@
 -(void) initRevealController{
     SWRevealViewController *revealController = self.revealViewController;
 //    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
+    
+// TODO: BRING THIS BACK
+//    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
     //TODO: this is not dynamically sized
     UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
     [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
@@ -420,6 +422,9 @@
 //            [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -65)];
         }
         else if(_perspective == 2)
+#warning todo
+//TODO: make this shift around, slightly (bounded) with a translucent drawing of the triangles on the back side (cull) and a person in the middle
+// or a cat
             [geodesicView setAttitudeMatrix:GLKMatrix4Identity];
 //            [geodesicView setAttitudeMatrix:GLKMatrix4MakeTranslation(0, 0, -52)]; // 65
     }

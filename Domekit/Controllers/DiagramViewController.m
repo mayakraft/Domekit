@@ -22,6 +22,7 @@
     EquidistantAzimuthView *equidistantAzimuthView;
     UIButton *arrowButton;
     BOOL tableUp;
+    UIScrollView *scrollView;  // attach this scrollview's guesture recognizer to
 }
 
 @end
@@ -48,6 +49,7 @@
         return 2;
     return 0;
 }
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
 }
@@ -79,6 +81,8 @@
             [label setText:@"Joints"];
         return view;
     }
+    
+    [view addGestureRecognizer:scrollView.panGestureRecognizer];
 
     UIButton *up = [[UIButton alloc] initWithFrame:CGRectMake(tableView.frame.size.width-44, 0, 44, 30)];
     [[up titleLabel] setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
@@ -221,37 +225,44 @@
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
 //    [self.tableView setBackgroundColor:[UIColor clearColor]];
 
-//    UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:nil action:NULL];
-//    self.navigationItem.rightBarButtonItem = makeButton;
-
-//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
-//    self.navigationItem.rightBarButtonItem = shareButton;
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
+    self.navigationItem.rightBarButtonItem = shareButton;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
     self.navigationItem.leftBarButtonItem = backButton;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, [[UIScreen mainScreen] bounds].size.width, self.tableView.frame.size.height + 44)];
+    [scrollView setDelegate:self];
+    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height*3)];
+    [self.view addSubview:scrollView];
+    [scrollView setHidden:YES];
+    [self.view bringSubviewToFront:scrollView];
 }
 
 -(void) animateTableUp{
     CGSize size = [[UIScreen mainScreen] bounds].size;
+    CGRect start = CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44);
     [UIView beginAnimations:@"up" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [UIView setAnimationDuration:0.2];
     [UIView setAnimationDelegate:self];
-    [self.tableView setFrame:CGRectMake(0, 0, size.width, size.height - 44)];
+    [scrollView setContentOffset:start.origin];
+//    [self.tableView setFrame:CGRectMake(0, 0, size.width, size.height - 44)];
     [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(M_PI)];
     [UIView commitAnimations];
 }
 
 -(void) animateTableDown{
-    CGSize size = [[UIScreen mainScreen] bounds].size;
     [UIView beginAnimations:@"down" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [UIView setAnimationDuration:0.25];
     [UIView setAnimationDelegate:self];
     [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(0)];
-    [self.tableView setFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44)];
+    [scrollView setContentOffset:CGPointMake(0, 0)];
+//    [self.tableView setFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44)];
     [UIView commitAnimations];
 }
 
@@ -277,23 +288,50 @@
     // Dispose of any resources that can be recreated.
 }
 -(void) backButtonPressed{
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//    [UIView setAnimationDuration:0.55];
-//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
-//    [UIView commitAnimations];
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDelay:0.375];
-//    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
-//    [UIView commitAnimations];
 }
 
-//-(void) shareButtonPressed{
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Save to Photos", @"Email PDF", nil];
-//    [actionSheet showInView:self.view];
-//}
+-(void) shareButtonPressed{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back" destructiveButtonTitle:nil otherButtonTitles:@"Save to Photos", @"Email PDF", nil];
+    [actionSheet showInView:self.view];
+}
 
+
+-(void) scrollViewDidScroll:(UIScrollView *)view{
+    if([view isEqual:scrollView]){
+//        NSLog(@"scrollview");
+        CGSize size = scrollView.frame.size;
+        CGRect start = CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44);
+        [self.tableView setFrame:CGRectMake(0, start.origin.y - scrollView.contentOffset.y, [[UIScreen mainScreen ] bounds].size.width, start.origin.y + start.size.height + scrollView.contentOffset.y)];
+        
+        if(scrollView.contentOffset.y < 0){
+            if(tableUp){
+                tableUp = false;
+                [arrowButton removeTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
+                [arrowButton addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+                [UIView beginAnimations:@"triangleFix" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                [UIView setAnimationDuration:0.2];
+                [UIView setAnimationDelegate:nil];
+                [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(0)];
+                [UIView commitAnimations];
+            }
+        }
+        else if(scrollView.contentOffset.y > start.origin.y){
+            if(!tableUp){
+                tableUp = true;
+                [arrowButton removeTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
+                [arrowButton addTarget:self action:@selector(animateTableDown) forControlEvents:UIControlEventTouchUpInside];
+                [UIView beginAnimations:@"triangleFix" context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                [UIView setAnimationDuration:0.2];
+                [UIView setAnimationDelegate:nil];
+                [[arrowButton layer] setAffineTransform:CGAffineTransformMakeRotation(M_PI)];
+                [UIView commitAnimations];
+            }
+        }
+    }
+}
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
 }
