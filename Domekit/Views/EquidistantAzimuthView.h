@@ -24,4 +24,7 @@
 @property NSSet *visiblePointIndices;
 @property NSSet *visibleLineIndices;
 
+
+-(void) drawProjectionWithContext:(CGContextRef)context inRect:(CGRect)rect;
+
 @end

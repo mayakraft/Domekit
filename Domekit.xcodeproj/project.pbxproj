@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2A1AFD13D4007101ED /* SliceControlView.m */; };
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
+		D539971F1B20FAE800FCB66D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D539971E1B20FAE800FCB66D /* CoreText.framework */; };
 		D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */; };
 		D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */; };
 		D53B9C641B0C202D008E5014 /* PreferencesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */; };
@@ -57,6 +58,7 @@
 		D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleControlView.m; sourceTree = "<group>"; };
 		D52FFC321AFD1540007101ED /* net.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = net.c; sourceTree = "<group>"; };
 		D52FFC331AFD1540007101ED /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
+		D539971E1B20FAE800FCB66D /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		D53B9C5B1B089ED7008E5014 /* EquidistantAzimuthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquidistantAzimuthView.h; sourceTree = "<group>"; };
 		D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquidistantAzimuthView.m; sourceTree = "<group>"; };
 		D53B9C5E1B0B7BD3008E5014 /* MaterialsListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaterialsListTableViewCell.h; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D539971F1B20FAE800FCB66D /* CoreText.framework in Frameworks */,
 				D5B360ED1AF67DA7006F33B9 /* CoreMotion.framework in Frameworks */,
 				D5B360EB1AF67DA0006F33B9 /* GLKit.framework in Frameworks */,
 				D5B360E91AF67D9A006F33B9 /* OpenGLES.framework in Frameworks */,
@@ -249,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */,
+				D539971E1B20FAE800FCB66D /* CoreText.framework */,
 				D5B360EA1AF67DA0006F33B9 /* GLKit.framework */,
 				D5B360E81AF67D99006F33B9 /* OpenGLES.framework */,
 			);

@@ -88,35 +88,6 @@
     return self;
 }
 
--(void) animationDidStop:(GLKMatrix4)matrix{
-    _cameraAnimation = nil;
-    [geodesicView setCameraRadius:[geodesicView cameraRadius]];
-}
--(void) storeCurrentDome{
-    NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
-    NSDictionary *dome = @{
-                           @"solid": @(geodesicModel.solid),
-                           @"frequency":@(geodesicModel.frequency),
-                           @"numerator":@(geodesicModel.frequencyNumerator),
-                           @"denominator":@(geodesicModel.frequencyDenominator),
-                           @"scale":@(_sessionScale)};
-    [saved addObject:dome];
-//    NSLog(@"ADDING DOME:\n%@",dome);
-    [[NSUserDefaults standardUserDefaults] setObject:saved forKey:@"saved"];
-    [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
-}
--(void) loadDome:(NSDictionary *)dome{
-    [geodesicView setGeodesicModel:nil];
-    geodesicModel = [[GeodesicModel alloc] initWithFrequency:[[dome objectForKey:@"frequency"] intValue]
-                                                       Solid:[[dome objectForKey:@"solid"] intValue]
-                                                        Crop:[[dome objectForKey:@"numerator"] intValue]];
-    _sessionScale = [[dome objectForKey:@"scale"] floatValue];
-    [geodesicView setGeodesicModel:geodesicModel];
-    [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
-    float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];
-    [sliceControlView.slider setValue:slicePercent];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -181,10 +152,20 @@
     [self setPerspective:0];
     [self.view bringSubviewToFront:extendedNavBar];
 }
-//-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
-//    NSLog(@"drawing");
-//    [geodesicView setNeedsDisplay];
-//}
+-(void) initRevealController{
+    SWRevealViewController *revealController = self.revealViewController;
+    //    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+    // TODO: BRING THIS BACK
+    //    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
+    //TODO: this is not dynamically sized
+    UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
+    [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
+    [revealButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithCustomView:revealButton];
+    [self.navigationItem setLeftBarButtonItem:revealBarButton];
+}
+
 -(void) makeDiagram{
     DiagramViewController *dVC = [[DiagramViewController alloc] init];
     [geodesicModel makeLineClasses];
@@ -197,6 +178,10 @@
     [dVC setGeodesicModel:geodesicModel];
     [self.navigationController pushViewController:dVC animated:YES];
 }
+
+
+#pragma mark- USER INTERFACE HANDLERS
+
 -(void) topMenuChange:(UISegmentedControl*)sender{
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
         _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
@@ -227,6 +212,111 @@
     }
     [self setPerspective:[sender selectedSegmentIndex]];
 }
+-(void) frequencyControlChange:(UISegmentedControl*)sender{
+    unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
+    //    [geodesicView setGeodesicModel:nil];
+    [[sliceControlView slider] setValue:1.0];
+    [geodesicModel setFrequency:frequency];
+    //    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
+    [self updateUI];
+    //    [geodesicView setGeodesicModel:geodesicModel];
+    [geodesicView setNeedsDisplay];
+}
+-(void) sliceControlChange:(UISlider*)sender{
+    //TODO: this is happening every frame, even when the frequency isn't changed
+    //    NSArray *sliceCounts = geodesicModel.faceAltitudeCountsCumulative;
+    int unit = sender.value * ([geodesicModel frequencyDenominator] - 1);
+    if(unit+1 >= [geodesicModel frequencyDenominator]){
+        // numerator must be smaller than or equal to denominator
+        [geodesicModel setSphere];
+        [self updateUI];
+        return;
+    }
+    //    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
+    [geodesicModel setFrequencyNumerator:unit+1];
+    [self updateUI];
+}
+-(void) scaleControlChange:(UISlider*)sender{
+    float SENSITIVITY = 0.1f;
+    static float baseScale;
+    if([sender state] == 0)  // touches begin
+        baseScale = _sessionScale;
+    else
+        _sessionScale = baseScale * pow(baseScale,(sender.value - .5) * SENSITIVITY);
+    if(_sessionScale > 1000000.0)
+        _sessionScale = 1000000.0;
+    [self updateUI];
+}
+-(void) scaleControlChangeEnd:(UISlider*)sender{
+    [UIView beginAnimations:@"scaleReset" context:nil];
+    [UIView setAnimationDuration:0.15];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [sender setValue:0.5 animated:YES];
+    [UIView commitAnimations];
+}
+-(void) userInputHeight:(float)value{
+    _sessionScale = value / [geodesicModel domeHeight] + 1.0;
+}
+-(void) userInputFloorDiameter:(float)value{
+    _sessionScale = value / [geodesicModel domeFloorDiameter] + 1.0;
+}
+-(void) userInputLongestStrut:(float)value{
+    _sessionScale = value / [geodesicModel longestStrutLength] + 1.0;
+}
+
+#pragma mark- MODEL INTERFACE
+
+-(void) setSolidType:(unsigned int)solidType{
+    _solidType = solidType;
+    [geodesicModel setSolid:solidType];
+    //    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
+    [self updateUI];
+}
+-(void) newPolyhedra:(unsigned int)solidType{
+    _solidType = solidType;
+    [geodesicModel setSolid:solidType];
+    [geodesicModel setFrequency:1];
+    [geodesicModel setSphere];
+    _sessionScale = 11.0;
+    [geodesicView setSphereOverride:YES];
+    [self setPerspective:0];
+    // reset top menu
+    [_topMenu setSelectedSegmentIndex:0];
+    [frequencyControlView setHidden:NO];
+    [sliceControlView setHidden:YES];
+    [scaleControlView setHidden:YES];
+    [geodesicView setSphereOverride:YES];
+    [[sliceControlView slider] setValue:1.0];
+    [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
+    [self updateUI];
+    //    [self setPerspective:0];
+}
+
+-(void) storeCurrentDome{
+    NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
+    NSDictionary *dome = @{
+                           @"solid": @(geodesicModel.solid),
+                           @"frequency":@(geodesicModel.frequency),
+                           @"numerator":@(geodesicModel.frequencyNumerator),
+                           @"denominator":@(geodesicModel.frequencyDenominator),
+                           @"scale":@(_sessionScale)};
+    [saved addObject:dome];
+    //    NSLog(@"ADDING DOME:\n%@",dome);
+    [[NSUserDefaults standardUserDefaults] setObject:saved forKey:@"saved"];
+    [(AppDelegate*)[[UIApplication sharedApplication] delegate] updateUserPreferencesAcrossApp];
+}
+-(void) loadDome:(NSDictionary *)dome{
+    [geodesicView setGeodesicModel:nil];
+    geodesicModel = [[GeodesicModel alloc] initWithFrequency:[[dome objectForKey:@"frequency"] intValue]
+                                                       Solid:[[dome objectForKey:@"solid"] intValue]
+                                                        Crop:[[dome objectForKey:@"numerator"] intValue]];
+    _sessionScale = [[dome objectForKey:@"scale"] floatValue];
+    [geodesicView setGeodesicModel:geodesicModel];
+    [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
+    float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];
+    [sliceControlView.slider setValue:slicePercent];
+}
+
 -(void) setPerspective:(NSUInteger)perspective{
     _perspective = perspective;
     if(_perspective == 0){
@@ -262,6 +352,12 @@
     [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
     [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
 }
+-(void) iOSKeyboardHide{
+    [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
+    [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
+    [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+}
+
 -(void) iOSKeyboardShow{
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc]init];
     [numberFormatter setFormatterBehavior:NSNumberFormatterBehaviorDefault];
@@ -280,102 +376,12 @@
     [[scaleControlView floorDiameterTextField] setText:twoString];
     [[scaleControlView strutTextField] setText:threeString];
 }
--(void) userInputHeight:(float)value{
-    _sessionScale = value / [geodesicModel domeHeight] + 1.0;
-}
--(void) userInputFloorDiameter:(float)value{
-    _sessionScale = value / [geodesicModel domeFloorDiameter] + 1.0;
-}
--(void) userInputLongestStrut:(float)value{
-    _sessionScale = value / [geodesicModel longestStrutLength] + 1.0;
-}
--(void) iOSKeyboardHide{
-    [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
-    [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
-    [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
-}
--(void) setSolidType:(unsigned int)solidType{
-    _solidType = solidType;
-    [geodesicModel setSolid:solidType];
-//    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
-    [self updateUI];
-}
--(void) newPolyhedra:(unsigned int)solidType{
-    _solidType = solidType;
-    [geodesicModel setSolid:solidType];
-    [geodesicModel setFrequency:1];
-    [geodesicModel setSphere];
-    _sessionScale = 11.0;
-    [geodesicView setSphereOverride:YES];
-    [self setPerspective:0];
-    // reset top menu
-    [_topMenu setSelectedSegmentIndex:0];
-    [frequencyControlView setHidden:NO];
-    [sliceControlView setHidden:YES];
-    [scaleControlView setHidden:YES];
-    [geodesicView setSphereOverride:YES];
-    [[sliceControlView slider] setValue:1.0];
-    [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
-    [self updateUI];
-//    [self setPerspective:0];
-}
--(void) frequencyControlChange:(UISegmentedControl*)sender{
-    unsigned int frequency = (unsigned int)([sender selectedSegmentIndex] + 1);
-//    [geodesicView setGeodesicModel:nil];
-    [[sliceControlView slider] setValue:1.0];
-    [geodesicModel setFrequency:frequency];
-//    NSLog(@"SLICERS: %@",[geodesicModel slicePoints]);
-    [self updateUI];
-//    [geodesicView setGeodesicModel:geodesicModel];
-    [geodesicView setNeedsDisplay];
-
-}
--(void) sliceControlChange:(UISlider*)sender{
-//TODO: this is happening every frame, even when the frequency isn't changed
-//    NSArray *sliceCounts = geodesicModel.faceAltitudeCountsCumulative;
-    int unit = sender.value * ([geodesicModel frequencyDenominator] - 1);
-    if(unit+1 >= [geodesicModel frequencyDenominator]){
-        // numerator must be smaller than or equal to denominator
-        [geodesicModel setSphere];
-        [self updateUI];
-        return;
-    }
-//    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
-    [geodesicModel setFrequencyNumerator:unit+1];
-    [self updateUI];
-}
--(void) scaleControlChange:(UISlider*)sender{
-    float SENSITIVITY = 0.1f;
-    static float baseScale;
-    if([sender state] == 0)  // touches begin
-        baseScale = _sessionScale;
-    else
-        _sessionScale = baseScale * pow(baseScale,(sender.value - .5) * SENSITIVITY);
-    if(_sessionScale > 1000000.0)
-        _sessionScale = 1000000.0;
-    [self updateUI];
-}
--(void) scaleControlChangeEnd:(UISlider*)sender{
-    [UIView beginAnimations:@"scaleReset" context:nil];
-    [UIView setAnimationDuration:0.15];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    [sender setValue:0.5 animated:YES];
-    [UIView commitAnimations];
+-(void) animationDidStop:(GLKMatrix4)matrix{
+    _cameraAnimation = nil;
+    [geodesicView setCameraRadius:[geodesicView cameraRadius]];
 }
 
--(void) initRevealController{
-    SWRevealViewController *revealController = self.revealViewController;
-//    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-// TODO: BRING THIS BACK
-//    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
-    //TODO: this is not dynamically sized
-    UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
-    [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
-    [revealButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithCustomView:revealButton];
-    [self.navigationItem setLeftBarButtonItem:revealBarButton];
-}
+#pragma mark- ORIENTATION
 
 -(void) updateLook{
 //    _lookVector = GLKVector3Make(-_attitudeMatrix.m02,
@@ -459,22 +465,9 @@
                                                a.m12, a.m22, a.m32, 0.0f,
                                                a.m13, a.m23, a.m33, 0.0f,
                                                0.0f , 0.0f , 0.0f , 1.0f), M_PI*.5, 1, 0, 0);
-//        return GLKMatrix4Make(a.m11, a.m21, a.m31, 0.0f,
-//                              a.m12, a.m22, a.m32, 0.0f,
-//                              a.m13, a.m23, a.m33, 0.0f,
-//                              0.0f , 0.0f , 0.0f , 1.0f);
-//        return GLKMatrix4Make(1.0f, 0.0f, 0.0f, 0.0f,
-//                              0.0f, 1.0f, 0.0f, 0.0f,
-//                              0.0f, 0.0f, 1.0f, 0.0f,
-//                              0.0f , 0.0f , -5.0f , 1.0f);
     }
     else
-//        return GLKMatrix4Identity;
-        return GLKMatrix4Make(1.0f, 0.0f, 0.0f, 0.0f,
-                              0.0f, 1.0f, 0.0f, 0.0f,
-                              0.0f, 0.0f, 1.0f, 0.0f,
-                              0.0f, 0.0f, 0.0f, 1.0f);
-
+        return GLKMatrix4Identity;
 }
 
 -(void) logMatrix:(GLKMatrix4)m{
