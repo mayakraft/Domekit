@@ -16,6 +16,7 @@
 		D53B9C671B0C9BF3008E5014 /* PreferencesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */; };
 		D54088821B15AEC7003E168C /* CameraAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D54088811B15AEC7003E168C /* CameraAnimation.m */; };
 		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
+		D56562931B2227EC002C5E90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D56562921B2227EC002C5E90 /* MessageUI.framework */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
 		D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C41AF67B58006F33B9 /* AppDelegate.m */; };
 		D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B360CC1AF67B58006F33B9 /* Images.xcassets */; };
@@ -83,6 +84,7 @@
 		D5619A1E1AF904830027A801 /* platonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platonic.h; sourceTree = "<group>"; };
 		D5619A221AF904830027A801 /* tween.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tween.c; sourceTree = "<group>"; };
 		D5619A241AF904830027A801 /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
+		D56562921B2227EC002C5E90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D5B360BC1AF67B58006F33B9 /* Domekit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Domekit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B360C01AF67B58006F33B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B360C11AF67B58006F33B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D56562931B2227EC002C5E90 /* MessageUI.framework in Frameworks */,
 				D539971F1B20FAE800FCB66D /* CoreText.framework in Frameworks */,
 				D5B360ED1AF67DA7006F33B9 /* CoreMotion.framework in Frameworks */,
 				D5B360EB1AF67DA0006F33B9 /* GLKit.framework in Frameworks */,
@@ -251,6 +254,7 @@
 		D5B360EE1AF67DDA006F33B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D56562921B2227EC002C5E90 /* MessageUI.framework */,
 				D5B360EC1AF67DA7006F33B9 /* CoreMotion.framework */,
 				D539971E1B20FAE800FCB66D /* CoreText.framework */,
 				D5B360EA1AF67DA0006F33B9 /* GLKit.framework */,

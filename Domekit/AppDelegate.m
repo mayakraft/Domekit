@@ -27,7 +27,7 @@
     
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
         flagSwitched = true;
-        [[NSUserDefaults standardUserDefaults] setObject:@"feet + inches" forKey:@"units"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"meters + centimeters" forKey:@"units"];
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"]){
         flagSwitched = true;
@@ -45,47 +45,60 @@
     if(flagSwitched)
         [[NSUserDefaults standardUserDefaults] synchronize];
 }
--(NSString*) unitifyNumber:(double)f{
+-(NSString*) unitifyNumber:(float)f{
+
+    // this prevents 2.999999 from turning into 2 and .999999
+    f += .000001;
+    // system cannot rely on 6th decimal place, only usable up to 5
+
     int precision = [[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] intValue];
-    //    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-    //    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-    //    else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] isEqualToNumber:@1])
-    //    else
-    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet"]){
         if(precision == 1)
-            return [NSString stringWithFormat:@"%.1f ft", f];
+            [numberFormatter setMaximumFractionDigits:1];
         else if(precision == 2)
-            return [NSString stringWithFormat:@"%.3f ft", f];
+            [numberFormatter setMaximumFractionDigits:3];
         else if(precision == 3)
-            return [NSString stringWithFormat:@"%.5f ft", f];
+            [numberFormatter setMaximumFractionDigits:5];
+        return [NSString stringWithFormat:@"%@ ft",[numberFormatter stringFromNumber:@(f)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"]){
         int whole = floorf(f);
-        double fraction = f - whole;
-        double inches = fraction * 12;
+        float fraction = f - whole;
+        float inches = fraction * 12;
         if(whole == 0){
             if(precision == 1)
-                return [NSString stringWithFormat:@"%.1f in", inches];
+                [numberFormatter setMaximumFractionDigits:1];
             else if(precision == 2)
-                return [NSString stringWithFormat:@"%.2f in", inches];
+                [numberFormatter setMaximumFractionDigits:2];
             else if(precision == 3)
-                return [NSString stringWithFormat:@"%.4f in", inches];
+                [numberFormatter setMaximumFractionDigits:4];
+            // special case, convert 12 inches to +1 foot
+            if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
+                return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
+            
+            return [NSString stringWithFormat:@"%@ in",[numberFormatter stringFromNumber:@(inches)]];
         }
         if(precision == 1)
-            return [NSString stringWithFormat:@"%d ft %.0f in", whole, inches];
+            [numberFormatter setMaximumFractionDigits:0];
         else if(precision == 2)
-            return [NSString stringWithFormat:@"%d ft %.2f in", whole, inches];
+            [numberFormatter setMaximumFractionDigits:2];
         else if(precision == 3)
-            return [NSString stringWithFormat:@"%d ft %.4f in", whole, inches];
+            [numberFormatter setMaximumFractionDigits:4];
+        // special case, convert 12 inches to +1 foot
+        if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
+            return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
+
+        return [NSString stringWithFormat:@"%d ft %@ in", whole, [numberFormatter stringFromNumber:@(inches)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){
         if(precision == 1)
-            return [NSString stringWithFormat:@"%.1f m", f];
+            [numberFormatter setMaximumFractionDigits:1];
         else if(precision == 2)
-            return [NSString stringWithFormat:@"%.3f m", f];
+            [numberFormatter setMaximumFractionDigits:3];
         else if(precision == 3)
-            return [NSString stringWithFormat:@"%.5f m", f];
+            [numberFormatter setMaximumFractionDigits:5];
+        return [NSString stringWithFormat:@"%@ m",[numberFormatter stringFromNumber:@(f)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters + centimeters"]){
         int whole = floorf(f);
@@ -93,20 +106,30 @@
         double centimeters = fraction * 100;
         if(whole == 0){
             if(precision == 1)
-                return [NSString stringWithFormat:@"%.1f cm", centimeters];
+                [numberFormatter setMaximumFractionDigits:1];
             else if(precision == 2)
-                return [NSString stringWithFormat:@"%.2f cm", centimeters];
+                [numberFormatter setMaximumFractionDigits:2];
             else if(precision == 3)
-                return [NSString stringWithFormat:@"%.5f cm", centimeters];
+                [numberFormatter setMaximumFractionDigits:5];
+            // special case, convert 100 cm to +1 meter
+            if([[numberFormatter stringFromNumber:@(centimeters)] isEqualToString:@"100"])
+                return [NSString stringWithFormat:@"%d m 0 cm", whole+1];
+
+            return [NSString stringWithFormat:@"%@ cm",[numberFormatter stringFromNumber:@(centimeters)]];
         }
         if(precision == 1)
-            return [NSString stringWithFormat:@"%d m %.0f cm", whole, centimeters];
+            [numberFormatter setMaximumFractionDigits:0];
         else if(precision == 2)
-            return [NSString stringWithFormat:@"%d m %.2f cm", whole, centimeters];
+            [numberFormatter setMaximumFractionDigits:2];
         else if(precision == 3)
-            return [NSString stringWithFormat:@"%d m %.4f cm", whole, centimeters];
+            [numberFormatter setMaximumFractionDigits:4];
+        // special case, convert 100 cm to +1 meter
+        if([[numberFormatter stringFromNumber:@(centimeters)] isEqualToString:@"100"])
+            return [NSString stringWithFormat:@"%d m 0 cm", whole+1];
+
+        return [NSString stringWithFormat:@"%d m %@ cm", whole, [numberFormatter stringFromNumber:@(centimeters)]];
     }
-    return [NSString stringWithFormat:@"%f",f];
+    return [NSString stringWithFormat:@"%@",[numberFormatter stringFromNumber:@(f)]];
 }
 
 -(void) newIcosahedron{

@@ -11,12 +11,13 @@
 #import "MaterialsListTableViewCell.h"
 #import "AppDelegate.h"
 #import <CoreText/CoreText.h>
+#import <MessageUI/MessageUI.h>
 
 #define NAVBAR_HEIGHT 88
 #define EXT_NAVBAR_HEIGHT 57
 
 
-@interface DiagramViewController () <UIActionSheetDelegate>
+@interface DiagramViewController ()
 {
     int polaris, octantis;
     NSArray *colorTable;
@@ -100,7 +101,7 @@
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
     //    [self.tableView setBackgroundColor:[UIColor clearColor]];
     
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"PDF" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
     self.navigationItem.rightBarButtonItem = shareButton;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
@@ -122,8 +123,19 @@
 }
 
 -(void) shareButtonPressed{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Print", @"Email", nil];
-    [actionSheet showInView:self.view];
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Print", @"Email", nil];
+//    [actionSheet showInView:self.view];
+    
+    NSArray *arrayPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [arrayPaths objectAtIndex:0];
+    NSString* pathAndFileName = [path stringByAppendingPathComponent:@"diagram.pdf"];
+    [self drawPDF:pathAndFileName];
+//    NSLog(@"PDF Created at %@",pathAndFileName);
+
+    NSData *pdfData = [NSData dataWithContentsOfFile:pathAndFileName];
+    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[pdfData] applicationActivities:nil];
+    [self presentViewController:controller animated:YES completion:nil];
+
 }
 
 #pragma mark- TABLE VIEW
@@ -157,7 +169,7 @@
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, 4, tableView.frame.size.width, 20)];
-    [label setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
+    [label setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17]];
     [label setTextColor:[UIColor blackColor]];
     [view addSubview:label];
 
@@ -332,40 +344,8 @@
         [arrowButton addTarget:self action:@selector(animateTableUp) forControlEvents:UIControlEventTouchUpInside];
     }
 }
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-//    [self createPDF:CGRectMake(0, 0, 612, 792)];
-//    [self createPDF:@"diagram.pdf"];
-    NSArray *arrayPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [arrayPaths objectAtIndex:0];
-    NSString* pathAndFileName = [path stringByAppendingPathComponent:@"diagram.pdf"];
-    [self drawPDF:pathAndFileName];
-    NSLog(@"PDF Created at %@",pathAndFileName);
-
-}
 
 #pragma mark- PDF
-
-//-(void)createPDF:(NSString*)fileName
-//{
-//    NSArray *arrayPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *path = [arrayPaths objectAtIndex:0];
-//    NSString* pathAndFileName = [path stringByAppendingPathComponent:fileName];
-//    // Create the PDF context using the default page size of 612 x 792.
-//    UIGraphicsBeginPDFContextToFile(pathAndFileName, CGRectZero, nil);
-//    // Mark the beginning of a new page.
-//    UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 612, 792), nil);
-//    
-////    [equidistantAzimuthView setLineWidth:defaultLineWidth / 4.0];
-////    [equidistantAzimuthView drawProjectionWithContext:UIGraphicsGetCurrentContext() inRect:CGRectMake(15, 792*.5 - (612-30)*.5, 612-30, 612-30)];
-////    [equidistantAzimuthView setLineWidth:defaultLineWidth];
-//    
-////    [self drawText:self.title inFrame:CGRectMake(15, 15, 612-15, 30)];
-//    
-//    // Close the PDF context and write the contents out.
-//    UIGraphicsEndPDFContext();
-//    NSLog(@"PDF written: %@",pathAndFileName);
-//}
-
 
 -(void)drawPDF:(NSString*)fileName
 {
@@ -378,6 +358,9 @@
     
 //    [self drawLabels];
 //    [self drawLogo];
+//    UIImage* logo = [UIImage imageNamed:@"logo.png"];
+//    [self drawImage:logo inRect:CGRectMake(15, 15, 80, 80)];
+
     
     [equidistantAzimuthView setLineWidth:defaultLineWidth / 4.0];
     [equidistantAzimuthView drawProjectionWithContext:UIGraphicsGetCurrentContext() inRect:CGRectMake(15, 792*.5 - (612-30)*.5, 612-30, 612-30)];
@@ -386,74 +369,107 @@
     //next page
     UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, 612, 792), nil);
     
-    int xOrigin = 150;
-    int yOrigin = 50;
+    int xOrigin = 110;
+    int yOrigin = 80;
     
-    int rowHeight = 20;
-    int columnWidth = 120;
+    int rowHeight = 28;
+    int columnWidth = 150;
     
-//    int numberOfRows = 7;
-//    int numberOfColumns = 4;
+    int titleY = 50;
     
-//    [self drawTableAt:CGPointMake(xOrigin, yOrigin) withRowHeight:rowHeight andColumnWidth:columnWidth andRowCount:numberOfRows andColumnCount:numberOfColumns];
+    NSArray *lines = [_materials objectForKey:@"lines"];
+    if([lines count] < 15){
+        yOrigin = 140;
+        titleY = 75;
+    }
     
+    [self drawText:self.title fontSize:24 inFrame:CGRectMake(200, titleY, 300, 30)];
     [self drawPartsTableDataAt:CGPointMake(xOrigin, yOrigin) withRowHeight:rowHeight andColumnWidth:columnWidth];
 
-    
     // Close the PDF context and write the contents out.
     UIGraphicsEndPDFContext();
 }
 
--(void)drawText
-{
+
+-(void)drawPartsTableDataAt:(CGPoint)origin
+              withRowHeight:(int)rowHeight
+             andColumnWidth:(int)columnWidth  {
+    int padding = 10;
     
-    NSString* textToDraw = @"Hello World";
-    CFStringRef stringRef = (__bridge CFStringRef)textToDraw;
-    // Prepare the text using a Core Text Framesetter
-    CFAttributedStringRef currentText = CFAttributedStringCreate(NULL, stringRef, NULL);
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(currentText);
-    
-    
-    CGRect frameRect = CGRectMake(0, 0, 300, 50);
-    CGMutablePathRef framePath = CGPathCreateMutable();
-    CGPathAddRect(framePath, NULL, frameRect);
-    
-    // Get the frame that will do the rendering.
-    CFRange currentRange = CFRangeMake(0, 0);
-    CTFrameRef frameRef = CTFramesetterCreateFrame(framesetter, currentRange, framePath, NULL);
-    CGPathRelease(framePath);
-    
-    // Get the graphics context.
-    CGContextRef    currentContext = UIGraphicsGetCurrentContext();
-    
-    // Put the text matrix into a known state. This ensures
-    // that no old scaling factors are left in place.
-    CGContextSetTextMatrix(currentContext, CGAffineTransformIdentity);
+    NSMutableArray *col1 = [NSMutableArray array];
+    NSArray *lines = [_materials objectForKey:@"lines"];
+    for(int i = 0; i < [lines count]; i++){
+        float length = [[lines objectAtIndex:i] floatValue] * _scale;
+        [col1 addObject:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:length]];
+    }
+    NSMutableArray *col2 = [NSMutableArray array];
+    NSArray *lineQuantities = [_materials objectForKey:@"lineQuantities"];
+    for(int i = 0; i < [lineQuantities count]; i++){
+        [col2 addObject:[NSString stringWithFormat:@"× %@",[lineQuantities objectAtIndex:i]]];
+    }
+    NSMutableArray *col0 = [NSMutableArray array];
+    for(int i = 0; i < [lines count]; i++)
+        [col0 addObject:@""];
     
     
-    // Core Text draws from the bottom-left corner up, so flip
-    // the current transform prior to drawing.
-    CGContextTranslateCTM(currentContext, 0, 100);
-    CGContextScaleCTM(currentContext, 1.0, -1.0);
+    [self drawText:@"Struts" fontSize:24 inFrame:CGRectMake(origin.x - columnWidth*.1, origin.y, columnWidth, rowHeight)];
     
-    // Draw the frame.
-    CTFrameDraw(frameRef, currentContext);
+    NSArray* strutInfo = [NSArray arrayWithObjects:col0, col1, col2, nil];
     
-    CFRelease(frameRef);
-    CFRelease(stringRef);
-    CFRelease(framesetter);
+    for(int i = 0; i < [strutInfo count]; i++){
+        NSArray* infoToDraw = [strutInfo objectAtIndex:i];
+        for (int j = 0; j < [lines count]; j++){
+            int newOriginX = origin.x + ((i)*columnWidth);
+            int newOriginY = origin.y + ((j+1)*rowHeight);
+            CGRect frame;
+            if(i == 1)
+                frame = CGRectMake(newOriginX + padding - columnWidth*.2, newOriginY + padding, columnWidth + columnWidth*2, rowHeight);
+            else
+                frame = CGRectMake(newOriginX + padding, newOriginY + padding, columnWidth, rowHeight);
+            [self drawText:[infoToDraw objectAtIndex:j] fontSize:24 inFrame:frame];
+        }
+    }
+    for(int i = 0; i < [lines count]; i++){
+        int newOriginX = origin.x + ((0)*columnWidth);
+        int newOriginY = origin.y + ((i)*rowHeight) + rowHeight * .6;
+        [self drawLineFromPoint:CGPointMake(newOriginX + padding, newOriginY + padding) toPoint:CGPointMake(newOriginX + padding + columnWidth*.66, newOriginY + padding) lineWidth:10.0 withColor:[colorTable objectAtIndex:i]];
+    }
+    
+    
+    
+    
+    float moreMargin = columnWidth * .5;
+
+    float nextY = origin.y + (([lines count]+1)*rowHeight) + rowHeight;
+//    CGRect frame = CGRectMake(newOriginX + padding, newOriginY + padding, columnWidth, rowHeight);
+    [self drawText:@"Joints" fontSize:24 inFrame:CGRectMake(origin.x - columnWidth*.1, nextY, columnWidth, rowHeight)];
+    NSArray *points = [_materials objectForKey:@"points"];
+    [self drawText:[NSString stringWithFormat:@"x %@",[points objectAtIndex:0]] fontSize:24 inFrame:CGRectMake(origin.x + columnWidth*2.1, nextY, columnWidth, rowHeight)];
+    
+    [self drawText:[NSString stringWithFormat:@"Dome Height: %@",[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeHeight] * (_scale * 2)]] fontSize:20 inFrame:CGRectMake(origin.x + moreMargin, nextY + rowHeight * 2, columnWidth*3, rowHeight)];
+    
+    [self drawText:[NSString stringWithFormat:@"Floor Diameter: %@",[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeFloorDiameter] * (_scale * 2)]] fontSize:20 inFrame:CGRectMake(origin.x + moreMargin, nextY + rowHeight * 3, columnWidth*3, rowHeight)];
+    
+    
+    // draw table lines
+    for (int i = 0; i <= [lines count]; i++) {
+        int newOrigin = origin.y + (rowHeight*i) + rowHeight * .4;
+        CGPoint from = CGPointMake(origin.x, newOrigin);
+        CGPoint to = CGPointMake(origin.x + (2.5*columnWidth), newOrigin);
+        [self drawLineFromPoint:from toPoint:to lineWidth:.5 withColor:[UIColor colorWithWhite:.92 alpha:1.0]];
+    }
 }
 
--(void)drawLineFromPoint:(CGPoint)from toPoint:(CGPoint)to withColor:(UIColor*)color{
+-(void)drawLineFromPoint:(CGPoint)from toPoint:(CGPoint)to lineWidth:(CGFloat)lineWidth withColor:(UIColor*)color{
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 10.0);
+    CGContextSetLineWidth(context, lineWidth);
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     CGContextSetStrokeColorWithColor(context, color.CGColor);
     CGContextMoveToPoint(context, from.x, from.y);
     CGContextAddLineToPoint(context, to.x, to.y);
     CGContextStrokePath(context);
     CGColorSpaceRelease(colorspace);
-    CGColorRelease(color.CGColor);
+    //    CGColorRelease(color.CGColor);
 }
 
 
@@ -462,11 +478,28 @@
 }
 
 -(void)drawText:(NSString*)textToDraw fontSize:(CGFloat)fontSize inFrame:(CGRect)frameRect{
-    CFStringRef stringRef = (__bridge CFStringRef)textToDraw;
-    // Prepare the text using a Core Text Framesetter
-    CFAttributedStringRef currentText = CFAttributedStringCreate(NULL, stringRef, NULL);
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(currentText);
+    if(![textToDraw length])
+        return;
+    //    CFStringRef stringRef = (__bridge CFStringRef)textToDraw;
+    //    NSString* familyName = @"HelveticaNeue-Medium";
     
+    CFMutableAttributedStringRef attrStr = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
+    CFAttributedStringReplaceString (attrStr, CFRangeMake(0, 0), (CFStringRef) textToDraw);
+    
+    CTFontRef font = CTFontCreateWithName(CFSTR("HelveticaNeue-Medium"), fontSize, NULL);
+    
+    //    create paragraph style and assign text alignment to it
+    //    CTTextAlignment alignment = kCTJustifiedTextAlignment;
+    //    CTParagraphStyleSetting _settings[] = {    {kCTParagraphStyleSpecifierAlignment, sizeof(alignment), &alignment} };
+    //    CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(_settings, sizeof(_settings) / sizeof(_settings[0]));
+    
+    //    set paragraph style attribute
+    //    CFAttributedStringSetAttribute(attrStr, CFRangeMake(0, CFAttributedStringGetLength(attrStr)), kCTParagraphStyleAttributeName, paragraphStyle);
+    
+    //    set font attribute
+    
+    CFAttributedStringSetAttribute(attrStr, CFRangeMake(0, CFAttributedStringGetLength(attrStr)), kCTFontAttributeName, font);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attrStr);
     CGMutablePathRef framePath = CGPathCreateMutable();
     CGPathAddRect(framePath, NULL, frameRect);
     
@@ -492,10 +525,6 @@
     
     CGContextScaleCTM(currentContext, 1.0, -1.0);
     CGContextTranslateCTM(currentContext, 0, (-1)*frameRect.origin.y*2);
-    
-    CFRelease(frameRef);
-    CFRelease(stringRef);
-    CFRelease(framesetter);
 }
 
 -(void)drawLabels{
@@ -519,136 +548,6 @@
         }
     }
 }
-
-
--(void)drawTableAt:(CGPoint)origin
-     withRowHeight:(int)rowHeight
-    andColumnWidth:(int)columnWidth
-       andRowCount:(int)numberOfRows
-    andColumnCount:(int)numberOfColumns
-
-{
-    
-    for (int i = 0; i <= numberOfRows; i++) {
-        
-        int newOrigin = origin.y + (rowHeight*i);
-        
-        
-        CGPoint from = CGPointMake(origin.x, newOrigin);
-        CGPoint to = CGPointMake(origin.x + (numberOfColumns*columnWidth), newOrigin);
-        
-//        [self drawLineFromPoint:from toPoint:to];
-        
-        
-    }
-    
-    for (int i = 0; i <= numberOfColumns; i++) {
-        
-        int newOrigin = origin.x + (columnWidth*i);
-        
-        
-        CGPoint from = CGPointMake(newOrigin, origin.y);
-        CGPoint to = CGPointMake(newOrigin, origin.y +(numberOfRows*rowHeight));
-        
-//        [self drawLineFromPoint:from toPoint:to];
-        
-        
-    }
-}
-
-
--(void)drawPartsTableDataAt:(CGPoint)origin
-              withRowHeight:(int)rowHeight
-             andColumnWidth:(int)columnWidth  {
-    int padding = 10;
-    
-    NSMutableArray *col1 = [NSMutableArray array];
-    NSArray *lines = [_materials objectForKey:@"lines"];
-    for(int i = 0; i < [lines count]; i++){
-        float length = [[lines objectAtIndex:i] floatValue] * _scale;
-        [col1 addObject:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:length]];
-    }
-    NSMutableArray *col2 = [NSMutableArray array];
-    NSArray *lineQuantities = [_materials objectForKey:@"lineQuantities"];
-    for(int i = 0; i < [lineQuantities count]; i++){
-        [col2 addObject:[NSString stringWithFormat:@"× %@",[lineQuantities objectAtIndex:i]]];
-    }
-    NSMutableArray *col0 = [NSMutableArray array];
-    for(int i = 0; i < [lines count]; i++)
-        [col0 addObject:@""];
-    
-    NSArray* strutInfo = [NSArray arrayWithObjects:col0, col1, col2, nil];
-    
-    for(int i = 0; i < [strutInfo count]; i++){
-        NSArray* infoToDraw = [strutInfo objectAtIndex:i];
-        for (int j = 0; j < [lines count]; j++){
-            int newOriginX = origin.x + ((i)*columnWidth);
-            int newOriginY = origin.y + ((j+1)*rowHeight);
-            CGRect frame = CGRectMake(newOriginX + padding, newOriginY + padding, columnWidth, rowHeight);
-            [self drawText:[infoToDraw objectAtIndex:j] fontSize:30 inFrame:frame];
-        }
-    }
-    for(int i = 0; i < [lines count]; i++){
-        int newOriginX = origin.x + ((0)*columnWidth);
-        int newOriginY = origin.y + ((i)*rowHeight) + rowHeight * .4;
-        [self drawLineFromPoint:CGPointMake(newOriginX + padding, newOriginY + padding) toPoint:CGPointMake(newOriginX + padding + columnWidth*.66, newOriginY + padding) withColor:[colorTable objectAtIndex:i]];
-    }
-    
-    
-    
-    
-    float moreMargin = columnWidth * .5;
-
-    float nextY = origin.y + (([lines count]+1)*rowHeight) + rowHeight;
-//    CGRect frame = CGRectMake(newOriginX + padding, newOriginY + padding, columnWidth, rowHeight);
-    [self drawText:@"Joints" fontSize:30 inFrame:CGRectMake(origin.x, nextY, columnWidth, rowHeight)];
-    NSArray *points = [_materials objectForKey:@"points"];
-    [self drawText:[NSString stringWithFormat:@"x %@",[points objectAtIndex:0]] fontSize:30 inFrame:CGRectMake(origin.x + columnWidth * 2, nextY, columnWidth, rowHeight)];
-
-    [self drawText:@"Dome Height" fontSize:30 inFrame:CGRectMake(origin.x + moreMargin, nextY + rowHeight * 2, columnWidth, rowHeight)];
-    [self drawText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeHeight] * (_scale * 2)] fontSize:30 inFrame:CGRectMake(origin.x + moreMargin + columnWidth, nextY + rowHeight * 2, columnWidth, rowHeight)];
-    
-    [self drawText:@"Floor Diameter" fontSize:30 inFrame:CGRectMake(origin.x + moreMargin, nextY + rowHeight * 3, columnWidth, rowHeight)];
-    [self drawText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[_geodesicModel domeFloorDiameter] * (_scale * 2)] fontSize:30 inFrame:CGRectMake(origin.x + moreMargin + columnWidth, nextY + rowHeight * 3, columnWidth, rowHeight)];
-    
-}
-
-
-//-(void)drawTableDataAt:(CGPoint)origin
-//         withRowHeight:(int)rowHeight
-//        andColumnWidth:(int)columnWidth
-//           andRowCount:(int)numberOfRows
-//        andColumnCount:(int)numberOfColumns
-//{
-//    int padding = 10;
-//    
-//    NSArray* headers = [NSArray arrayWithObjects:@"Quantity", @"Description", @"Unit price", @"Total", nil];
-//    NSArray* invoiceInfo1 = [NSArray arrayWithObjects:@"1", @"Development", @"$1000", @"$1000", nil];
-//    NSArray* invoiceInfo2 = [NSArray arrayWithObjects:@"1", @"Development", @"$1000", @"$1000", nil];
-//    NSArray* invoiceInfo3 = [NSArray arrayWithObjects:@"1", @"Development", @"$1000", @"$1000", nil];
-//    NSArray* invoiceInfo4 = [NSArray arrayWithObjects:@"1", @"Development", @"$1000", @"$1000", nil];
-//    
-//    NSArray* allInfo = [NSArray arrayWithObjects:headers, invoiceInfo1, invoiceInfo2, invoiceInfo3, invoiceInfo4, nil];
-//    
-//    for(int i = 0; i < [allInfo count]; i++)
-//    {
-//        NSArray* infoToDraw = [allInfo objectAtIndex:i];
-//        
-//        for (int j = 0; j < numberOfColumns; j++)
-//        {
-//            
-//            int newOriginX = origin.x + (j*columnWidth);
-//            int newOriginY = origin.y + ((i+1)*rowHeight);
-//            
-//            CGRect frame = CGRectMake(newOriginX + padding, newOriginY + padding, columnWidth, rowHeight);
-//            
-//            
-//            [self drawText:[infoToDraw objectAtIndex:j] inFrame:frame];
-//        }
-//        
-//    }
-//    
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

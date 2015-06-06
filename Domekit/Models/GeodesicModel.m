@@ -97,7 +97,7 @@
 -(void) resliceSphere{
     _domeFraction = (float)_frequencyNumerator / (float)_frequencyDenominator;
     _domeFloorDiameter = sqrt(1 - pow(2*_domeFraction-1, 2));
-    _domeHeight = _domeFraction;
+    _domeHeight = sin((_domeFraction-.5)*M_PI)*.5 + .5;
     _longestStrutLength = 0;
     _numVisibleTriangles = [[self faceAltitudeCountsCumulative][_frequencyNumerator - 1] unsignedIntValue];
 //    NSArray *sliceCounts = [self faceAltitudeCountsCumulative];

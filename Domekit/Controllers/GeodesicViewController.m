@@ -311,6 +311,7 @@
                                                        Solid:[[dome objectForKey:@"solid"] intValue]
                                                         Crop:[[dome objectForKey:@"numerator"] intValue]];
     _sessionScale = [[dome objectForKey:@"scale"] floatValue];
+    [geodesicModel calculateLongestStrutLength];
     [geodesicView setGeodesicModel:geodesicModel];
     [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
     float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];

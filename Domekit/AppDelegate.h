@@ -22,7 +22,7 @@
 -(void) storeCurrentDome;
 -(void) loadDome:(NSDictionary*)dome;
 
--(NSString*) unitifyNumber:(double)f;
+-(NSString*) unitifyNumber:(float)f;
 
 @end
 
