@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D510EB241B250ACB00723C7D /* voyagercat.png in Resources */ = {isa = PBXBuildFile; fileRef = D510EB221B250ACB00723C7D /* voyagercat.png */; };
+		D510EB251B250ACB00723C7D /* voyagerman.png in Resources */ = {isa = PBXBuildFile; fileRef = D510EB231B250ACB00723C7D /* voyagerman.png */; };
+		D510EB281B252AB500723C7D /* ScaleFigureView.m in Sources */ = {isa = PBXBuildFile; fileRef = D510EB271B252AB500723C7D /* ScaleFigureView.m */; };
 		D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2A1AFD13D4007101ED /* SliceControlView.m */; };
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
 		D539971F1B20FAE800FCB66D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D539971E1B20FAE800FCB66D /* CoreText.framework */; };
@@ -53,6 +56,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D510EB221B250ACB00723C7D /* voyagercat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagercat.png; sourceTree = "<group>"; };
+		D510EB231B250ACB00723C7D /* voyagerman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagerman.png; sourceTree = "<group>"; };
+		D510EB261B252AB500723C7D /* ScaleFigureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleFigureView.h; sourceTree = "<group>"; };
+		D510EB271B252AB500723C7D /* ScaleFigureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleFigureView.m; sourceTree = "<group>"; };
 		D52FFC291AFD13D4007101ED /* SliceControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliceControlView.h; sourceTree = "<group>"; };
 		D52FFC2A1AFD13D4007101ED /* SliceControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliceControlView.m; sourceTree = "<group>"; };
 		D52FFC2C1AFD13E3007101ED /* ScaleControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleControlView.h; sourceTree = "<group>"; };
@@ -70,8 +77,6 @@
 		D53B9C661B0C9BF3008E5014 /* PreferencesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesTableViewCell.m; sourceTree = "<group>"; };
 		D54088801B15AEC7003E168C /* CameraAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAnimation.h; sourceTree = "<group>"; };
 		D54088811B15AEC7003E168C /* CameraAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAnimation.m; sourceTree = "<group>"; };
-		D555508F1AFD381A00113FEF /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Animation.h; path = ../Controllers/Animation.h; sourceTree = "<group>"; };
-		D55550901AFD381A00113FEF /* Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Animation.m; path = ../Controllers/Animation.m; sourceTree = "<group>"; };
 		D55550921B006DCA00113FEF /* DiagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiagramViewController.h; sourceTree = "<group>"; };
 		D55550931B006DCA00113FEF /* DiagramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiagramViewController.m; sourceTree = "<group>"; };
 		D5619A131AF904830027A801 /* geodesic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = geodesic.c; sourceTree = "<group>"; };
@@ -157,6 +162,8 @@
 				D52FFC2A1AFD13D4007101ED /* SliceControlView.m */,
 				D52FFC2C1AFD13E3007101ED /* ScaleControlView.h */,
 				D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */,
+				D510EB261B252AB500723C7D /* ScaleFigureView.h */,
+				D510EB271B252AB500723C7D /* ScaleFigureView.m */,
 			);
 			name = "Dome Edit Controls";
 			sourceTree = "<group>";
@@ -285,8 +292,6 @@
 		D5DBB4981AFBAD8A002D2EB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D555508F1AFD381A00113FEF /* Animation.h */,
-				D55550901AFD381A00113FEF /* Animation.m */,
 				D5DBB4991AFBAD8A002D2EB0 /* GeodesicModel.h */,
 				D5DBB49A1AFBAD8A002D2EB0 /* GeodesicModel.m */,
 			);
@@ -327,6 +332,8 @@
 				D5EFDC291B128645002ADD28 /* icosahedron.png */,
 				D5DBB4771AFA6500002D2EB0 /* reveal-icon.png */,
 				D5DBB4751AFA64EA002D2EB0 /* TransparentPixel.png */,
+				D510EB221B250ACB00723C7D /* voyagercat.png */,
+				D510EB231B250ACB00723C7D /* voyagerman.png */,
 				D5DBB4791AFA6ECA002D2EB0 /* NavigationBar.h */,
 				D5DBB47A1AFA6ECA002D2EB0 /* NavigationBar.m */,
 				D5DBB46D1AFA6412002D2EB0 /* ExtendedNavBarView.h */,
@@ -424,6 +431,8 @@
 				D5DBB4741AFA64E4002D2EB0 /* Pixel.png in Resources */,
 				D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */,
 				D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */,
+				D510EB251B250ACB00723C7D /* voyagerman.png in Resources */,
+				D510EB241B250ACB00723C7D /* voyagercat.png in Resources */,
 				D5DBB4781AFA6500002D2EB0 /* reveal-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,6 +467,7 @@
 				D53B9C671B0C9BF3008E5014 /* PreferencesTableViewCell.m in Sources */,
 				D5DBB4A11AFBAD8A002D2EB0 /* RearTableViewController.m in Sources */,
 				D5DBB4A31AFBAD8A002D2EB0 /* GeodesicModel.m in Sources */,
+				D510EB281B252AB500723C7D /* ScaleFigureView.m in Sources */,
 				D5B360C51AF67B58006F33B9 /* AppDelegate.m in Sources */,
 				D53B9C641B0C202D008E5014 /* PreferencesTableViewController.m in Sources */,
 				D5B360C21AF67B58006F33B9 /* main.m in Sources */,

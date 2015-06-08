@@ -23,6 +23,7 @@
 #import "FrequencyControlView.h"
 #import "SliceControlView.h"
 #import "ScaleControlView.h"
+#import "ScaleFigureView.h"
 // DATA MODELS
 #import "GeodesicModel.h"
 #import "CameraAnimation.h"
@@ -45,6 +46,7 @@
     FrequencyControlView *frequencyControlView;
     SliceControlView *sliceControlView;
     ScaleControlView *scaleControlView;
+    ScaleFigureView *scaleFigureView;
 }
 
 @property CameraAnimation *cameraAnimation;
@@ -105,10 +107,10 @@
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
     
-    geodesicView = [[GeodesicView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
+    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 44) context:context];
     [self setView:geodesicView];
-//    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
-//    [self.view addSubview:geodesicView];
+    //    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
+    //    [self.view addSubview:geodesicView];
     
     [geodesicView setGeodesicModel:geodesicModel];
 
@@ -143,9 +145,15 @@
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
     
+    CGPoint sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.5);
+    CGFloat sphereRadius = geodesicView.frame.size.width * .4;
+    scaleFigureView = [[ScaleFigureView alloc] initWithFrame:CGRectMake(sphereCenter.x - sphereRadius, sphereCenter.y - sphereRadius, sphereRadius*2, sphereRadius*2)];
+    [self.view addSubview:scaleFigureView];
+    [self.view sendSubviewToBack:scaleFigureView];
     
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
+    [scaleFigureView setHidden:YES];
     
     [geodesicView setSphereOverride:YES];
     
@@ -194,19 +202,26 @@
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:YES];
+        [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:YES];
+        [geodesicView setSphereAlpha:1.0];
     }
     else if([sender selectedSegmentIndex] == 1){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
+        [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:NO];
+        [geodesicView setSphereAlpha:1.0];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:NO];
+        [scaleFigureView setHidden:NO];
         [geodesicView setSphereOverride:NO];
+        [geodesicView setSphereAlpha:0.5];
+//        [geodesicView setAlphaHiddenFaces:.2];
         [geodesicModel calculateLongestStrutLength];
         [self updateUI];
     }
@@ -279,6 +294,7 @@
     [geodesicModel setSphere];
     _sessionScale = 11.0;
     [geodesicView setSphereOverride:YES];
+    [geodesicView setSphereAlpha:1.0];
     [self setPerspective:0];
     // reset top menu
     [_topMenu setSelectedSegmentIndex:0];
@@ -313,6 +329,8 @@
     _sessionScale = [[dome objectForKey:@"scale"] floatValue];
     [geodesicModel calculateLongestStrutLength];
     [geodesicView setGeodesicModel:geodesicModel];
+    [geodesicView setSphereAlpha:1.0];
+//    [self setShowScaleFigure:NO];
     [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
     float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];
     [sliceControlView.slider setValue:slicePercent];
@@ -352,11 +370,20 @@
     [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
     [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
     [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+    NSString *unitsString = [[NSUserDefaults standardUserDefaults] objectForKey:@"units"];
+    if([unitsString isEqualToString:@"feet"] || [unitsString isEqualToString:@"feet + inches"])
+        [scaleFigureView setMeters:NO];
+    if([unitsString isEqualToString:@"meters"] || [unitsString isEqualToString:@"meters + centimeters"])
+        [scaleFigureView setMeters:YES];
+    [scaleFigureView setSessionScale:(_sessionScale - 1.0)];
+    [scaleFigureView setDomeHeight:geodesicModel.domeHeight];
 }
 -(void) iOSKeyboardHide{
     [[scaleControlView floorDiameterTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeFloorDiameter] * (_sessionScale - 1.0)]];
     [[scaleControlView heightTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel domeHeight] * (_sessionScale - 1.0)]];
     [[scaleControlView strutTextField] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:[geodesicModel longestStrutLength] * (_sessionScale - 1.0)]];
+    [scaleFigureView setSessionScale:(_sessionScale - 1.0)];
+    [scaleFigureView setDomeHeight:geodesicModel.domeHeight];
 }
 
 -(void) iOSKeyboardShow{

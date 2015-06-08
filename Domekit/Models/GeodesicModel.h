@@ -67,6 +67,9 @@ typedef enum : NSUInteger {
 // OpenGL
 -(void) drawTriangles;
 -(void) drawTrianglesSphereOverride;
+// cull opposite face, draw hidden faces
+-(void) drawHiddenTriangles;
+-(void) drawHiddenTrianglesSphereOverride;
 // EXPOSE SOME OF THE DATA
 @property float *points;
 @property unsigned short *lines;

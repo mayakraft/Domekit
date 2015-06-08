@@ -8,6 +8,9 @@
 
 #import "SliceControlView.h"
 
+#define IPAD     UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+
+
 @implementation SliceControlView
 
 /*
@@ -39,6 +42,9 @@
 
 -(void) initUI:(CGRect)frame{
     _slider = [[UISlider alloc] initWithFrame:CGRectMake(frame.size.width*.1, frame.size.height*.33, frame.size.width*.8, frame.size.height*.33)];
+    if(IPAD){
+        [_slider setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.5, frame.size.width*.8, frame.size.height*.33)];
+    }
     [_slider setValue:1.0];
     [self addSubview:_slider];
 }

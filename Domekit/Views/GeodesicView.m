@@ -16,17 +16,10 @@
 - (void)drawRect:(CGRect)rect {
 //    static GLfloat whiteColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 //    static GLfloat clearColor[] = {0.0f, 0.0f, 0.0f, 0.0f};
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glPushMatrix(); // begin device orientation
-
-//    _attitudeMatrix = GLKMatrix4Multiply([self getDeviceOrientationMatrix], _offsetMatrix);
-    
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);  // panorama at full color
-//    [sphere execute];
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, clearColor);
-//        [meridians execute];  // semi-transparent texture overlay (15° meridian lines)
 
     static perspective_t POV = POLAR;
     switch(POV){
@@ -48,20 +41,31 @@
             break;
     }
     
-//    glDisable(GL_LIGHTING);
-//    glPushMatrix();
-//        [self drawCheckerboardX:0 Y:0 NumberSquares:4];
-//    glPopMatrix();
+    glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDepthMask (GL_TRUE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    glEnable(GL_LIGHTING);
-    
+    if(_sphereAlphaHiddenFaces != 0.0){
+        GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlphaHiddenFaces };
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseHidden);
+        glPushMatrix();
+            if(_sphereOverride)
+                [_geodesicModel drawHiddenTrianglesSphereOverride];
+            else
+                [_geodesicModel drawHiddenTriangles];
+        glPopMatrix();
+    }
+    GLfloat diffuse[] = { 1.0, 1.0, 1.0, _sphereAlpha };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
     glPushMatrix();
-//        glTranslatef(0, 0, 1.0f);
-    if(_sphereOverride)
-        [_geodesicModel drawTrianglesSphereOverride];
-    else
-        [_geodesicModel drawTriangles];
+        if(_sphereOverride)
+            [_geodesicModel drawTrianglesSphereOverride];
+        else
+            [_geodesicModel drawTriangles];
     glPopMatrix();
+
     
     glPopMatrix(); // end device orientation
 }
@@ -131,43 +135,40 @@
     static GLfloat light_position2[] = { 5.0, -5.0, 5.0, 0.0 };
     static GLfloat light_position3[] = { -5.0, -5.0, 5.0, 0.0 };
     glMatrixMode(GL_MODELVIEW);
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_FRONT);
-//    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    glDepthMask(GL_TRUE);
+//    glDepthMask(GL_TRUE);
 //    glClearDepth(1.0f);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+//    glEnable(GL_DEPTH_TEST);
+//    glDepthFunc(GL_LEQUAL);
     
-    GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+//    GLfloat mat_solid[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 //    GLfloat mat_shininess[] = { 5.0f };
     GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
     GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
     GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_specular);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
     // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, red);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
     glLightfv(GL_LIGHT2, GL_DIFFUSE, green);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position1);
     glLightfv(GL_LIGHT1, GL_POSITION, light_position2);
     glLightfv(GL_LIGHT2, GL_POSITION, light_position3);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    glEnable(GL_LIGHT2);
-    glCullFace(GL_FRONT);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     // glShadeModel(GL_FLAT);
     glShadeModel (GL_SMOOTH);
     glEnable( GL_POINT_SMOOTH );
     glLineWidth(5);
     glPointSize(10);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 -(id) init{
@@ -190,6 +191,8 @@
     self = [super initWithFrame:frame context:context];
     if (self) {
         [self initOpenGL:context];
+        _sphereAlpha = 1.0;
+        _sphereAlphaHiddenFaces = 0.0;
     }
     return self;
 }

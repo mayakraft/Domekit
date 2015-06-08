@@ -27,7 +27,7 @@
     
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
         flagSwitched = true;
-        [[NSUserDefaults standardUserDefaults] setObject:@"meters + centimeters" forKey:@"units"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"feet + inches" forKey:@"units"];
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"]){
         flagSwitched = true;
@@ -44,6 +44,32 @@
     
     if(flagSwitched)
         [[NSUserDefaults standardUserDefaults] synchronize];
+}
+-(NSString*) fractionifyNumber:(float)f Denominator:(unsigned int)denominator{
+    unsigned int whole = floorf(f);
+    float fractional = f - (float)whole;
+
+    float fNumerator = fractional * (float) denominator;
+    float remainder = fNumerator - floorf(fNumerator);
+    unsigned int numerator;
+    if(remainder > .5)
+        numerator = ceilf(fNumerator);
+    else
+        numerator = floorf(fNumerator);
+    
+    if(whole == 0 && numerator == 0)
+        return [NSString stringWithFormat:@"0"];
+    if(numerator == denominator)
+        return [NSString stringWithFormat:@"%d",whole + 1];
+    while (numerator % 2 == 0 && numerator > 1){
+        numerator /= 2.0;
+        denominator /= 2.0;
+    }
+    if(whole == 0)
+        return [NSString stringWithFormat:@"%d/%d",numerator, denominator];
+    if(numerator == 0)
+        return [NSString stringWithFormat:@"%d", whole];
+    return [NSString stringWithFormat:@"%d %d/%d",whole, numerator, denominator];
 }
 -(NSString*) unitifyNumber:(float)f{
 
@@ -66,29 +92,44 @@
         int whole = floorf(f);
         float fraction = f - whole;
         float inches = fraction * 12;
+        NSString *inchesString;
         if(whole == 0){
-            if(precision == 1)
+            if(precision == 1){
+                inchesString = [self fractionifyNumber:inches Denominator:4];
                 [numberFormatter setMaximumFractionDigits:1];
-            else if(precision == 2)
+            }
+            else if(precision == 2){
+                inchesString = [self fractionifyNumber:inches Denominator:32];
                 [numberFormatter setMaximumFractionDigits:2];
+            }
             else if(precision == 3)
                 [numberFormatter setMaximumFractionDigits:4];
+
             // special case, convert 12 inches to +1 foot
             if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
                 return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
             
+            if(inchesString)
+                return [NSString stringWithFormat:@"%@ in",inchesString];
             return [NSString stringWithFormat:@"%@ in",[numberFormatter stringFromNumber:@(inches)]];
         }
-        if(precision == 1)
+        if(precision == 1){
+            inchesString = [self fractionifyNumber:inches Denominator:2];
             [numberFormatter setMaximumFractionDigits:0];
-        else if(precision == 2)
+        }
+        else if(precision == 2){
+            inchesString = [self fractionifyNumber:inches Denominator:16];
             [numberFormatter setMaximumFractionDigits:2];
+        }
         else if(precision == 3)
             [numberFormatter setMaximumFractionDigits:4];
+
         // special case, convert 12 inches to +1 foot
         if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
             return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
 
+        if(inchesString)
+            return [NSString stringWithFormat:@"%d ft %@ in", whole, inchesString];
         return [NSString stringWithFormat:@"%d ft %@ in", whole, [numberFormatter stringFromNumber:@(inches)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){

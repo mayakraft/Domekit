@@ -25,6 +25,7 @@
     UIButton *arrowButton;
     BOOL tableUp;
     UIScrollView *scrollView;  // attach this scrollview's guesture recognizer to
+    UIBarButtonItem *shareButton;
 }
 
 @end
@@ -101,7 +102,7 @@
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
     //    [self.tableView setBackgroundColor:[UIColor clearColor]];
     
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
+    shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
     self.navigationItem.rightBarButtonItem = shareButton;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
@@ -112,7 +113,7 @@
     
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, [[UIScreen mainScreen] bounds].size.width, self.tableView.frame.size.height + 44)];
     [scrollView setDelegate:self];
-    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height*3)];
+    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, [[UIScreen mainScreen] bounds].size.height)];
     [self.view addSubview:scrollView];
     [scrollView setHidden:YES];
     [self.view bringSubviewToFront:scrollView];
@@ -134,8 +135,9 @@
 
     NSData *pdfData = [NSData dataWithContentsOfFile:pathAndFileName];
     UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[pdfData] applicationActivities:nil];
-    [self presentViewController:controller animated:YES completion:nil];
-
+    [controller.popoverPresentationController setBarButtonItem:shareButton];
+    if(controller)
+        [self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark- TABLE VIEW

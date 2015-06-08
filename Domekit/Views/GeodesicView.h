@@ -25,6 +25,9 @@ typedef enum{
 @property float aspectRatio;
 @property (nonatomic) float fieldOfView;
 
+@property (nonatomic) float sphereAlpha;   // visible triangles, default: 1.0
+@property (nonatomic) float sphereAlphaHiddenFaces;  // hidden triangles, default: 0.0
+
 @property float cameraRadius;
 @property float cameraRadiusFix;
 

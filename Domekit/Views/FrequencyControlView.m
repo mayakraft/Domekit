@@ -46,6 +46,7 @@
     _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"]];
     [_segmentedControl setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.33, frame.size.width*.8, frame.size.height*.33)];
     if(IPAD){
+        [_segmentedControl setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.45, frame.size.width*.8, frame.size.height*.33)];
         [_segmentedControl setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:30]} forState:UIControlStateNormal];
     }
     [_segmentedControl setSelectedSegmentIndex:0];

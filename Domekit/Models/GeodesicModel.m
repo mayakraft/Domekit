@@ -270,6 +270,18 @@
     glPopMatrix();
 }
 
+-(void) drawHiddenTriangles{
+    glCullFace(GL_BACK);
+    [self drawTriangles];
+    glCullFace(GL_FRONT);
+}
+
+-(void) drawHiddenTrianglesSphereOverride{
+    glCullFace(GL_BACK);
+    [self drawTrianglesSphereOverride];
+    glCullFace(GL_FRONT);
+}
+
 //-(void) setCropEnabled:(BOOL)cropEnabled{
 //    _cropEnabled = cropEnabled;
 //    if(_solid == 0)
