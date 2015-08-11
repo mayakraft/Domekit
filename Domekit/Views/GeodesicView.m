@@ -20,25 +20,23 @@
     glClear(GL_COLOR_BUFFER_BIT);
     
     glPushMatrix(); // begin device orientation
+//    GLKMatrix4 m = GLKMatrix4MakeWithQuaternion(_gestureRotation);
+//    glMultMatrixf(m.m);
 
     static perspective_t POV = POLAR;
-    switch(POV){
-        case FPP:
+    if (POV == FPP){
 //            glMultMatrixf(_attitudeMatrix.m);
 //            // raise POV 1.0 above the floor, 1.0 is an arbitrary value
 //            glTranslatef(0, 0, -1.0f);
-            break;
-            
-        case POLAR:
+    }
+    if(POV == POLAR){
             glTranslatef(0, 0, -.4);
             glTranslatef(0, 0, -_cameraRadius);
             glTranslatef(0, 0, -_cameraRadiusFix);
             glMultMatrixf(_attitudeMatrix.m);
-            break;
-            
-        case ORTHO:
+    }
+    if(POV == ORTHO){
 //            glTranslatef(-mouseTotalOffsetX * .05, mouseTotalOffsetY * .05, 0.0f);
-            break;
     }
     
     glEnable(GL_BLEND);
@@ -193,6 +191,7 @@
         [self initOpenGL:context];
         _sphereAlpha = 1.0;
         _sphereAlphaHiddenFaces = 0.0;
+        _gestureRotation = GLKQuaternionIdentity;
     }
     return self;
 }

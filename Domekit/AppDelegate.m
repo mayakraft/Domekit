@@ -31,7 +31,7 @@
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"]){
         flagSwitched = true;
-        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
+        [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"gyro"];
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"precision"]){
         flagSwitched = true;
@@ -86,7 +86,7 @@
             [numberFormatter setMaximumFractionDigits:3];
         else if(precision == 3)
             [numberFormatter setMaximumFractionDigits:5];
-        return [NSString stringWithFormat:@"%@ ft",[numberFormatter stringFromNumber:@(f)]];
+        return [NSString stringWithFormat:@"%@'",[numberFormatter stringFromNumber:@(f)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet + inches"]){
         int whole = floorf(f);
@@ -107,11 +107,15 @@
 
             // special case, convert 12 inches to +1 foot
             if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
-                return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
+                return [NSString stringWithFormat:@"%d' 0\"", whole+1];
             
-            if(inchesString)
-                return [NSString stringWithFormat:@"%@ in",inchesString];
-            return [NSString stringWithFormat:@"%@ in",[numberFormatter stringFromNumber:@(inches)]];
+            if(inchesString){
+                // AGAIN, (for some reason) special case, convert 12 inches to +1 foot
+                if([inchesString isEqualToString:@"12"])
+                    return [NSString stringWithFormat:@"%d' 0\"", whole+1];
+                return [NSString stringWithFormat:@"%@\"",inchesString];
+            }
+            return [NSString stringWithFormat:@"%@\"",[numberFormatter stringFromNumber:@(inches)]];
         }
         if(precision == 1){
             inchesString = [self fractionifyNumber:inches Denominator:2];
@@ -126,11 +130,15 @@
 
         // special case, convert 12 inches to +1 foot
         if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
-            return [NSString stringWithFormat:@"%d ft 0 in", whole+1];
+            return [NSString stringWithFormat:@"%d' 0\"", whole+1];
 
-        if(inchesString)
-            return [NSString stringWithFormat:@"%d ft %@ in", whole, inchesString];
-        return [NSString stringWithFormat:@"%d ft %@ in", whole, [numberFormatter stringFromNumber:@(inches)]];
+        if(inchesString){
+            // AGAIN, (for some reason) special case, convert 12 inches to +1 foot
+            if([inchesString isEqualToString:@"12"])
+                return [NSString stringWithFormat:@"%d' 0\"", whole + 1];
+            return [NSString stringWithFormat:@"%d' %@\"", whole, inchesString];
+        }
+        return [NSString stringWithFormat:@"%d' %@\"", whole, [numberFormatter stringFromNumber:@(inches)]];
     }
     else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"meters"]){
         if(precision == 1)
@@ -229,7 +237,7 @@
     _geodesicNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[NavigationBar class] toolbarClass:nil];
     [_geodesicNavigationController setViewControllers:@[_geodesicViewController]];
     
-    RearTableViewController *rearViewController = [[RearTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    RearTableViewController *rearViewController = [[RearTableViewController alloc] init];
 
     _revealController =
     [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:_geodesicNavigationController];

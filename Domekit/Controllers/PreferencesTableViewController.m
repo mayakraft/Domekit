@@ -81,7 +81,7 @@
     if(section == 0)
         return @"";
     else if(section == 1)
-        return @"Storage";
+        return @"Memory";
     else
         return @"";
 }

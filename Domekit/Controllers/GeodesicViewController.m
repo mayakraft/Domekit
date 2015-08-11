@@ -27,6 +27,8 @@
 // DATA MODELS
 #import "GeodesicModel.h"
 #import "CameraAnimation.h"
+// GESTURES
+#import "RotationGestureRecognizer.h"
 
 
 // this appears to be the best way to grab orientation. if this becomes formalized, just make sure the orientations match
@@ -47,6 +49,8 @@
     SliceControlView *sliceControlView;
     ScaleControlView *scaleControlView;
     ScaleFigureView *scaleFigureView;
+    
+    GLKQuaternion rotation;
 }
 
 @property CameraAnimation *cameraAnimation;
@@ -113,7 +117,13 @@
     //    [self.view addSubview:geodesicView];
     
     [geodesicView setGeodesicModel:geodesicModel];
+    
+    rotation = GLKQuaternionIdentity;
 
+    RotationGestureRecognizer *rotationGesture = [[RotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureHandler:)];
+    [rotationGesture setMaximumNumberOfTouches:1];
+//    [rotationGesture setDelegate:self];
+    [geodesicView addGestureRecognizer:rotationGesture];
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
@@ -159,6 +169,7 @@
     
     [self setPerspective:0];
     [self.view bringSubviewToFront:extendedNavBar];
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"]);
 }
 -(void) initRevealController{
     SWRevealViewController *revealController = self.revealViewController;
@@ -189,8 +200,21 @@
 
 
 #pragma mark- USER INTERFACE HANDLERS
-
+-(void) rotationGestureHandler:(RotationGestureRecognizer*)sender{
+    static GLKQuaternion start, cumulative;
+    if([sender state] == 1){
+        start = rotation;
+        cumulative = GLKQuaternionIdentity;
+    }
+    if([sender state] == 2){
+        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
+        rotation = GLKQuaternionMultiply(start, cumulative);
+        NSLog(@"                                    SUM: %.1f, %.1f, %.1f, %.1f",rotation.w, rotation.x, rotation.y, rotation.z);
+    }
+}
 -(void) topMenuChange:(UISegmentedControl*)sender{
+    // CAMERA ANIMATIONS
+    // begins now with duration set by ORTHO_ANIM_TIME
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
         _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
     }
@@ -225,6 +249,7 @@
         [geodesicModel calculateLongestStrutLength];
         [self updateUI];
     }
+    // active screen / menu selection stored in perspective
     [self setPerspective:[sender selectedSegmentIndex]];
 }
 -(void) frequencyControlChange:(UISegmentedControl*)sender{
@@ -247,12 +272,12 @@
         [self updateUI];
         return;
     }
-    //    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
+//    [geodesicView setSliceAmount:[geodesicModel.faceAltitudeCountsCumulative[unit] unsignedIntValue]];
     [geodesicModel setFrequencyNumerator:unit+1];
     [self updateUI];
 }
 -(void) scaleControlChange:(UISlider*)sender{
-    float SENSITIVITY = 0.1f;
+    float SENSITIVITY = 0.3f;
     static float baseScale;
     if([sender state] == 0)  // touches begin
         baseScale = _sessionScale;
@@ -301,6 +326,7 @@
     [frequencyControlView setHidden:NO];
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
+    [scaleFigureView setHidden:YES];
     [geodesicView setSphereOverride:YES];
     [[sliceControlView slider] setValue:1.0];
     [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
@@ -311,6 +337,7 @@
 -(void) storeCurrentDome{
     NSMutableArray *saved = [[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] mutableCopy];
     NSDictionary *dome = @{
+                           @"date": [NSDate date],
                            @"solid": @(geodesicModel.solid),
                            @"frequency":@(geodesicModel.frequency),
                            @"numerator":@(geodesicModel.frequencyNumerator),
@@ -329,8 +356,6 @@
     _sessionScale = [[dome objectForKey:@"scale"] floatValue];
     [geodesicModel calculateLongestStrutLength];
     [geodesicView setGeodesicModel:geodesicModel];
-    [geodesicView setSphereAlpha:1.0];
-//    [self setShowScaleFigure:NO];
     [frequencyControlView.segmentedControl setSelectedSegmentIndex:[[dome objectForKey:@"frequency"] intValue] - 1];
     float slicePercent = (float)[[dome objectForKey:@"numerator"] intValue] / [[dome objectForKey:@"denominator"] intValue];
     [sliceControlView.slider setValue:slicePercent];
@@ -447,6 +472,7 @@
         if(_perspective == 0){
 //        orient.m32 = -5.0;
 //            [geodesicView setCameraRadius:2];
+            [geodesicView setGestureRotation:rotation];
             [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
         }
         else if(_perspective == 1){

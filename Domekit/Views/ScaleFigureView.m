@@ -72,16 +72,16 @@
     [_humanImageView.layer setAffineTransform:CGAffineTransformMakeScale(6.0 / _sessionScale * unitScale, 6.0 / _sessionScale * unitScale)];
     [_catImageView.layer setAffineTransform:CGAffineTransformMakeScale(6.0 / _sessionScale * unitScale, 6.0 / _sessionScale * unitScale)];
     
-    if (_sessionScale * _domeHeight > 6.0 * unitScale)
+    if (_sessionScale * _domeHeight > 6.5 * unitScale)
     {
         [_catImageView setAlpha:0.0];
         [_humanImageView setAlpha:1.0];
     }
-    else if (_sessionScale * _domeHeight > 5.75 * unitScale && _sessionScale * _domeHeight < 6.0 * unitScale)
+    else if (_sessionScale * _domeHeight > 5.5 * unitScale && _sessionScale * _domeHeight < 6.5 * unitScale)
     {
         float tween = (_sessionScale * _domeHeight / unitScale);
-        [_catImageView setAlpha:(6.0-tween)*4];
-        [_humanImageView setAlpha:(tween-5.75)*4];
+        [_catImageView setAlpha:(6.5-tween)];
+        [_humanImageView setAlpha:(tween-5.5)];
     }
     else
     {
