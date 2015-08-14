@@ -27,6 +27,7 @@
 // DATA MODELS
 #import "GeodesicModel.h"
 #import "CameraAnimation.h"
+#import "ValueAnimation.h"
 // GESTURES
 #import "RotationGestureRecognizer.h"
 
@@ -39,7 +40,7 @@
 
 #define ORTHO_ANIM_TIME 0.266f
 
-@interface GeodesicViewController () <CameraAnimationDelegate> {
+@interface GeodesicViewController () <CameraAnimationDelegate, ValueAnimationDelegate> {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
@@ -50,7 +51,11 @@
     ScaleControlView *scaleControlView;
     ScaleFigureView *scaleFigureView;
     
+    // rotation and touch handling
     GLKQuaternion rotation;
+    float gestureRotationX, gestureRotationY;
+    RotationGestureRecognizer *touchRotationGesture;
+    ValueAnimation *animateGestureX, *animateGestureY;
 }
 
 @property CameraAnimation *cameraAnimation;
@@ -120,10 +125,11 @@
     
     rotation = GLKQuaternionIdentity;
 
-    RotationGestureRecognizer *rotationGesture = [[RotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureHandler:)];
-    [rotationGesture setMaximumNumberOfTouches:1];
+    touchRotationGesture = [[RotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureHandler:)];
+    [touchRotationGesture setMaximumNumberOfTouches:1];
 //    [rotationGesture setDelegate:self];
-    [geodesicView addGestureRecognizer:rotationGesture];
+    [geodesicView addGestureRecognizer:touchRotationGesture];
+
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
@@ -198,25 +204,67 @@
     [self.navigationController pushViewController:dVC animated:YES];
 }
 
+#pragma mark- SINGLE VALUE ANIMATION DELEGATE
+-(void) valueAnimationDidUpdate:(ValueAnimation *)sender{
+    if([[sender name] isEqualToString:@"gestureX"]){
+        gestureRotationX = [sender value];
+    }
+    else if([[sender name] isEqualToString:@"gestureY"]){
+        gestureRotationY = [sender value];
+    }
+    [geodesicView setGestureRotationX:gestureRotationX];
+    [geodesicView setGestureRotationY:gestureRotationY];
+}
+-(void) valueAnimationDidStop:(ValueAnimation *)sender{
+    if([[sender name] isEqualToString:@"gestureX"]){
+        gestureRotationX = [sender value];
+        sender = nil;
+    }
+    else if([[sender name] isEqualToString:@"gestureY"]){
+        gestureRotationY = [sender value];
+        sender = nil;
+    }
+    [geodesicView setGestureRotationX:gestureRotationX];
+    [geodesicView setGestureRotationY:gestureRotationY];
+}
 
 #pragma mark- USER INTERFACE HANDLERS
 -(void) rotationGestureHandler:(RotationGestureRecognizer*)sender{
+    static const float SENSITIVITY = .55;
     static GLKQuaternion start, cumulative;
+    static float startX, startY;
     if([sender state] == 1){
         start = rotation;
         cumulative = GLKQuaternionIdentity;
+        startX = gestureRotationX;
+        startY = gestureRotationY;
     }
     if([sender state] == 2){
         cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
         rotation = GLKQuaternionMultiply(start, cumulative);
-        NSLog(@"                                    SUM: %.1f, %.1f, %.1f, %.1f",rotation.w, rotation.x, rotation.y, rotation.z);
+//        NSLog(@"                                    SUM: %.1f, %.1f, %.1f, %.1f",rotation.w, rotation.x, rotation.y, rotation.z);
+        gestureRotationX = startX + ([sender translationInView:geodesicView].x) * SENSITIVITY;
+        gestureRotationY = startY + ([sender translationInView:geodesicView].y) * SENSITIVITY;
+    }
+    if([sender state] == 3){
+        while(gestureRotationX >= 180)
+            gestureRotationX -= 360;
+        while(gestureRotationX <= -180)
+            gestureRotationX += 360;
+        while(gestureRotationY >= 180)
+            gestureRotationY -= 360;
+        while(gestureRotationY <= -180)
+            gestureRotationY += 360;
     }
 }
+
 -(void) topMenuChange:(UISegmentedControl*)sender{
     // CAMERA ANIMATIONS
     // begins now with duration set by ORTHO_ANIM_TIME
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
         _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
+        animateGestureX = [[ValueAnimation alloc] initWithName:@"gestureX" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationX EndValue:0];
+        animateGestureY = [[ValueAnimation alloc] initWithName:@"gestureY" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationY EndValue:0];
     }
     if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
         _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
@@ -229,6 +277,7 @@
         [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:YES];
         [geodesicView setSphereAlpha:1.0];
+        [touchRotationGesture setEnabled:YES];
     }
     else if([sender selectedSegmentIndex] == 1){
         [frequencyControlView setHidden:YES];
@@ -237,6 +286,7 @@
         [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:NO];
         [geodesicView setSphereAlpha:1.0];
+        [touchRotationGesture setEnabled:NO];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
@@ -245,6 +295,7 @@
         [scaleFigureView setHidden:NO];
         [geodesicView setSphereOverride:NO];
         [geodesicView setSphereAlpha:0.5];
+        [touchRotationGesture setEnabled:NO];
 //        [geodesicView setAlphaHiddenFaces:.2];
         [geodesicModel calculateLongestStrutLength];
         [self updateUI];
@@ -473,6 +524,8 @@
 //        orient.m32 = -5.0;
 //            [geodesicView setCameraRadius:2];
             [geodesicView setGestureRotation:rotation];
+            [geodesicView setGestureRotationX:gestureRotationX];
+            [geodesicView setGestureRotationY:gestureRotationY];
             [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
         }
         else if(_perspective == 1){

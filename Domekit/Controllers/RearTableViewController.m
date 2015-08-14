@@ -232,7 +232,7 @@
                 NSDate *date = [dome objectForKey:@"date"];
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitHour | NSCalendarUnitMinute fromDate:date];
                 NSString *timeString;
-                NSInteger hour = [components hour];
+                int hour = [components hour];
                 NSString *meridian = @"";
                 if(hour > 12){
                     hour -= 12;
@@ -241,11 +241,12 @@
                 if(hour == 0)
                     hour += 12;
                 if( ([components minute] < 10) )
-                    timeString = [NSString stringWithFormat:@"%ld:0%ld",hour, [components minute]];
+                    timeString = [NSString stringWithFormat:@"%d:0%d",hour, (int)[components minute]];
                 else
-                    timeString = [NSString stringWithFormat:@"%ld:%ld",hour, [components minute]];
-                NSString *dateString = [NSString stringWithFormat:@"%@ %ld, %ld %@%@",MONTHS[[components month]],[components day], [components year], timeString,meridian];
+                    timeString = [NSString stringWithFormat:@"%d:%d",hour, (int)[components minute]];
+                NSString *dateString = [NSString stringWithFormat:@"%@ %d, %d %@%@",MONTHS[[components month]],(int)[components day], (int)[components year], timeString, meridian];
                 [[cell detailTextLabel] setText:dateString];
+                [[cell detailTextLabel] setTextColor:[UIColor grayColor]];
             }
             [cell.textLabel setText:title];
         }

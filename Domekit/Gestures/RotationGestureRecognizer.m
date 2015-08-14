@@ -18,7 +18,7 @@
     float a = sqrt((t.x * t.x) + (t.y * t.y));
     t.x /= a;
     t.y /= a;
-    NSLog(@"(%.2f : %.2f)",t.y, t.x);
+//    NSLog(@"(%.2f : %.2f)",t.y, t.x);
     
     return GLKQuaternionMakeWithAngleAndAxis(.01, t.y, t.x, 0);
 //    t.x *= SCALE;

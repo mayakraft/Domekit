@@ -32,6 +32,8 @@ typedef enum{
 @property float cameraRadiusFix;
 
 @property (nonatomic) GLKQuaternion gestureRotation;
+@property (nonatomic) GLfloat gestureRotationX;
+@property (nonatomic) GLfloat gestureRotationY;
 
 @property (nonatomic) GLKMatrix4 attitudeMatrix;
 @property GLKMatrix4 projectionMatrix;
