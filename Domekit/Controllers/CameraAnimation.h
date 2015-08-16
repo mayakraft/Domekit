@@ -4,7 +4,7 @@
 @class CameraAnimation;
 
 @protocol CameraAnimationDelegate <NSObject>
--(void) animationDidStop:(GLKMatrix4)matrix;
+-(void) animationDidStop:(CameraAnimation*)animation;
 @end
 
 @interface CameraAnimation : NSObject

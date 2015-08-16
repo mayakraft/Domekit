@@ -58,7 +58,8 @@
     ValueAnimation *animateGestureX, *animateGestureY;
 }
 
-@property CameraAnimation *cameraAnimation;
+@property CameraAnimation *gyroOrientationAnimation;
+@property CameraAnimation *gestureOrientationAnimation;
 @property (nonatomic) NSUInteger perspective;
 @property (weak) UISegmentedControl *topMenu;
 @end
@@ -175,7 +176,7 @@
     
     [self setPerspective:0];
     [self.view bringSubviewToFront:extendedNavBar];
-    NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"]);
+//    NSLog(@"SAVED DOMES: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"]);
 }
 -(void) initRevealController{
     SWRevealViewController *revealController = self.revealViewController;
@@ -241,10 +242,12 @@
     }
     if([sender state] == 2){
         cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
-        rotation = GLKQuaternionMultiply(start, cumulative);
+        rotation = GLKQuaternionMultiply(cumulative, start);
 //        NSLog(@"                                    SUM: %.1f, %.1f, %.1f, %.1f",rotation.w, rotation.x, rotation.y, rotation.z);
         gestureRotationX = startX + ([sender translationInView:geodesicView].x) * SENSITIVITY;
         gestureRotationY = startY + ([sender translationInView:geodesicView].y) * SENSITIVITY;
+//        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
+        [geodesicView setGestureRotation:rotation];
     }
     if([sender state] == 3){
         while(gestureRotationX >= 180)
@@ -262,14 +265,21 @@
     // CAMERA ANIMATIONS
     // begins now with duration set by ORTHO_ANIM_TIME
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
-        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
-        animateGestureX = [[ValueAnimation alloc] initWithName:@"gestureX" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationX EndValue:0];
-        animateGestureY = [[ValueAnimation alloc] initWithName:@"gestureY" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationY EndValue:0];
+        _gyroOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
+        
+        _gestureOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:rotation End:GLKQuaternionIdentity];
+
+//        animateGestureX = [[ValueAnimation alloc] initWithName:@"gestureX" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationX EndValue:0];
+//        animateGestureY = [[ValueAnimation alloc] initWithName:@"gestureY" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationY EndValue:0];
     }
     if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
-        _cameraAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
-        [_cameraAnimation setReverse:YES];
-    }
+        _gyroOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        [_gyroOrientationAnimation setReverse:YES];
+
+        rotation = GLKQuaternionIdentity;
+//        _gestureOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:rotation];
+//        [_gyroOrientationAnimation setReverse:YES];
+}
     if([sender selectedSegmentIndex] == 0){
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
@@ -404,6 +414,7 @@
     geodesicModel = [[GeodesicModel alloc] initWithFrequency:[[dome objectForKey:@"frequency"] intValue]
                                                        Solid:[[dome objectForKey:@"solid"] intValue]
                                                         Crop:[[dome objectForKey:@"numerator"] intValue]];
+    _solidType = geodesicModel.solid;
     _sessionScale = [[dome objectForKey:@"scale"] floatValue];
     [geodesicModel calculateLongestStrutLength];
     [geodesicView setGeodesicModel:geodesicModel];
@@ -480,8 +491,20 @@
     [[scaleControlView floorDiameterTextField] setText:twoString];
     [[scaleControlView strutTextField] setText:threeString];
 }
--(void) animationDidStop:(GLKMatrix4)matrix{
-    _cameraAnimation = nil;
+-(void) animationDidStop:(CameraAnimation*)animation{
+//    if([animation isEqual:_gestureOrientationAnimation]){
+//        NSLog(@"captured! gesture");
+        _gestureOrientationAnimation = nil;
+//    }
+//    if([animation isEqual:_gyroOrientationAnimation]){
+//        NSLog(@"captured! gyro");
+        _gyroOrientationAnimation = nil;
+//    }
+    
+    rotation = GLKQuaternionIdentity;
+    [geodesicView setGestureRotation:rotation];
+    
+    
     [geodesicView setCameraRadius:[geodesicView cameraRadius]];
 }
 
@@ -509,15 +532,18 @@
 
 // part of GLKViewController
 - (void)update{
-    if(_cameraAnimation){
-        [geodesicView setAttitudeMatrix:[_cameraAnimation matrix]];
-        [geodesicView setFieldOfView:[_cameraAnimation fieldOfView]];
-        [geodesicView setCameraRadius:[_cameraAnimation radius]];
-        [geodesicView setCameraRadiusFix:[_cameraAnimation radiusFix]];
-        if([_cameraAnimation reverse])
-            [_cameraAnimation setOrientationEnd:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+    if(_gyroOrientationAnimation){
+        [geodesicView setAttitudeMatrix:[_gyroOrientationAnimation matrix]];
+        [geodesicView setFieldOfView:[_gyroOrientationAnimation fieldOfView]];
+        [geodesicView setCameraRadius:[_gyroOrientationAnimation radius]];
+        [geodesicView setCameraRadiusFix:[_gyroOrientationAnimation radiusFix]];
+        if([_gyroOrientationAnimation reverse])
+            [_gyroOrientationAnimation setOrientationEnd:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
         else
-            [_cameraAnimation setOrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+            [_gyroOrientationAnimation setOrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        
+        if(_gestureOrientationAnimation)
+            [geodesicView setGestureRotation:GLKQuaternionMakeWithMatrix4([_gestureOrientationAnimation matrix])];
     }
     else {
         if(_perspective == 0){

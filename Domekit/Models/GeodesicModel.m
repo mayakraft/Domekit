@@ -25,6 +25,7 @@
     self = [super init];
     if(self){
         _frequency = frequency;
+        _solid = solid;
         if(solid == ICOSAHEDRON_SEED)
             _geo = icosahedronDome(_frequency, 1.0);
         else if(solid == OCTAHEDRON_SEED)
@@ -48,6 +49,7 @@
     self = [super init];
     if(self){
         _frequency = frequency;
+        _solid = solid;
         if(solid == ICOSAHEDRON_SEED)
             _geo = icosahedronDome(_frequency, 1.0);
         else if(solid == OCTAHEDRON_SEED)

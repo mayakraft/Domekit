@@ -40,7 +40,7 @@
         _orientationStart = orientationStart;
         _orientationEnd = orientationEnd;
         
-        _durationTimer = [NSTimer scheduledTimerWithTimeInterval:_duration target:_delegate selector:@selector(animationDidStop:) userInfo:nil repeats:NO];
+        _durationTimer = [NSTimer scheduledTimerWithTimeInterval:_duration target:_delegate selector:@selector(animationDidStop:) userInfo:self repeats:NO];
 
         _fieldOfView = 68.087608;//56.782191;
         _initHeightAtDist = [self FrustumHeightAtDistance:2 -.4];

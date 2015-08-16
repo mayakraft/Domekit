@@ -58,10 +58,11 @@
     GLfloat diffuse[] = { 1.0, 1.0, 1.0, _sphereAlpha };
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
     glPushMatrix();
-        float yAngle = _gestureRotationY*M_PI/180;
-        glRotatef(_gestureRotationX, 0, 1,0);//cos(yAngle), sin(yAngle));
-        float xAngle = _gestureRotationX*M_PI/180;
-        glRotatef(_gestureRotationY, cos(xAngle), 0, sin(xAngle));
+    glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
+//        float yAngle = _gestureRotationY*M_PI/180;
+//        glRotatef(_gestureRotationX, 0, 1,0);//cos(yAngle), sin(yAngle));
+//        float xAngle = _gestureRotationX*M_PI/180;
+//        glRotatef(_gestureRotationY, cos(xAngle), 0, sin(xAngle));
         if(_sphereOverride)
             [_geodesicModel drawTrianglesSphereOverride];
         else
