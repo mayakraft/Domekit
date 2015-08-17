@@ -262,16 +262,34 @@
 }
 -(void) rotationGestureHandler:(RotationGestureRecognizer*)sender{
     static GLKQuaternion start, cumulative;
+    static GLKQuaternion operatingFrame;
+    
     if([sender state] == 1){
+        // in case gyro is on, store the present rotation context before we apply gesture rotations
+        operatingFrame = GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]);
         // before gesture starts, store previous motion
         start = gestureRotation;
         cumulative = GLKQuaternionIdentity;
     }
     if([sender state] == 2){
-        // build upon previous motion
-        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);//[sender rotationInView:geodesicView]);
-        gestureRotation = GLKQuaternionMultiply(cumulative, start);
-        [geodesicView setGestureRotation:gestureRotation];
+        if([sender lockToY]){
+            // disregard all gyroscope reference frames in this special case
+            cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
+            gestureRotation = GLKQuaternionMultiply(cumulative, start);
+            [geodesicView setGestureRotation:gestureRotation];
+        }
+        else{
+            // the theory here goes:
+            // the rotation due to guesture is a tiny quaternion, apply it to the context of the operating frame, due to the gyroscope
+            GLKQuaternion q = GLKQuaternionMultiply([sender rotationInView:geodesicView], operatingFrame);
+            // then divide out from under it the operating frame (multiply the inverse)
+            q = GLKQuaternionMultiply(GLKQuaternionInvert(operatingFrame), q);
+            // and somehow it preserves the gesture rotation in the operating frame.
+            // i'm not really even sure how this works, but it does
+            cumulative = GLKQuaternionMultiply(cumulative, q);//[sender rotationInView:geodesicView]);
+            gestureRotation = GLKQuaternionMultiply(cumulative, start);
+            [geodesicView setGestureRotation:gestureRotation];
+        }
     }
 }
 
