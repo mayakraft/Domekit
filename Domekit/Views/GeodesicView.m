@@ -18,76 +18,27 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-//    static GLfloat whiteColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-//    static GLfloat clearColor[] = {0.0f, 0.0f, 0.0f, 0.0f};
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glPushMatrix(); // begin device orientation
-//    GLKMatrix4 m = GLKMatrix4MakeWithQuaternion(_gestureRotation);
-//    glMultMatrixf(m.m);
 
-    static perspective_t POV = POLAR;
-    if (POV == FPP){
-//            glMultMatrixf(_attitudeMatrix.m);
-//            // raise POV 1.0 above the floor, 1.0 is an arbitrary value
-//            glTranslatef(0, 0, -1.0f);
-    }
-    if(POV == POLAR){
-            glTranslatef(0, 0, -.4);
-            glTranslatef(0, 0, -_cameraRadius);
-            glTranslatef(0, 0, -_cameraRadiusFix);
-            glMultMatrixf(_attitudeMatrix.m);
-    }
-    if(POV == ORTHO){
-//            glTranslatef(-mouseTotalOffsetX * .05, mouseTotalOffsetY * .05, 0.0f);
-    }
-    
-    glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDepthMask (GL_TRUE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-//    if(_sphereAlphaHiddenFaces != 0.0){
-//        NSLog(@"hidden faces");
-//        GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlphaHiddenFaces };
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseHidden);
-//        glPushMatrix();
-//            if(_sphereOverride)
-//                [_geodesicModel drawHiddenTrianglesSphereOverride];
-//            else
-//                [_geodesicModel drawHiddenTriangles];
-//        glPopMatrix();
-//    }
-    
-//    if(_animationFlag){
+        // setup polar coordinate frame looking into the origin
+        glTranslatef(0, 0, -.4);
+        glTranslatef(0, 0, -_cameraRadius);
+        glTranslatef(0, 0, -_cameraRadiusFix);
+        glMultMatrixf(_attitudeMatrix.m);
+
         GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlpha * _slicedSphereAlpha};
         GLfloat diffuseFull[] = { 1.0, 1.0, 1.0, _sphereAlpha };
-
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseHidden);
+
         glPushMatrix();
-        glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
-        [_geodesicModel drawTrianglesSphereOverride];
-
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseFull);
-
-        [_geodesicModel drawTriangles];
+            glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
+            [_geodesicModel drawTrianglesSphereOverride];
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseFull);
+            [_geodesicModel drawTriangles];
         glPopMatrix();
-//    }
-//    else{
-//        GLfloat diffuse[] = { 1.0, 1.0, 1.0, _sphereAlpha * _slicedSphereAlpha};
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
-//        glPushMatrix();
-//        glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
-//
-//            if(_sphereOverride)
-//                [_geodesicModel drawTrianglesSphereOverride];
-//            else
-//                [_geodesicModel drawTriangles];
-//        glPopMatrix();
-//    }
-    
     glPopMatrix(); // end device orientation
 }
 
@@ -97,37 +48,6 @@
 
 #pragma mark- OPENGL
 
-// draws a XY 1x1 square in the Z = 0 plane
--(void) unitSquareX:(float)x Y:(float)y Width:(float)width Height:(float)height{
-    static const GLfloat _unit_square_vertex[] = {
-        0.0f, 1.0f, 0.0f,     1.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f };
-    static const GLfloat _unit_square_normals[] = {
-        0.0f, 0.0f, 1.0f,     0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f };
-    glPushMatrix();
-    glScalef(width, height, 1.0);
-    glTranslatef(x, y, 0.0);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, _unit_square_vertex);
-    glNormalPointer(GL_FLOAT, 0, _unit_square_normals);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glPopMatrix();
-}
-
--(void) drawCheckerboardX:(float)walkX Y:(float)walkY NumberSquares:(int)numSquares{
-    int XOffset = ceil(walkX);
-    int YOffset = ceil(walkY);
-    for(int i = -numSquares; i <= numSquares; i++){
-        for(int j = -numSquares; j <= numSquares; j++){
-            int b = abs(((i+j+XOffset+YOffset)%2));
-            if(b) glColor4f(1.0, 1.0, 1.0, 1.0);
-            else glColor4f(0.0, 0.0, 0.0, 1.0);
-            [self unitSquareX:i-XOffset Y:j-YOffset Width:1 Height:1];
-        }
-    }
-}
 -(void)setFieldOfView:(float)fieldOfView{
     _fieldOfView = fieldOfView;
     [self rebuildProjectionMatrix];
@@ -137,7 +57,6 @@
     _aspectRatio = self.frame.size.width/self.frame.size.height;
     _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
     _cameraRadius = polarRadius;
-//    NSLog(@"FOV %f",_fieldOfView);
     [self rebuildProjectionMatrix];
     _attitudeMatrix = GLKMatrix4Identity;
     [self customGL];
@@ -157,18 +76,13 @@
     static GLfloat light_position3[] = { -5.0, -5.0, 5.0, 0.0 };
     glMatrixMode(GL_MODELVIEW);
     
-//    glDepthMask(GL_TRUE);
-//    glClearDepth(1.0f);
-//    glEnable(GL_DEPTH_TEST);
-//    glDepthFunc(GL_LEQUAL);
-    
 //    GLfloat mat_solid[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 //    GLfloat mat_shininess[] = { 5.0f };
     GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
     GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
     GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
 //    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_solid);
-    // glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+//    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
@@ -181,7 +95,7 @@
     glLightfv(GL_LIGHT2, GL_POSITION, light_position3);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
-    // glShadeModel(GL_FLAT);
+//    glShadeModel(GL_FLAT);
     glShadeModel (GL_SMOOTH);
     glEnable( GL_POINT_SMOOTH );
     glLineWidth(5);
@@ -189,7 +103,11 @@
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask (GL_TRUE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glClearDepth(1.0f);
+//    glDepthFunc(GL_LEQUAL);
 }
 
 -(id) init{
@@ -213,7 +131,7 @@
     if (self) {
         [self initOpenGL:context];
         _sphereAlpha = 1.0;
-//        _sphereAlphaHiddenFaces = 0.0;
+        _slicedSphereAlpha = 1.0;
         _gestureRotation = GLKQuaternionIdentity;
     }
     return self;

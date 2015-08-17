@@ -11,17 +11,10 @@
 #import "SWRevealViewController.h"
 #import "PreferencesTableViewCell.h"
 
-@interface PreferencesTableViewController ()
-
-@end
-
 @implementation PreferencesTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-//    [self initRevealController];
     
     [self setTitle:@"PREFERENCES"];
  
@@ -32,27 +25,10 @@
     [[[self navigationController] navigationBar] setBarStyle:UIBarStyleDefault];
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     [self.tableView setScrollEnabled:NO];
 }
 -(void) backButtonPressed{
     [self.navigationController popViewControllerAnimated:YES];
-}
--(void) initRevealController{
-    SWRevealViewController *revealController = self.revealViewController;
-    //    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
-    //TODO: this is not dynamically sized
-    UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
-    [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
-    [revealButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithCustomView:revealButton];
-    [self.navigationItem setLeftBarButtonItem:revealBarButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +62,6 @@
         return @"";
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PreferencesTableViewCell *cell = [[PreferencesTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PreferencesTableViewCell"];
     
@@ -118,7 +93,7 @@
             [[cell textLabel] setText:[NSString stringWithFormat:@"(%lu) Saved Domes", (unsigned long)[saved count]]];
         }
         if(indexPath.row == 1){
-            [[cell textLabel] setText:@"Clear Saved Domes"];
+            [[cell textLabel] setText:@"Clear Memory"];
             [cell setTextColor:[UIColor redColor]];
             [cell setTextAlignment:@1];
         }
@@ -205,7 +180,7 @@
     else if(indexPath.section == 1){
         if(indexPath.row == 1){
             if([[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"] count]){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Erase", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"Erase all saved domes" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Erase", nil];
                 [alert show];
             }
         }
@@ -222,49 +197,5 @@
         [self.tableView reloadData];
     }
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

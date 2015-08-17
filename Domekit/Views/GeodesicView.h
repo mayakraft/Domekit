@@ -26,7 +26,11 @@ typedef enum{
 @property (nonatomic) float fieldOfView;
 
 @property (nonatomic) float sphereAlpha;   // visible triangles, default: 1.0
-//@property (nonatomic) float sphereAlphaHiddenFaces;  // hidden triangles, default: 0.0
+@property float slicedSphereAlpha;  // sliced-off part of sphere, for animating fade in/out
+
+
+@property BOOL sphereOverride;
+
 
 @property float cameraRadius;
 @property float cameraRadiusFix;
@@ -37,12 +41,5 @@ typedef enum{
 @property GLKMatrix4 projectionMatrix;
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
-
-@property BOOL sphereOverride;
-
-// animate fade in/out of hidden sliced part of sphere
-//@property BOOL animationFlag;
-//@property float fullSphereAlpha;
-@property float slicedSphereAlpha;
 
 @end

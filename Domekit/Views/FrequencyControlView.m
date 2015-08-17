@@ -9,7 +9,7 @@
 #import "FrequencyControlView.h"
 
 
-#define IPAD     UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+#define IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
 
 

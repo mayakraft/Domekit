@@ -8,15 +8,6 @@
 
 #import "EquidistantAzimuthView.h"
 
-@interface EquidistantAzimuthView ()
-
-//@property float *points;
-//@property float *lines;
-//@property unsigned int numPoints;
-//@property unsigned int numLines;
-
-@end
-
 @implementation EquidistantAzimuthView
 
 -(id) init{
@@ -24,10 +15,6 @@
     if(self){
         _scale = defaultScale;
         _lineWidth = defaultLineWidth;
-//        _points = malloc(sizeof(float));
-//        _lines = malloc(sizeof(float));
-//        _numPoints = 1;
-//        _numLines = 1;
     }
     return self;
 }
@@ -36,10 +23,6 @@
     if(self){
         _scale = defaultScale;
         _lineWidth = defaultLineWidth * frame.size.width / 1536.0;
-//        _points = malloc(sizeof(float));
-//        _lines = malloc(sizeof(float));
-//        _numPoints = 1;
-//        _numLines = 1;
     }
     return self;
 }
@@ -48,16 +31,9 @@
     if(self){
         _scale = defaultScale;
         _lineWidth = defaultLineWidth;
-//        _points = malloc(sizeof(float));
-//        _lines = malloc(sizeof(float));
-//        _numPoints = 1;
-//        _numLines = 1;
     }
     return self;
 }
-
-// MODEL-Y STUFF
-// breaking MVC here
 
 -(void) setGeodesic:(GeodesicModel *)geodesic{
     _geodesic = geodesic;
@@ -65,31 +41,18 @@
     NSDictionary *visible = [_geodesic visiblePointsAndLines];
     _visibleLineIndices = [NSSet setWithArray:[visible objectForKey:@"lines"]];
     _visiblePointIndices = [NSSet setWithArray:[visible objectForKey:@"points"]];
-//    free(_points);
-//    free(_lines);
-//    _points = malloc(sizeof(float)*geodesic.nu);
+
     [self setNeedsDisplay];
 }
 
-//-(void)dealloc{
-//    free(_points);
-//    free(_lines);
-//}
-
 - (void)drawRect:(CGRect)rect
 {
-    if(!_geodesic) {NSLog(@"Gonna return, no geodesic"); return;}
-    if(!_colorTable) {NSLog(@"Gonna return, no colors"); return;}
-    
-//    imageForContext = [[UIImage alloc] init];
+    if(!_geodesic) {NSLog(@"exiting, no geodesic"); return;}
+    if(!_colorTable) {NSLog(@"exiting, no colors"); return;}
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     [self drawProjectionWithContext:context inRect:rect];
-}
-
--(void)setupContext{
-    
 }
 
 -(void) drawProjectionWithContext:(CGContextRef)context inRect:(CGRect)rect{
@@ -99,23 +62,17 @@
     double angle, yOffset, scale;
     double lowest = 0;
     double fisheye = 1; // close-to-sphere domes are further extended at their edges to prevent overlapping lines
-    
-//    CGFloat dashedLine[2] = {0.5,1.5};
-    
-    
+
     float FISHEYE_POINT = 2.0;//0.85699263932702;  // arbitrary
     
     int octantis = 1;
-    
     
     scale = _scale*16;///(2.5);
     
     _scale = _scale * 24;
     
-    //     FIND THE LOWEST POINT, stretch radius of circle (SCALE) to accomodate
-    for(count = 0; count < _geodesic.numPoints; count++)
-    {
-        
+//     FIND THE LOWEST POINT, stretch radius of circle (SCALE) to accomodate
+    for(count = 0; count < _geodesic.numPoints; count++){
         if( count != octantis &&[_visiblePointIndices containsObject:@(count)])
         {
             yOffset = asin(_geodesic.points[count*3+0]) / (M_PI/2) + 1;
@@ -132,19 +89,15 @@
     }
     else scale = _scale/(2.5);
     
-    
 //    NSLog(@"FURTHEST: %f",lowest);
-    
 //    NSLog(@"Width: %f",rect.size.width);
     
     float MARGIN = .9; // percent of screen used
     scale = rect.size.width*.5 / lowest * MARGIN;
     
-    
     [[UIColor colorWithWhite:0.0 alpha:1.0] setStroke];
     CGContextSetLineWidth(context, _lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
-    
     
     int index1, index2;
     for(int i = 0; i < _geodesic.numPoints; i++){
@@ -199,7 +152,7 @@
                 CGContextClosePath(context);
                 CGContextDrawPath(context, kCGPathFillStroke);
             }
-            // for the one point that is the bottom. the dashed lines extending outward
+            // for the one point that is the bottom. the lines extending outward to no other points
             else
             {
                 if (index1 == octantis)
@@ -229,8 +182,6 @@
 //                        fisheye = 1;
                 }
                 CGContextBeginPath(context);
-//                CGContextSetLineDash(context, 0.0f, dashedLine, 2);
-//                CGContextSetLineCap(context, kCGLineCapButt);
                 CGContextMoveToPoint(context,
                                      centerX + fisheye*yOffset*sin(angle)*scale,
                                      centerY + fisheye*yOffset*cos(angle)*scale);
@@ -239,8 +190,6 @@
                                         centerY + fisheye*2*cos(angle)*scale);
                 CGContextClosePath(context);
                 CGContextDrawPath(context, kCGPathFillStroke);
-//                CGContextSetLineDash(context, 0, NULL, 0);
-//                CGContextSetLineCap(context, kCGLineCapRound);
             }
         }
     }

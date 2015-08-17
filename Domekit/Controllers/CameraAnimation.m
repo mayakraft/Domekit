@@ -39,23 +39,6 @@
 
 -(GLKQuaternion) quaternion{
     tween = -[self.startTime timeIntervalSinceNow]/self.duration;
-    
-    double t = (cos(M_PI - M_PI*tween)+1)*.5;
-    GLKQuaternion slerp = GLKQuaternionSlerp(_startOrientation, _endOrientation, powf(t,3));
-    
-    //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
-    //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;
-    
-    if(_reverse)
-        t = 1.0-t;
-    
-    [self dollyZoomFlat:t];
-    
-    return slerp;
-}
--(GLKMatrix4) matrix{
-    tween = -[self.startTime timeIntervalSinceNow]/self.duration;
-    
     double t = (cos(M_PI - M_PI*tween)+1)*.5;
     GLKQuaternion slerp = GLKQuaternionSlerp(_startOrientation, _endOrientation, powf(t,3));
 
@@ -64,10 +47,12 @@
 
     if(_reverse)
         t = 1.0-t;
-
     [self dollyZoomFlat:t];
+    return slerp;
+}
 
-    return GLKMatrix4MakeWithQuaternion(slerp);
+-(GLKMatrix4) matrix{
+    return GLKMatrix4MakeWithQuaternion([self quaternion]);
 }
 
 -(void) dollyZoomFlat:(double)frame{
@@ -87,47 +72,6 @@
     // 68.087608
 }
 
--(void) animateFrame{
-//    NSLog(@"%.2f < %.2f < %.2f", _startTime, elapsedSeconds, _endTime);
-    
-}
 
-//-(id) step{
-//    if(_endTime < [(Stage*)_delegate elapsedSeconds]){
-//        [_delegate animationDidStop:self];
-//        return nil;
-//    }
-//    _scale = ([(Stage*)_delegate elapsedSeconds] - _startTime)/_duration;
-//    return self;
-//}
 
 @end
-
-
-
-//typedef struct Animation Animation;
-//struct Animation{
-//    NSTimeInterval startTime;
-//    NSTimeInterval endTime;
-//    NSTimeInterval duration;
-//    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
-//};
-//Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-//    Animation *a = malloc(sizeof(Animation));
-//    a->startTime = start;
-//    a->endTime = end;
-//    a->duration = end-start;
-//    a->animate = animationFunction;
-//    return a;
-//}
-//Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-//    Animation *a = malloc(sizeof(Animation));
-//    a->startTime = start;
-//    a->endTime = start+duration;
-//    a->duration = duration;
-//    a->animate = animationFunction;
-//    return a;
-//}
-//void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
-//    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
-//}

@@ -67,12 +67,6 @@
                   [UIColor colorWithRed:0.66 green:0.66 blue:0.66 alpha:1.0], nil];  //gray
     
     
-    // Do any additional setup after loading the view.
-    
-    
-    //    CGSize windowSize = [[UIScreen mainScreen] bounds].size;
-    //    EquidistantAzimuthView *azimuthView = [[EquidistantAzimuthView alloc] initWithFrame:CGRectMake(0, (windowSize.height-windowSize.width)*.5, windowSize.width, windowSize.width)];
-    //    [self.view addSubview:azimuthView];
     CGSize size = [[UIScreen mainScreen] bounds].size;
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -86,7 +80,7 @@
     
     UIScrollView *diagramScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.width + EXT_NAVBAR_HEIGHT)];
     [diagramScrollview setContentSize:CGSizeMake(size.width * ZOOM, (size.width + EXT_NAVBAR_HEIGHT) * ZOOM)];
-    //    [diagramScrollview setZoomScale:.5];
+//    [diagramScrollview setZoomScale:.5];
     [diagramScrollview setDelegate:self];
     [diagramScrollview setMaximumZoomScale:1.0];
     [diagramScrollview setMinimumZoomScale:.25];
@@ -95,12 +89,12 @@
     [self.view addSubview:diagramScrollview];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, size.width + EXT_NAVBAR_HEIGHT, size.width, size.height - size.width - EXT_NAVBAR_HEIGHT - 44) style:UITableViewStylePlain];
-    //    [self setTableView:tableView];
+//    [self setTableView:tableView];
     [self.view addSubview:self.tableView];
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
-    //    [self.tableView setBackgroundColor:[UIColor clearColor]];
+//    [self.tableView setBackgroundColor:[UIColor clearColor]];
     
     shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
     self.navigationItem.rightBarButtonItem = shareButton;
@@ -252,21 +246,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-
-//-(NSArray*) getLengthOrder
-//{
-//    NSMutableArray *lengthOrder = [[NSMutableArray alloc] initWithCapacity:_geodesicModel.lineClassLengths.count];
-//    int i, j, index;
-//    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++) [lengthOrder addObject:[[NSNumber alloc] initWithInt:0]];
-//    for(i = 0; i < _geodesicModel.lineClassLengths.count; i++){
-//        index = 0;
-//        for(j = 0; j < _geodesicModel.lineClassLengths.count; j++){
-//            if(i!=j && [_geodesicModel.lineClassLengths[i] doubleValue] > [_geodesicModel.lineClassLengths[j] doubleValue]) index++;
-//        }
-//        lengthOrder[index] = [[NSNumber alloc] initWithInt:i];
-//    }
-//    return [[NSArray alloc] initWithArray:lengthOrder];
-//}
 
 #pragma mark- SCROLL VIEW DELEGATE
 
@@ -438,8 +417,6 @@
     }
     
     
-    
-    
     float moreMargin = columnWidth * .5;
 
     float nextY = origin.y + (([lines count]+1)*rowHeight) + rowHeight;
@@ -471,7 +448,6 @@
     CGContextAddLineToPoint(context, to.x, to.y);
     CGContextStrokePath(context);
     CGColorSpaceRelease(colorspace);
-    //    CGColorRelease(color.CGColor);
 }
 
 
@@ -530,7 +506,7 @@
 }
 
 -(void)drawLabels{
-    NSArray* objects = [[NSBundle mainBundle] loadNibNamed:@"InvoiceView" owner:nil options:nil];
+    NSArray* objects = [[NSBundle mainBundle] loadNibNamed:@"PDFNibView" owner:nil options:nil];
     UIView* mainView = [objects objectAtIndex:0];
     for (UIView* view in [mainView subviews]) {
         if([view isKindOfClass:[UILabel class]]){
@@ -541,11 +517,11 @@
 }
 
 -(void)drawLogo{
-    NSArray* objects = [[NSBundle mainBundle] loadNibNamed:@"InvoiceView" owner:nil options:nil];
+    NSArray* objects = [[NSBundle mainBundle] loadNibNamed:@"PDFNibView" owner:nil options:nil];
     UIView* mainView = [objects objectAtIndex:0];
     for (UIView* view in [mainView subviews]) {
         if([view isKindOfClass:[UIImageView class]]){
-            UIImage* logo = [UIImage imageNamed:@"ray-logo.png"];
+            UIImage* logo = [UIImage imageNamed:@"dome-logo.png"];
             [self drawImage:logo inRect:view.frame];
         }
     }

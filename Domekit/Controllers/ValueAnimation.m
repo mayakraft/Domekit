@@ -8,8 +8,6 @@
 
 #import "ValueAnimation.h"
 
-
-
 @interface ValueAnimation ()
 @property float startValue;
 @property float endValue;

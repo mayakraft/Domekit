@@ -68,11 +68,12 @@
     [_humanImageView setCenter:CGPointMake(self.frame.size.width*.5, self.frame.size.height*_domeHeight)];
     [_catImageView setCenter:CGPointMake(self.frame.size.width*.5, self.frame.size.height*_domeHeight)];
 
+    // feet and meters stuff
     float unitScale = 1.0;
     if(_meters)
         unitScale = 0.3048;
 
-    
+    // range of the fade between figures
     // the lower the number, the taller the figure gets before crossing the threshhold
     float CEILING = 4.5;
     float FLOOR = 4.0;

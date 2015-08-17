@@ -16,11 +16,15 @@
 
 @property (nonatomic, weak) GeodesicModel *geodesic;
 
+// these both get default values, from the macros, or you can set them yourself
 @property (nonatomic) double scale;
 @property (nonatomic) double lineWidth;
 
+// colorTable is an array of UIColors, at least one is required
 @property (weak) NSArray *colorTable;
 
+// array of indices, corresponding to array indices in
+// geodesic.lines and geodesic.points
 @property NSSet *visiblePointIndices;
 @property NSSet *visibleLineIndices;
 

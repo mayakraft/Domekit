@@ -11,8 +11,6 @@
 // not a subclass of UITableViewController, needed to alter the frame of self.tableView
 @interface RearTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) NSIndexPath *lastSelection;
-
 @property UITableView *tableView;
 
 @end
