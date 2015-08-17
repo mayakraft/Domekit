@@ -35,7 +35,7 @@
     self = [super initWithFrame:frame];
     if(self){
         _scale = defaultScale;
-        _lineWidth = defaultLineWidth;
+        _lineWidth = defaultLineWidth * frame.size.width / 1536.0;
 //        _points = malloc(sizeof(float));
 //        _lines = malloc(sizeof(float));
 //        _numPoints = 1;

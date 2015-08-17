@@ -15,41 +15,16 @@
 
 @implementation CameraAnimation
 
--(id)initWithStart:(NSDate*)start End:(NSDate*)end{
-    self = [super init];
-    if (self) {
-        _startTime = start;
-        _endTime = end;
-//        _duration = end-start;
-        // TODO: is this next right?
-        _duration = [_startTime timeIntervalSinceNow] - [_endTime timeIntervalSinceNow];
-//        _delegate = stage;
-    }
-    return self;
-}
+@synthesize tween;
 
--(id)initWithDuration:(NSTimeInterval)seconds Delegate:(id)delegate OrientationStart:(GLKQuaternion)orientationStart End:(GLKQuaternion)orientationEnd {
-//-(id)initWithDuration:(NSTimeInterval)seconds OrientationStart:(GLKQuaternion)orientationStart End:(GLKQuaternion)orientationEnd FieldOfViewStart:(float)FOVStart End:(float)FOVEnd FOVPointer:(float*)FOV DistanceStart:(float)distanceStart DistanceEnd:(float)distanceEnd DistancePointer:(float*)distance{
-    self = [super init];
-    if (self) {
-        _delegate = delegate;
-        _startTime = [NSDate date];
-        _endTime = [_startTime dateByAddingTimeInterval:seconds];
-        _duration = seconds;
-
-        _orientationStart = orientationStart;
-        _orientationEnd = orientationEnd;
-        
-        _durationTimer = [NSTimer scheduledTimerWithTimeInterval:_duration target:_delegate selector:@selector(animationDidStop:) userInfo:self repeats:NO];
-
+-(id) initWithName:(NSString *)name Duration:(NSTimeInterval)seconds FramesPerSecond:(float)FramesPerSecond Delegate:(id)delegate StartValue:(float)start EndValue:(float)end{
+    self = [super initWithName:name Duration:seconds FramesPerSecond:FramesPerSecond Delegate:delegate StartValue:start EndValue:end];
+    if(self){
         _fieldOfView = 68.087608;//56.782191;
         _initHeightAtDist = [self FrustumHeightAtDistance:2 -.4];
-//        NSLog(@"HEIGHT AT DIST: %f", _initHeightAtDist);
-
     }
     return self;
 }
-
 
 
 // Calculate the frustum height at a given distance from the camera.
@@ -62,11 +37,27 @@
     return 2 * atan(height * 0.5 / distance) / M_PI * 180.0;
 }
 
--(GLKMatrix4) matrix{
-    double t = -[_startTime timeIntervalSinceNow]/_duration;
+-(GLKQuaternion) quaternion{
+    tween = -[self.startTime timeIntervalSinceNow]/self.duration;
     
-    t = (cos(M_PI - M_PI*t)+1)*.5;
-    GLKQuaternion slerp = GLKQuaternionSlerp(_orientationStart, _orientationEnd, powf(t,3));
+    double t = (cos(M_PI - M_PI*tween)+1)*.5;
+    GLKQuaternion slerp = GLKQuaternionSlerp(_startOrientation, _endOrientation, powf(t,3));
+    
+    //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
+    //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;
+    
+    if(_reverse)
+        t = 1.0-t;
+    
+    [self dollyZoomFlat:t];
+    
+    return slerp;
+}
+-(GLKMatrix4) matrix{
+    tween = -[self.startTime timeIntervalSinceNow]/self.duration;
+    
+    double t = (cos(M_PI - M_PI*tween)+1)*.5;
+    GLKQuaternion slerp = GLKQuaternionSlerp(_startOrientation, _endOrientation, powf(t,3));
 
 //    *_FOV = _FOVStart + (_FOVEnd - _FOVStart) * t;
 //    *_distance = _distanceStart + (_distanceEnd - _distanceStart) * t;

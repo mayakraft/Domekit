@@ -31,13 +31,16 @@
 }
 
 -(void) initUI{
+    float humanCatRatio = .3; //.25;  // approximate the height of a person : height of a cat
+    // but really it's the heigh of these images to each other, so it's not scientific
+    
 //    float startRatio = .6; // domes begin at 10 units, person is 6 ft tall.
     _humanImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagerman.png"]];
     _catImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercat.png"]];
     CGFloat aspectHuman = _humanImageView.frame.size.width / _humanImageView.frame.size.height;
     CGFloat aspectCat = _catImageView.frame.size.width / _catImageView.frame.size.height;
     [_humanImageView setFrame:CGRectMake(0, 0, self.frame.size.height * aspectHuman, self.frame.size.height)];
-    [_catImageView setFrame:CGRectMake(0, 0, self.frame.size.height * .25 * aspectCat, self.frame.size.height * .25)];
+    [_catImageView setFrame:CGRectMake(0, 0, self.frame.size.height * humanCatRatio * aspectCat, self.frame.size.height * humanCatRatio)];
     [_humanImageView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
     [_catImageView.layer setAnchorPoint:CGPointMake(0.5, 1.0)];
     [_humanImageView setCenter:CGPointMake(self.frame.size.width*.5, self.frame.size.height)];
@@ -68,20 +71,27 @@
     float unitScale = 1.0;
     if(_meters)
         unitScale = 0.3048;
+
+    
+    // the lower the number, the taller the figure gets before crossing the threshhold
+    float CEILING = 4.5;
+    float FLOOR = 4.0;
+
+    float span = CEILING - FLOOR;
     
     [_humanImageView.layer setAffineTransform:CGAffineTransformMakeScale(6.0 / _sessionScale * unitScale, 6.0 / _sessionScale * unitScale)];
     [_catImageView.layer setAffineTransform:CGAffineTransformMakeScale(6.0 / _sessionScale * unitScale, 6.0 / _sessionScale * unitScale)];
     
-    if (_sessionScale * _domeHeight > 6.5 * unitScale)
+    if (_sessionScale * _domeHeight > CEILING * unitScale)
     {
         [_catImageView setAlpha:0.0];
         [_humanImageView setAlpha:1.0];
     }
-    else if (_sessionScale * _domeHeight > 5.5 * unitScale && _sessionScale * _domeHeight < 6.5 * unitScale)
+    else if (_sessionScale * _domeHeight > FLOOR * unitScale && _sessionScale * _domeHeight < CEILING * unitScale)
     {
         float tween = (_sessionScale * _domeHeight / unitScale);
-        [_catImageView setAlpha:(6.5-tween)];
-        [_humanImageView setAlpha:(tween-5.5)];
+        [_catImageView setAlpha:(CEILING-tween)/span];
+        [_humanImageView setAlpha:(tween-FLOOR)/span];
     }
     else
     {

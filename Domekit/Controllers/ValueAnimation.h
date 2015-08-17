@@ -10,6 +10,7 @@
 @class ValueAnimation;
 
 @protocol ValueAnimationDelegate
+@optional
 -(void) valueAnimationDidStop:(ValueAnimation*)sender;
 -(void) valueAnimationDidUpdate:(ValueAnimation*)sender;
 @end
@@ -24,7 +25,7 @@
 // it runs
 // it calls the delegate when it's done
 //-(id)initWithDuration:(NSTimeInterval)seconds;
--(id)initWithName:(NSString*)name Duration:(NSTimeInterval)seconds Delegate:(id)delegate StartValue:(float)start EndValue:(float)end;
+-(id)initWithName:(NSString*)name Duration:(NSTimeInterval)seconds FramesPerSecond:(float)FramesPerSecond Delegate:(id)delegate StartValue:(float)start EndValue:(float)end;
 
 
 @property (readonly) float value;  // grab your value here
@@ -36,11 +37,17 @@
 @property (readonly) NSDate *endTime;
 @property (readonly) NSTimeInterval duration;
 
+@property (readonly) float fps;
+
 
 // SET THIS TRUE
 // TO PLAY ANIMATION IN REVERSE
 //@property BOOL reverse;
 
+
+// subclassing, implement this and call it's super
+// to implement and update your own custom value
+-(void) updateValue;
 
 
 @end

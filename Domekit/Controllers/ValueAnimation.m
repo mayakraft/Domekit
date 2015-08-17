@@ -8,7 +8,7 @@
 
 #import "ValueAnimation.h"
 
-#define FPS 60.0
+
 
 @interface ValueAnimation ()
 @property float startValue;
@@ -19,7 +19,7 @@
 
 @implementation ValueAnimation
 
--(id) initWithName:(NSString *)name Duration:(NSTimeInterval)seconds Delegate:(id)delegate StartValue:(float)start EndValue:(float)end{
+-(id) initWithName:(NSString *)name Duration:(NSTimeInterval)seconds FramesPerSecond:(float)framesPerSecond Delegate:(id)delegate StartValue:(float)start EndValue:(float)end{
     self = [super init];
     if(self){
         
@@ -30,13 +30,19 @@
         _endTime = [_startTime dateByAddingTimeInterval:seconds];
         _duration = seconds;
         
-        _startValue = start;
+        _value = _startValue = start;
         _endValue = end;
         
+        _fps = framesPerSecond;
+        
         _endTimer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(animationWillStop) userInfo:nil repeats:NO];
-        _durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/FPS target:self selector:@selector(animationDidUpdate) userInfo:nil repeats:YES];
+        _durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/_fps target:self selector:@selector(animationDidUpdate) userInfo:nil repeats:YES];
     }
     return self;
+}
+
+-(void) updateValue{
+    _value = _startValue + (_endValue - _startValue) * _tween;
 }
 
 -(void) animationWillStop{
@@ -48,7 +54,7 @@
 
 -(void) animationDidUpdate{
     _tween = -[_startTime timeIntervalSinceNow]/_duration;
-    _value = _startValue + (_endValue - _startValue) * _tween;
+    [self updateValue];
     [_delegate valueAnimationDidUpdate:self];
 }
 

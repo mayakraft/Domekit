@@ -25,6 +25,7 @@
 -(void) checkNSUserDefaults{
     BOOL flagSwitched = false;
     
+    // PREFERENCES
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"units"]){
         flagSwitched = true;
         [[NSUserDefaults standardUserDefaults] setObject:@"feet + inches" forKey:@"units"];
@@ -42,9 +43,24 @@
         [[NSUserDefaults standardUserDefaults] setObject:@[] forKey:@"saved"];
     }
     
+    
+    // VERSION TRACKING
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"version"] ||
+       ![[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToNumber:@1.3]){
+        flagSwitched = true;
+        [self updateToMostRecentVersionFrom:[[NSUserDefaults standardUserDefaults] objectForKey:@"version"]];
+        [[NSUserDefaults standardUserDefaults] setObject:@1.3 forKey:@"version"];
+    }
+
+    
     if(flagSwitched)
         [[NSUserDefaults standardUserDefaults] synchronize];
 }
+-(void) updateToMostRecentVersionFrom:(NSNumber*)lastVersion{
+    [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"gyro"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 -(NSString*) fractionifyNumber:(float)f Denominator:(unsigned int)denominator{
     unsigned int whole = floorf(f);
     float fractional = f - (float)whole;

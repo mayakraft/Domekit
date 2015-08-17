@@ -299,8 +299,7 @@
 				D5DBB4951AFBAD8A002D2EB0 /* RearTableViewController.m */,
 				D53B9C621B0C202D008E5014 /* PreferencesTableViewController.h */,
 				D53B9C631B0C202D008E5014 /* PreferencesTableViewController.m */,
-				D597BF091B7D81810046984D /* ValueAnimation.h */,
-				D597BF0A1B7D81810046984D /* ValueAnimation.m */,
+				D5F8E5CD1B81564300A01930 /* Supers */,
 				D54088801B15AEC7003E168C /* CameraAnimation.h */,
 				D54088811B15AEC7003E168C /* CameraAnimation.m */,
 			);
@@ -340,6 +339,15 @@
 				D5EFDC261B0E0EE5002ADD28 /* NewDomeTableViewCell.m */,
 			);
 			name = "TableView Cells";
+			sourceTree = "<group>";
+		};
+		D5F8E5CD1B81564300A01930 /* Supers */ = {
+			isa = PBXGroup;
+			children = (
+				D597BF091B7D81810046984D /* ValueAnimation.h */,
+				D597BF0A1B7D81810046984D /* ValueAnimation.m */,
+			);
+			name = Supers;
 			sourceTree = "<group>";
 		};
 		D5F918271AF9162600564114 /* 3rdParty */ = {

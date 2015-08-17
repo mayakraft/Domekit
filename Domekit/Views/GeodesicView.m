@@ -13,6 +13,10 @@
 
 @implementation GeodesicView
 
+-(void) setGestureRotation:(GLKQuaternion)gestureRotation{
+    _gestureRotation = gestureRotation;
+}
+
 - (void)drawRect:(CGRect)rect {
 //    static GLfloat whiteColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 //    static GLfloat clearColor[] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -45,30 +49,44 @@
     glDepthMask (GL_TRUE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    if(_sphereAlphaHiddenFaces != 0.0){
-        GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlphaHiddenFaces };
+//    if(_sphereAlphaHiddenFaces != 0.0){
+//        NSLog(@"hidden faces");
+//        GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlphaHiddenFaces };
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseHidden);
+//        glPushMatrix();
+//            if(_sphereOverride)
+//                [_geodesicModel drawHiddenTrianglesSphereOverride];
+//            else
+//                [_geodesicModel drawHiddenTriangles];
+//        glPopMatrix();
+//    }
+    
+//    if(_animationFlag){
+        GLfloat diffuseHidden[] = { 1.0, 1.0, 1.0, _sphereAlpha * _slicedSphereAlpha};
+        GLfloat diffuseFull[] = { 1.0, 1.0, 1.0, _sphereAlpha };
+
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseHidden);
         glPushMatrix();
-            if(_sphereOverride)
-                [_geodesicModel drawHiddenTrianglesSphereOverride];
-            else
-                [_geodesicModel drawHiddenTriangles];
-        glPopMatrix();
-    }
-    GLfloat diffuse[] = { 1.0, 1.0, 1.0, _sphereAlpha };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
-    glPushMatrix();
-    glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
-//        float yAngle = _gestureRotationY*M_PI/180;
-//        glRotatef(_gestureRotationX, 0, 1,0);//cos(yAngle), sin(yAngle));
-//        float xAngle = _gestureRotationX*M_PI/180;
-//        glRotatef(_gestureRotationY, cos(xAngle), 0, sin(xAngle));
-        if(_sphereOverride)
-            [_geodesicModel drawTrianglesSphereOverride];
-        else
-            [_geodesicModel drawTriangles];
-    glPopMatrix();
+        glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
+        [_geodesicModel drawTrianglesSphereOverride];
 
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseFull);
+
+        [_geodesicModel drawTriangles];
+        glPopMatrix();
+//    }
+//    else{
+//        GLfloat diffuse[] = { 1.0, 1.0, 1.0, _sphereAlpha * _slicedSphereAlpha};
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
+//        glPushMatrix();
+//        glMultMatrixf(GLKMatrix4MakeWithQuaternion(_gestureRotation).m);
+//
+//            if(_sphereOverride)
+//                [_geodesicModel drawTrianglesSphereOverride];
+//            else
+//                [_geodesicModel drawTriangles];
+//        glPopMatrix();
+//    }
     
     glPopMatrix(); // end device orientation
 }
@@ -195,7 +213,7 @@
     if (self) {
         [self initOpenGL:context];
         _sphereAlpha = 1.0;
-        _sphereAlphaHiddenFaces = 0.0;
+//        _sphereAlphaHiddenFaces = 0.0;
         _gestureRotation = GLKQuaternionIdentity;
     }
     return self;

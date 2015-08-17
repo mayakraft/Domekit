@@ -232,7 +232,7 @@
                 NSDate *date = [dome objectForKey:@"date"];
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitHour | NSCalendarUnitMinute fromDate:date];
                 NSString *timeString;
-                int hour = [components hour];
+                int hour = (int)[components hour];
                 NSString *meridian = @"";
                 if(hour > 12){
                     hour -= 12;

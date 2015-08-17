@@ -10,7 +10,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import "GeodesicModel.h"
 
-#define FPS 60
+#define FPS 30
 #define FOV_MIN 1
 #define FOV_MAX 155
 #define Z_NEAR 0.1f
@@ -26,14 +26,12 @@ typedef enum{
 @property (nonatomic) float fieldOfView;
 
 @property (nonatomic) float sphereAlpha;   // visible triangles, default: 1.0
-@property (nonatomic) float sphereAlphaHiddenFaces;  // hidden triangles, default: 0.0
+//@property (nonatomic) float sphereAlphaHiddenFaces;  // hidden triangles, default: 0.0
 
 @property float cameraRadius;
 @property float cameraRadiusFix;
 
 @property (nonatomic) GLKQuaternion gestureRotation;
-@property (nonatomic) GLfloat gestureRotationX;
-@property (nonatomic) GLfloat gestureRotationY;
 
 @property (nonatomic) GLKMatrix4 attitudeMatrix;
 @property GLKMatrix4 projectionMatrix;
@@ -41,5 +39,10 @@ typedef enum{
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
 
 @property BOOL sphereOverride;
+
+// animate fade in/out of hidden sliced part of sphere
+//@property BOOL animationFlag;
+//@property float fullSphereAlpha;
+@property float slicedSphereAlpha;
 
 @end

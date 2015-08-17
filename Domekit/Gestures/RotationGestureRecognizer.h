@@ -13,4 +13,6 @@
 
 -(GLKQuaternion) rotationInView:(UIView*)view;
 
+@property BOOL lockToY;
+
 @end

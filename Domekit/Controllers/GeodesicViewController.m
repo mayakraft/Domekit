@@ -27,7 +27,7 @@
 // DATA MODELS
 #import "GeodesicModel.h"
 #import "CameraAnimation.h"
-#import "ValueAnimation.h"
+//#import "ValueAnimation.h"
 // GESTURES
 #import "RotationGestureRecognizer.h"
 
@@ -40,7 +40,11 @@
 
 #define ORTHO_ANIM_TIME 0.266f
 
-@interface GeodesicViewController () <CameraAnimationDelegate, ValueAnimationDelegate> {
+#warning TODO
+//TODO: implement subclassed gesture delegates
+// get rid of the gesture interaction ontop of UIKit elements
+
+@interface GeodesicViewController () <ValueAnimationDelegate> {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
     CMMotionManager *motionManager;
@@ -52,14 +56,10 @@
     ScaleFigureView *scaleFigureView;
     
     // rotation and touch handling
-    GLKQuaternion rotation;
-    float gestureRotationX, gestureRotationY;
+    GLKQuaternion gestureRotation;
     RotationGestureRecognizer *touchRotationGesture;
-    ValueAnimation *animateGestureX, *animateGestureY;
 }
 
-@property CameraAnimation *gyroOrientationAnimation;
-@property CameraAnimation *gestureOrientationAnimation;
 @property (nonatomic) NSUInteger perspective;
 @property (weak) UISegmentedControl *topMenu;
 @end
@@ -124,14 +124,6 @@
     
     [geodesicView setGeodesicModel:geodesicModel];
     
-    rotation = GLKQuaternionIdentity;
-
-    touchRotationGesture = [[RotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureHandler:)];
-    [touchRotationGesture setMaximumNumberOfTouches:1];
-//    [rotationGesture setDelegate:self];
-    [geodesicView addGestureRecognizer:touchRotationGesture];
-
-    
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
@@ -144,6 +136,8 @@
     [self.view addSubview:extendedNavBar];
     _topMenu = [extendedNavBar segmentedControl];
 
+
+    // BOTTOM CONTROLS
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
     frequencyControlView = [[FrequencyControlView alloc] initWithFrame:controllerFrame];
     [frequencyControlView setBackgroundColor:[UIColor clearColor]];
@@ -162,6 +156,7 @@
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
     
+    // HUMAN CAT FIGURE
     CGPoint sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.5);
     CGFloat sphereRadius = geodesicView.frame.size.width * .4;
     scaleFigureView = [[ScaleFigureView alloc] initWithFrame:CGRectMake(sphereCenter.x - sphereRadius, sphereCenter.y - sphereRadius, sphereRadius*2, sphereRadius*2)];
@@ -170,9 +165,24 @@
     
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
-    [scaleFigureView setHidden:YES];
+//    [scaleFigureView setHidden:YES];
+    [scaleFigureView setAlpha:0.0];
     
     [geodesicView setSphereOverride:YES];
+    
+    
+    // TOUCH GESTURES
+    gestureRotation = GLKQuaternionIdentity;
+    
+    touchRotationGesture = [[RotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationGestureHandler:)];
+    [touchRotationGesture setMaximumNumberOfTouches:1];
+//    [rotationGesture setDelegate:self];
+    float gestureTop = extendedNavBar.frame.origin.y + extendedNavBar.frame.size.height;
+    float gestureHeight = controllerFrame.origin.y - gestureTop;
+    UIView *gestureView = [[UIView alloc] initWithFrame:CGRectMake(0, gestureTop, [[UIScreen mainScreen] bounds].size.width, gestureHeight)];
+    [self.view addSubview:gestureView];
+    [gestureView addGestureRecognizer:touchRotationGesture];
+    
     
     [self setPerspective:0];
     [self.view bringSubviewToFront:extendedNavBar];
@@ -207,105 +217,125 @@
 
 #pragma mark- SINGLE VALUE ANIMATION DELEGATE
 -(void) valueAnimationDidUpdate:(ValueAnimation *)sender{
-    if([[sender name] isEqualToString:@"gestureX"]){
-        gestureRotationX = [sender value];
-    }
-    else if([[sender name] isEqualToString:@"gestureY"]){
-        gestureRotationY = [sender value];
-    }
-    [geodesicView setGestureRotationX:gestureRotationX];
-    [geodesicView setGestureRotationY:gestureRotationY];
+//    if([[sender name] isEqualToString:@"GYRO"]){ }
+//    else if([[sender name] isEqualToString:@"GESTURE"]){ }
+    
 }
 -(void) valueAnimationDidStop:(ValueAnimation *)sender{
-    if([[sender name] isEqualToString:@"gestureX"]){
-        gestureRotationX = [sender value];
-        sender = nil;
+    if([[sender name] isEqualToString:@"GYRO"]){
+
     }
-    else if([[sender name] isEqualToString:@"gestureY"]){
-        gestureRotationY = [sender value];
-        sender = nil;
+    else if([[sender name] isEqualToString:@"GESTURE"]){
+//        gestureRotation = GLKQuaternionIdentity;
+        gestureRotation = [(CameraAnimation*)sender quaternion];
+        [geodesicView setGestureRotation:gestureRotation];
     }
-    [geodesicView setGestureRotationX:gestureRotationX];
-    [geodesicView setGestureRotationY:gestureRotationY];
+    else if([[sender name] isEqualToString:@"FADE"]){
+        [geodesicView setSphereAlpha:[sender value]];
+        [scaleFigureView setAlpha:1.0 - (([sender value]-.5) * 2.0)];
+    }
+    else if ([[sender name] isEqualToString:@"SLICE"]){
+        [geodesicView setSlicedSphereAlpha:[sender value]];
+    }
+    
+//    [geodesicView setCameraRadius:[geodesicView cameraRadius]];
+    
+//    [geodesicView setAnimationFlag:NO];
+
+    // END
+    NSMutableArray *anim = [_animations mutableCopy];
+    [anim removeObject:sender];
+    _animations = anim;
+    sender = nil;
 }
 
 #pragma mark- USER INTERFACE HANDLERS
 -(void) rotationGestureHandler:(RotationGestureRecognizer*)sender{
-    static const float SENSITIVITY = .55;
     static GLKQuaternion start, cumulative;
-    static float startX, startY;
     if([sender state] == 1){
-        start = rotation;
+        start = gestureRotation;
         cumulative = GLKQuaternionIdentity;
-        startX = gestureRotationX;
-        startY = gestureRotationY;
     }
     if([sender state] == 2){
-        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
-        rotation = GLKQuaternionMultiply(cumulative, start);
-//        NSLog(@"                                    SUM: %.1f, %.1f, %.1f, %.1f",rotation.w, rotation.x, rotation.y, rotation.z);
-        gestureRotationX = startX + ([sender translationInView:geodesicView].x) * SENSITIVITY;
-        gestureRotationY = startY + ([sender translationInView:geodesicView].y) * SENSITIVITY;
-//        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
-        [geodesicView setGestureRotation:rotation];
-    }
-    if([sender state] == 3){
-        while(gestureRotationX >= 180)
-            gestureRotationX -= 360;
-        while(gestureRotationX <= -180)
-            gestureRotationX += 360;
-        while(gestureRotationY >= 180)
-            gestureRotationY -= 360;
-        while(gestureRotationY <= -180)
-            gestureRotationY += 360;
+        cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);//[sender rotationInView:geodesicView]);
+        gestureRotation = GLKQuaternionMultiply(cumulative, start);
+        [geodesicView setGestureRotation:gestureRotation];
     }
 }
 
 -(void) topMenuChange:(UISegmentedControl*)sender{
+    if(!_animations)
+        _animations = @[];
+    
     // CAMERA ANIMATIONS
     // begins now with duration set by ORTHO_ANIM_TIME
     if(_perspective == 0 && [sender selectedSegmentIndex] != 0){
-        _gyroOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix]) End:GLKQuaternionIdentity];
-        
-        _gestureOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:rotation End:GLKQuaternionIdentity];
+        CameraAnimation *gyroOrientationAnimation = [[CameraAnimation alloc] initWithName:@"GYRO" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:0 EndValue:0];
+        [gyroOrientationAnimation setStartOrientation:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        [gyroOrientationAnimation setEndOrientation:GLKQuaternionIdentity];
+        _animations = [_animations arrayByAddingObject:gyroOrientationAnimation];
 
-//        animateGestureX = [[ValueAnimation alloc] initWithName:@"gestureX" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationX EndValue:0];
-//        animateGestureY = [[ValueAnimation alloc] initWithName:@"gestureY" Duration:ORTHO_ANIM_TIME Delegate:self StartValue:gestureRotationY EndValue:0];
+        CameraAnimation *gestureOrientationAnimation = [[CameraAnimation alloc] initWithName:@"GESTURE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:0 EndValue:0];
+        [gestureOrientationAnimation setStartOrientation:gestureRotation];
+        [gestureOrientationAnimation setEndOrientation:GLKQuaternionNormalize(GLKQuaternionMake(0, gestureRotation.y, 0, gestureRotation.w))];
+        _animations = [_animations arrayByAddingObject:gestureOrientationAnimation];
+        
+        ValueAnimation *sliceAnimation = [[ValueAnimation alloc] initWithName:@"SLICE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:1.0 EndValue:0.0];
+        _animations = [_animations arrayByAddingObject:sliceAnimation];
     }
     if(_perspective != 0 && [sender selectedSegmentIndex] == 0){
-        _gyroOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
-        [_gyroOrientationAnimation setReverse:YES];
+        CameraAnimation *gyroOrientationAnimation = [[CameraAnimation alloc] initWithName:@"GYRO" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:0 EndValue:0];
+        [gyroOrientationAnimation setStartOrientation:GLKQuaternionIdentity];
+        [gyroOrientationAnimation setEndOrientation:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+        [gyroOrientationAnimation setReverse:YES];
+        _animations = [_animations arrayByAddingObject:gyroOrientationAnimation];
 
-        rotation = GLKQuaternionIdentity;
-//        _gestureOrientationAnimation = [[CameraAnimation alloc] initWithDuration:ORTHO_ANIM_TIME Delegate:self OrientationStart:GLKQuaternionIdentity End:rotation];
-//        [_gyroOrientationAnimation setReverse:YES];
-}
+        CameraAnimation *gestureOrientationAnimation = [[CameraAnimation alloc] initWithName:@"GESTURE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:0 EndValue:0];
+        [gestureOrientationAnimation setStartOrientation:gestureRotation];//rotation];
+        [gestureOrientationAnimation setEndOrientation:gestureRotation];
+        [gestureOrientationAnimation setReverse:YES];
+        _animations = [_animations arrayByAddingObject:gestureOrientationAnimation];
+
+        ValueAnimation *sliceAnimation = [[ValueAnimation alloc] initWithName:@"SLICE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:0.0 EndValue:1.0];
+        _animations = [_animations arrayByAddingObject:sliceAnimation];
+    }
+    if(_perspective != 2 && [sender selectedSegmentIndex] == 2){
+        ValueAnimation *fadeAnimation = [[ValueAnimation alloc] initWithName:@"FADE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:1.0 EndValue:.5];
+        _animations = [_animations arrayByAddingObject:fadeAnimation];
+    }
+    if(_perspective ==2 && [sender selectedSegmentIndex] != 2){
+        ValueAnimation *fadeAnimation = [[ValueAnimation alloc] initWithName:@"FADE" Duration:ORTHO_ANIM_TIME FramesPerSecond:FPS Delegate:self StartValue:.5 EndValue:1.0];
+        _animations = [_animations arrayByAddingObject:fadeAnimation];
+    }
     if([sender selectedSegmentIndex] == 0){
         [frequencyControlView setHidden:NO];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:YES];
-        [scaleFigureView setHidden:YES];
+//        [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:YES];
-        [geodesicView setSphereAlpha:1.0];
-        [touchRotationGesture setEnabled:YES];
+//        [geodesicView setSphereAlpha:1.0];
+//        [touchRotationGesture setEnabled:YES];
+        [touchRotationGesture setLockToY:NO];
     }
     else if([sender selectedSegmentIndex] == 1){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:NO];
         [scaleControlView setHidden:YES];
-        [scaleFigureView setHidden:YES];
+//        [scaleFigureView setHidden:YES];
         [geodesicView setSphereOverride:NO];
-        [geodesicView setSphereAlpha:1.0];
-        [touchRotationGesture setEnabled:NO];
+//        [geodesicView setSphereAlpha:1.0];
+//        [touchRotationGesture setEnabled:NO];
+        [touchRotationGesture setLockToY:YES];
     }
     else if([sender selectedSegmentIndex] == 2){
         [frequencyControlView setHidden:YES];
         [sliceControlView setHidden:YES];
         [scaleControlView setHidden:NO];
-        [scaleFigureView setHidden:NO];
+//        [scaleFigureView setHidden:NO];
         [geodesicView setSphereOverride:NO];
-        [geodesicView setSphereAlpha:0.5];
-        [touchRotationGesture setEnabled:NO];
+//        [geodesicView setSphereAlpha:0.5];
+//        [touchRotationGesture setEnabled:NO];
+        [touchRotationGesture setLockToY:YES];
 //        [geodesicView setAlphaHiddenFaces:.2];
         [geodesicModel calculateLongestStrutLength];
         [self updateUI];
@@ -387,8 +417,10 @@
     [frequencyControlView setHidden:NO];
     [sliceControlView setHidden:YES];
     [scaleControlView setHidden:YES];
-    [scaleFigureView setHidden:YES];
+//    [scaleFigureView setHidden:YES];
+    [scaleFigureView setAlpha:0.0];
     [geodesicView setSphereOverride:YES];
+    [touchRotationGesture setLockToY:NO];
     [[sliceControlView slider] setValue:1.0];
     [[frequencyControlView segmentedControl] setSelectedSegmentIndex:0];
     [self updateUI];
@@ -491,22 +523,6 @@
     [[scaleControlView floorDiameterTextField] setText:twoString];
     [[scaleControlView strutTextField] setText:threeString];
 }
--(void) animationDidStop:(CameraAnimation*)animation{
-//    if([animation isEqual:_gestureOrientationAnimation]){
-//        NSLog(@"captured! gesture");
-        _gestureOrientationAnimation = nil;
-//    }
-//    if([animation isEqual:_gyroOrientationAnimation]){
-//        NSLog(@"captured! gyro");
-        _gyroOrientationAnimation = nil;
-//    }
-    
-    rotation = GLKQuaternionIdentity;
-    [geodesicView setGestureRotation:rotation];
-    
-    
-    [geodesicView setCameraRadius:[geodesicView cameraRadius]];
-}
 
 #pragma mark- ORIENTATION
 
@@ -532,26 +548,41 @@
 
 // part of GLKViewController
 - (void)update{
-    if(_gyroOrientationAnimation){
-        [geodesicView setAttitudeMatrix:[_gyroOrientationAnimation matrix]];
-        [geodesicView setFieldOfView:[_gyroOrientationAnimation fieldOfView]];
-        [geodesicView setCameraRadius:[_gyroOrientationAnimation radius]];
-        [geodesicView setCameraRadiusFix:[_gyroOrientationAnimation radiusFix]];
-        if([_gyroOrientationAnimation reverse])
-            [_gyroOrientationAnimation setOrientationEnd:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
-        else
-            [_gyroOrientationAnimation setOrientationStart:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+    
+    for(ValueAnimation *animation in _animations){
+//        if([animation isMemberOfClass:[CameraAnimation class]])
+//        CameraAnimation *animation = (CameraAnimation*)animation;
         
-        if(_gestureOrientationAnimation)
-            [geodesicView setGestureRotation:GLKQuaternionMakeWithMatrix4([_gestureOrientationAnimation matrix])];
+        if([[animation name] isEqualToString:@"GYRO"]){
+            [geodesicView setAttitudeMatrix:[(CameraAnimation*)animation matrix]];
+            [geodesicView setFieldOfView:[(CameraAnimation*)animation fieldOfView]];
+            [geodesicView setCameraRadius:[(CameraAnimation*)animation radius]];
+            [geodesicView setCameraRadiusFix:[(CameraAnimation*)animation radiusFix]];
+            if([(CameraAnimation*)animation reverse])
+                [(CameraAnimation*)animation setEndOrientation:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+            else
+                [(CameraAnimation*)animation setStartOrientation:GLKQuaternionMakeWithMatrix4([self getDeviceOrientationMatrix])];
+            
+            if((CameraAnimation*)animation)
+                [geodesicView setGestureRotation:GLKQuaternionMakeWithMatrix4([(CameraAnimation*)animation matrix])];
+        }
+        else if([[animation name] isEqualToString:@"GESTURE"]){
+            gestureRotation = [(CameraAnimation*)animation quaternion];
+            [geodesicView setGestureRotation:gestureRotation];
+        }
+        else if([[animation name] isEqualToString:@"FADE"]){
+            [geodesicView setSphereAlpha:[animation value]];
+            [scaleFigureView setAlpha:1.0 - (([animation value]-.5) * 2.0)];
+        }
+        else if([[animation name] isEqualToString:@"SLICE"]){
+            [geodesicView setSlicedSphereAlpha:powf([animation value],1.5)];
+        }
     }
-    else {
+    if(![_animations count]) {
         if(_perspective == 0){
 //        orient.m32 = -5.0;
 //            [geodesicView setCameraRadius:2];
-            [geodesicView setGestureRotation:rotation];
-            [geodesicView setGestureRotationX:gestureRotationX];
-            [geodesicView setGestureRotationY:gestureRotationY];
+            [geodesicView setGestureRotation:gestureRotation];
             [geodesicView setAttitudeMatrix:[self getDeviceOrientationMatrix]];
         }
         else if(_perspective == 1){
