@@ -32,7 +32,7 @@
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"]){
         flagSwitched = true;
-        [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"gyro"];
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
     }
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"precision"]){
         flagSwitched = true;
@@ -51,20 +51,21 @@
         [self updateToMostRecentVersionFrom:[[NSUserDefaults standardUserDefaults] objectForKey:@"version"]];
         [[NSUserDefaults standardUserDefaults] setObject:@1.3 forKey:@"version"];
     }
-
+    
     
     if(flagSwitched)
         [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
 -(void) updateToMostRecentVersionFrom:(NSNumber*)lastVersion{
-    [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"gyro"];
+    [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"gyro"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(NSString*) fractionifyNumber:(float)f Denominator:(unsigned int)denominator{
     unsigned int whole = floorf(f);
     float fractional = f - (float)whole;
-
+    
     float fNumerator = fractional * (float) denominator;
     float remainder = fNumerator - floorf(fNumerator);
     unsigned int numerator;
@@ -88,11 +89,11 @@
     return [NSString stringWithFormat:@"%d %d/%d",whole, numerator, denominator];
 }
 -(NSString*) unitifyNumber:(float)f{
-
+    
     // this prevents 2.999999 from turning into 2 and .999999
     f += .000001;
     // system cannot rely on 6th decimal place, only usable up to 5
-
+    
     int precision = [[[NSUserDefaults standardUserDefaults] objectForKey:@"precision"] intValue];
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     if([[[NSUserDefaults standardUserDefaults] objectForKey:@"units"] isEqualToString:@"feet"]){
@@ -120,7 +121,7 @@
             }
             else if(precision == 3)
                 [numberFormatter setMaximumFractionDigits:4];
-
+            
             // special case, convert 12 inches to +1 foot
             if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
                 return [NSString stringWithFormat:@"%d' 0\"", whole+1];
@@ -143,11 +144,11 @@
         }
         else if(precision == 3)
             [numberFormatter setMaximumFractionDigits:4];
-
+        
         // special case, convert 12 inches to +1 foot
         if([[numberFormatter stringFromNumber:@(inches)] isEqualToString:@"12"])
             return [NSString stringWithFormat:@"%d' 0\"", whole+1];
-
+        
         if(inchesString){
             // AGAIN, (for some reason) special case, convert 12 inches to +1 foot
             if([inchesString isEqualToString:@"12"])
@@ -179,7 +180,7 @@
             // special case, convert 100 cm to +1 meter
             if([[numberFormatter stringFromNumber:@(centimeters)] isEqualToString:@"100"])
                 return [NSString stringWithFormat:@"%d m 0 cm", whole+1];
-
+            
             return [NSString stringWithFormat:@"%@ cm",[numberFormatter stringFromNumber:@(centimeters)]];
         }
         if(precision == 1)
@@ -191,7 +192,7 @@
         // special case, convert 100 cm to +1 meter
         if([[numberFormatter stringFromNumber:@(centimeters)] isEqualToString:@"100"])
             return [NSString stringWithFormat:@"%d m 0 cm", whole+1];
-
+        
         return [NSString stringWithFormat:@"%d m %@ cm", whole, [numberFormatter stringFromNumber:@(centimeters)]];
     }
     return [NSString stringWithFormat:@"%@",[numberFormatter stringFromNumber:@(f)]];
@@ -244,7 +245,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.    
+    // Override point for customization after application launch.
     
     // important for first runtime.
     [self checkNSUserDefaults];
@@ -254,7 +255,7 @@
     [_geodesicNavigationController setViewControllers:@[_geodesicViewController]];
     
     RearTableViewController *rearViewController = [[RearTableViewController alloc] init];
-
+    
     _revealController =
     [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:_geodesicNavigationController];
     _revealController.rearViewRevealWidth = 260;

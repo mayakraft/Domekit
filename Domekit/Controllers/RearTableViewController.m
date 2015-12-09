@@ -13,7 +13,7 @@
 
 #define BLUE_COLOR [UIColor colorWithRed:0 green:0.48 blue:1 alpha:1]
 
-#define MONTHS @[@"Jan", @"Feb", @"Mar", @"Apr", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"]
+#define MONTHS @[@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"]
 
 @interface RearTableViewController () {
     NSInteger _previouslySelectedRow;
@@ -194,7 +194,8 @@
                     timeString = [NSString stringWithFormat:@"%d:0%d",hour, (int)[components minute]];
                 else
                     timeString = [NSString stringWithFormat:@"%d:%d",hour, (int)[components minute]];
-                NSString *dateString = [NSString stringWithFormat:@"%@ %d, %d %@%@",MONTHS[[components month]],(int)[components day], (int)[components year], timeString, meridian];
+                int monthIndex = ([components month]-1)%12;
+                NSString *dateString = [NSString stringWithFormat:@"%@ %d, %d %@%@",MONTHS[monthIndex],(int)[components day], (int)[components year], timeString, meridian];
                 [[cell detailTextLabel] setText:dateString];
                 [[cell detailTextLabel] setTextColor:[UIColor grayColor]];
             }

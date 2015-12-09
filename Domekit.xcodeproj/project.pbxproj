@@ -20,6 +20,7 @@
 		D54088821B15AEC7003E168C /* CameraAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D54088811B15AEC7003E168C /* CameraAnimation.m */; };
 		D55550941B006DCA00113FEF /* DiagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D55550931B006DCA00113FEF /* DiagramViewController.m */; };
 		D56562931B2227EC002C5E90 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D56562921B2227EC002C5E90 /* MessageUI.framework */; };
+		D565E20F1B85B9E8004B12BF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D565E20E1B85B9E8004B12BF /* Localizable.strings */; };
 		D57CDE5D1B775E99008A2AF8 /* RotationGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D57CDE5C1B775E99008A2AF8 /* RotationGestureRecognizer.m */; };
 		D597BF0B1B7D81810046984D /* ValueAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D597BF0A1B7D81810046984D /* ValueAnimation.m */; };
 		D5B360C21AF67B58006F33B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B360C11AF67B58006F33B9 /* main.m */; };
@@ -92,6 +93,8 @@
 		D5619A221AF904830027A801 /* tween.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tween.c; sourceTree = "<group>"; };
 		D5619A241AF904830027A801 /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
 		D56562921B2227EC002C5E90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		D565E20E1B85B9E8004B12BF /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		D565E2101B85B9F8004B12BF /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		D57CDE5B1B775E99008A2AF8 /* RotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationGestureRecognizer.h; sourceTree = "<group>"; };
 		D57CDE5C1B775E99008A2AF8 /* RotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationGestureRecognizer.m; sourceTree = "<group>"; };
 		D597BF091B7D81810046984D /* ValueAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueAnimation.h; sourceTree = "<group>"; };
@@ -234,6 +237,7 @@
 			children = (
 				D5B360C31AF67B58006F33B9 /* AppDelegate.h */,
 				D5B360C41AF67B58006F33B9 /* AppDelegate.m */,
+				D565E20E1B85B9E8004B12BF /* Localizable.strings */,
 				D5DBB4911AFBAD8A002D2EB0 /* Controllers */,
 				D57CDE5A1B775E5C008A2AF8 /* Gestures */,
 				D5DBB49B1AFBAD8A002D2EB0 /* Views */,
@@ -456,6 +460,7 @@
 				D5DBB4761AFA64EA002D2EB0 /* TransparentPixel.png in Resources */,
 				D5DBB4741AFA64E4002D2EB0 /* Pixel.png in Resources */,
 				D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */,
+				D565E20F1B85B9E8004B12BF /* Localizable.strings in Resources */,
 				D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */,
 				D510EB251B250ACB00723C7D /* voyagerman.png in Resources */,
 				D510EB241B250ACB00723C7D /* voyagercat.png in Resources */,
@@ -526,6 +531,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D5B360CF1AF67B58006F33B9 /* Base */,
+				D565E2101B85B9F8004B12BF /* it */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -569,7 +575,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -607,7 +613,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
