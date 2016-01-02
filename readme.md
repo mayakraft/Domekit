@@ -1,3 +1,5 @@
+when cloning, `git clone --recursive`, this repo contains a submodule located at [geodesic](https://github.com/robbykraft/Geodesic)
+
 # Domekit
 
 mobile geodesic dome calculator for parametric design and construction
@@ -11,7 +13,3 @@ mobile geodesic dome calculator for parametric design and construction
 * multiple ways to input and set scale for construction
 * machine-level precision, feet or meters
 * on-screen construction diagram, or share via PDF
-
-# required dependency
-
-[geodesic](https://github.com/robbykraft/Geodesic)

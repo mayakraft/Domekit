@@ -172,8 +172,7 @@
 				D5619A221AF904830027A801 /* tween.c */,
 				D5619A241AF904830027A801 /* world.c */,
 			);
-			name = Geodesic;
-			path = ../../Geodesic;
+			path = Geodesic;
 			sourceTree = "<group>";
 		};
 		D5619A181AF904830027A801 /* OpenGL */ = {
@@ -198,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				D5B360BE1AF67B58006F33B9 /* Domekit */,
+				D5619A121AF904830027A801 /* Geodesic */,
 				D5B360BD1AF67B58006F33B9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -224,7 +224,6 @@
 				D5B360CC1AF67B58006F33B9 /* Images.xcassets */,
 				D5B360CE1AF67B58006F33B9 /* LaunchScreen.xib */,
 				D5B360C01AF67B58006F33B9 /* Info.plist */,
-				D5619A121AF904830027A801 /* Geodesic */,
 				D5B360EE1AF67DDA006F33B9 /* Frameworks */,
 				D5B360BF1AF67B58006F33B9 /* Supporting Files */,
 			);
