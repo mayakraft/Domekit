@@ -12,6 +12,7 @@
 		D510EB281B252AB500723C7D /* ScaleFigureView.m in Sources */ = {isa = PBXBuildFile; fileRef = D510EB271B252AB500723C7D /* ScaleFigureView.m */; };
 		D52FFC2B1AFD13D4007101ED /* SliceControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2A1AFD13D4007101ED /* SliceControlView.m */; };
 		D52FFC2E1AFD13E3007101ED /* ScaleControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */; };
+		D538D1F51C4C6AC800FABCF9 /* OpenGL in Resources */ = {isa = PBXBuildFile; fileRef = D538D1F41C4C6AC800FABCF9 /* OpenGL */; };
 		D539971F1B20FAE800FCB66D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D539971E1B20FAE800FCB66D /* CoreText.framework */; };
 		D53B9C5D1B089ED7008E5014 /* EquidistantAzimuthView.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */; };
 		D53B9C601B0B7BD3008E5014 /* MaterialsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D53B9C5F1B0B7BD3008E5014 /* MaterialsListTableViewCell.m */; };
@@ -59,6 +60,7 @@
 		D52FFC2D1AFD13E3007101ED /* ScaleControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleControlView.m; sourceTree = "<group>"; };
 		D52FFC321AFD1540007101ED /* net.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = net.c; sourceTree = "<group>"; };
 		D52FFC331AFD1540007101ED /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
+		D538D1F41C4C6AC800FABCF9 /* OpenGL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = OpenGL; sourceTree = "<group>"; };
 		D539971E1B20FAE800FCB66D /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		D53B9C5B1B089ED7008E5014 /* EquidistantAzimuthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquidistantAzimuthView.h; sourceTree = "<group>"; };
 		D53B9C5C1B089ED7008E5014 /* EquidistantAzimuthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquidistantAzimuthView.m; sourceTree = "<group>"; };
@@ -76,8 +78,6 @@
 		D5619A141AF904830027A801 /* geodesic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geodesic.h; sourceTree = "<group>"; };
 		D5619A161AF904830027A801 /* noise.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
 		D5619A171AF904830027A801 /* noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise.h; sourceTree = "<group>"; };
-		D5619A191AF904830027A801 /* mesh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mesh.c; sourceTree = "<group>"; };
-		D5619A1A1AF904830027A801 /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
 		D5619A1D1AF904830027A801 /* platonic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = platonic.c; sourceTree = "<group>"; };
 		D5619A1E1AF904830027A801 /* platonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platonic.h; sourceTree = "<group>"; };
 		D5619A221AF904830027A801 /* tween.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tween.c; sourceTree = "<group>"; };
@@ -166,22 +166,13 @@
 				D52FFC321AFD1540007101ED /* net.c */,
 				D5619A171AF904830027A801 /* noise.h */,
 				D5619A161AF904830027A801 /* noise.c */,
-				D5619A181AF904830027A801 /* OpenGL */,
 				D5619A1E1AF904830027A801 /* platonic.h */,
 				D5619A1D1AF904830027A801 /* platonic.c */,
+				D538D1F41C4C6AC800FABCF9 /* OpenGL */,
 				D5619A221AF904830027A801 /* tween.c */,
 				D5619A241AF904830027A801 /* world.c */,
 			);
 			path = Geodesic;
-			sourceTree = "<group>";
-		};
-		D5619A181AF904830027A801 /* OpenGL */ = {
-			isa = PBXGroup;
-			children = (
-				D5619A1A1AF904830027A801 /* mesh.h */,
-				D5619A191AF904830027A801 /* mesh.c */,
-			);
-			path = OpenGL;
 			sourceTree = "<group>";
 		};
 		D57CDE5A1B775E5C008A2AF8 /* Gestures */ = {
@@ -408,6 +399,7 @@
 				D5DBB4741AFA64E4002D2EB0 /* Pixel.png in Resources */,
 				D5C1F4A91C182BB300AE589B /* Default@2x.png in Resources */,
 				D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */,
+				D538D1F51C4C6AC800FABCF9 /* OpenGL in Resources */,
 				D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */,
 				D510EB251B250ACB00723C7D /* voyagerman.png in Resources */,
 				D510EB241B250ACB00723C7D /* voyagercat.png in Resources */,
@@ -554,7 +546,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"~/Code/Geodesic/",
+					Geodesic/,
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -574,7 +566,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"~/Code/Geodesic/",
+					Geodesic/,
 				);
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

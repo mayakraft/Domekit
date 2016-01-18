@@ -13,6 +13,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <OpenGLES/ES1/gl.h>
+#include "Geodesic.h"
 #include "OpenGL/mesh.h"
 
 typedef enum : NSUInteger {
