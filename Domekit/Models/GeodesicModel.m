@@ -30,15 +30,15 @@
             _geo = icosahedronDome(_frequency, 1.0);
         else if(solid == OCTAHEDRON_SEED)
             _geo = octahedronDome(_frequency, 1.0);
-        _mesh = makeMeshTriangles(&(_geo.g), 0.85);
+        _mesh = makeMeshTriangles(&(_geo.sphere), 0.85);
 //        _sliceMeridians = makeMeshSlicePoints(&(_geo));
 //        _meridiansMesh = makeMeshCropPlanes(&(_geo));
         _frequencyDenominator = _geo.numMeridians;
         _frequencyNumerator = _frequencyDenominator;
-        _points = _geo.g.points;
-        _lines = _geo.g.lines;
-        _numPoints = _geo.g.numPoints;
-        _numLines = _geo.g.numLines;
+        _points = _geo.sphere.points;
+        _lines = _geo.sphere.lines;
+        _numPoints = _geo.sphere.numPoints;
+        _numLines = _geo.sphere.numLines;
         [self resliceSphere];
     }
     return self;
@@ -54,15 +54,15 @@
             _geo = icosahedronDome(_frequency, 1.0);
         else if(solid == OCTAHEDRON_SEED)
             _geo = octahedronDome(_frequency, 1.0);
-        _mesh = makeMeshTriangles(&(_geo.g), 0.85);
+        _mesh = makeMeshTriangles(&(_geo.sphere), 0.85);
         _frequencyDenominator = _geo.numMeridians;
         if(numerator > _frequencyDenominator)
             numerator = _frequencyDenominator;
         _frequencyNumerator = numerator;
-        _points = _geo.g.points;
-        _lines = _geo.g.lines;
-        _numPoints = _geo.g.numPoints;
-        _numLines = _geo.g.numLines;
+        _points = _geo.sphere.points;
+        _lines = _geo.sphere.lines;
+        _numPoints = _geo.sphere.numPoints;
+        _numLines = _geo.sphere.numLines;
         [self resliceSphere];
     }
     return self;
@@ -152,13 +152,13 @@
     NSMutableSet *pointIndices = [NSMutableSet set];
     NSMutableSet *lineIndices = [NSMutableSet set];
     for(int i = 0; i < _numVisibleTriangles; i++){
-        [pointIndices addObject:@(_geo.g.faces[i*3+0])];
-        [pointIndices addObject:@(_geo.g.faces[i*3+1])];
-        [pointIndices addObject:@(_geo.g.faces[i*3+2])];
+        [pointIndices addObject:@(_geo.sphere.faces[i*3+0])];
+        [pointIndices addObject:@(_geo.sphere.faces[i*3+1])];
+        [pointIndices addObject:@(_geo.sphere.faces[i*3+2])];
     }
-    for(int i = 0; i < _geo.g.numLines; i++){
-        NSNumber *pt1 = @(_geo.g.lines[i*2+0]);
-        NSNumber *pt2 = @(_geo.g.lines[i*2+1]);
+    for(int i = 0; i < _geo.sphere.numLines; i++){
+        NSNumber *pt1 = @(_geo.sphere.lines[i*2+0]);
+        NSNumber *pt2 = @(_geo.sphere.lines[i*2+1]);
         if([pointIndices containsObject:pt1] && [pointIndices containsObject:pt2]){
             [lineIndices addObject:@(i)];
         }
@@ -185,14 +185,14 @@
 }
 
 -(void) makeLineClasses{
-    geodesicAnalysis a = classifyLines(&_geo.g);
+    geodesicAnalysis a = classifyLines(&_geo.sphere);
     
     NSDictionary *visible = [self visiblePointsAndLines];
     NSSet *visibleLines = [NSSet setWithArray:[visible objectForKey:@"lines"]];
     NSSet *visiblePoints = [NSSet setWithArray:[visible objectForKey:@"points"]];
     
     NSMutableArray *types = [NSMutableArray array];
-    for(int i = 0; i < _geo.g.numLines; i++){
+    for(int i = 0; i < _geo.sphere.numLines; i++){
         [types addObject:[NSNumber numberWithUnsignedInt:a.lineLengthTypes[i]]];
     }
 
@@ -236,9 +236,9 @@
     else
         NSLog(@"new %dV icosahedral geodesic", _frequency);
     NSLog(@"Sliced: %d / %d", _frequencyNumerator, _frequencyDenominator);
-    NSLog(@" - points: %d", _geo.g.numPoints);
-    NSLog(@" - lines: %d", _geo.g.numLines);
-    NSLog(@" - faces: %d", _geo.g.numFaces);
+    NSLog(@" - points: %d", _geo.sphere.numPoints);
+    NSLog(@" - lines: %d", _geo.sphere.numLines);
+    NSLog(@" - faces: %d", _geo.sphere.numFaces);
 //    NSLog(@" - meridians: %d", _geo.numMeridians);
 }
 
@@ -302,15 +302,15 @@
 //    deleteSlicePoints(&_sliceMeridians);
 //    deleteCropPlanes(&_meridiansMesh);
     _geo = icosahedronDome(_frequency, 1.0);
-    _mesh = makeMeshTriangles(&(_geo.g), 0.85);
+    _mesh = makeMeshTriangles(&(_geo.sphere), 0.85);
 //    _sliceMeridians = makeMeshSlicePoints(&(_geo));
 //    _meridiansMesh = makeMeshCropPlanes(&(_geo));
     _frequencyDenominator = _geo.numMeridians;
     _frequencyNumerator = _frequencyDenominator;
-    _points = _geo.g.points;
-    _lines = _geo.g.lines;
-    _numPoints = _geo.g.numPoints;
-    _numLines = _geo.g.numLines;
+    _points = _geo.sphere.points;
+    _lines = _geo.sphere.lines;
+    _numPoints = _geo.sphere.numPoints;
+    _numLines = _geo.sphere.numLines;
     
 //    deleteGeodesicSphere(&_geo);
 //    deleteMeshTriangles(&_mesh);
@@ -324,15 +324,15 @@
 //    deleteSlicePoints(&_sliceMeridians);
 //    deleteCropPlanes(&_meridiansMesh);
     _geo = octahedronDome(_frequency, 1.0);
-    _mesh = makeMeshTriangles(&(_geo.g), 0.85);
-//    _meridiansMesh = makeMeshCropPlanes(&(_geo.g));
+    _mesh = makeMeshTriangles(&(_geo.sphere), 0.85);
+//    _meridiansMesh = makeMeshCropPlanes(&(_geo.sphere));
 //    _sliceMeridians = makeMeshSlicePoints(&(_geo));
     _frequencyDenominator = _geo.numMeridians;
     _frequencyNumerator = _frequencyDenominator;
-    _points = _geo.g.points;
-    _lines = _geo.g.lines;
-    _numPoints = _geo.g.numPoints;
-    _numLines = _geo.g.numLines;
+    _points = _geo.sphere.points;
+    _lines = _geo.sphere.lines;
+    _numPoints = _geo.sphere.numPoints;
+    _numLines = _geo.sphere.numLines;
     
 //    deleteGeodesicSphere(&_geo);
 //    deleteMeshTriangles(&_mesh);
