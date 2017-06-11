@@ -14,6 +14,9 @@
 
 -(GLKQuaternion)rotationInView:(UIView *)view{
     CGPoint t = [self velocityInView:view];
+	// sometimes velocityInView will return nan
+	if(isnan(t.x)){ t.x = 0; }
+	if(isnan(t.y)){ t.y = 0; }
     float a = sqrt((t.x * t.x) + (t.y * t.y));
     t.x /= a;
     t.y /= a;

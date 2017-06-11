@@ -81,7 +81,6 @@
 		D5619A1D1AF904830027A801 /* platonic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = platonic.c; sourceTree = "<group>"; };
 		D5619A1E1AF904830027A801 /* platonic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platonic.h; sourceTree = "<group>"; };
 		D5619A221AF904830027A801 /* tween.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tween.c; sourceTree = "<group>"; };
-		D5619A241AF904830027A801 /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
 		D56562921B2227EC002C5E90 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D57CDE5B1B775E99008A2AF8 /* RotationGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationGestureRecognizer.h; sourceTree = "<group>"; };
 		D57CDE5C1B775E99008A2AF8 /* RotationGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationGestureRecognizer.m; sourceTree = "<group>"; };
@@ -170,7 +169,6 @@
 				D5619A1D1AF904830027A801 /* platonic.c */,
 				D538D1F41C4C6AC800FABCF9 /* OpenGL */,
 				D5619A221AF904830027A801 /* tween.c */,
-				D5619A241AF904830027A801 /* world.c */,
 			);
 			path = Geodesic;
 			sourceTree = "<group>";
