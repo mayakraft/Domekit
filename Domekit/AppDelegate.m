@@ -246,7 +246,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
+	
+//	GLKMatrix4 m = GLKMatrix4Identity;
+//	m = GLKMatrix4Translate(m, -5, -3, 0);
+//	m = GLKMatrix4Rotate(m, M_PI*0.51, 0, 0, 1);
+//	m = GLKMatrix4Scale(m, -1, 1, 1);
+//	m = GLKMatrix4Rotate(m, -M_PI*0.51, 0, 0, 1);
+//	m = GLKMatrix4Translate(m, 5, 3, 0);
+//	NSLog(@"\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f",
+//		  m.m00, m.m10, m.m20, m.m30,
+//		  m.m01, m.m11, m.m21, m.m31,
+//		  m.m02, m.m12, m.m22, m.m32,
+//		  m.m03, m.m13, m.m23, m.m33 );
+//	m.m00, m.m01, m.m02, m.m03,
+//	m.m10, m.m11, m.m12, m.m13,
+//	m.m20, m.m21, m.m22, m.m23,
+//	m.m30, m.m31, m.m32, m.m33 );
+	
+//	exit(1);
+//	return false;
+	
     // important for first runtime.
     [self checkNSUserDefaults];
     

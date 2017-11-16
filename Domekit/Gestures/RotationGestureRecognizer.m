@@ -18,8 +18,10 @@
 	if(isnan(t.x)){ t.x = 0; }
 	if(isnan(t.y)){ t.y = 0; }
     float a = sqrt((t.x * t.x) + (t.y * t.y));
-    t.x /= a;
-    t.y /= a;
+	if(a != 0) {
+		t.x /= a;
+		t.y /= a;
+	}
     float angle = atan2(t.x, t.y);
     if(_lockToY)
         return GLKQuaternionMakeWithAngleAndAxis(a * SCALE, 0, sin(angle), 0);

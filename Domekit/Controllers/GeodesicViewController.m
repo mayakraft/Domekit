@@ -34,6 +34,14 @@
 
 #define ORTHO_ANIM_TIME 0.266f
 
+GLKQuaternion qCheck(GLKQuaternion input){
+//	printf("%.3f, %.3f, %.3f, %.3f\n", input.w, input.x, input.y, input.z);
+	if(isnan(input.w) || isnan(input.x) || isnan(input.y) || isnan(input.z)){
+		return GLKQuaternionMake(0, 1, 0, 0);
+	}
+	return input;
+}
+
 @interface GeodesicViewController () <ValueAnimationDelegate> {
     GeodesicView *geodesicView;
     GeodesicModel *geodesicModel;
@@ -110,8 +118,8 @@
     
     geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 44) context:context];
     [self setView:geodesicView];
-    //    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
-    //    [self.view addSubview:geodesicView];
+//    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
+//    [self.view addSubview:geodesicView];
     [geodesicView setGeodesicModel:geodesicModel];
 
     
@@ -172,6 +180,7 @@
     
     [self setPerspective:0];
     [self.view bringSubviewToFront:extendedNavBar];
+//	printf("view did load\n");
 //    NSLog(@"SAVED DOMES: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"saved"]);
 }
 
@@ -275,7 +284,7 @@
         if([sender lockToY]){
             // disregard all gyroscope reference frames in this special case
             cumulative = GLKQuaternionMultiply(cumulative, [sender rotationInView:geodesicView]);
-            gestureRotation = GLKQuaternionMultiply(cumulative, start);
+			gestureRotation = qCheck(GLKQuaternionMultiply(cumulative, start));
             [geodesicView setGestureRotation:gestureRotation];
         }
         else{
@@ -287,7 +296,7 @@
             // and somehow it preserves the gesture rotation in the operating frame.
             // i'm not really even sure how this works, but it does
             cumulative = GLKQuaternionMultiply(cumulative, q);//[sender rotationInView:geodesicView]);
-            gestureRotation = GLKQuaternionMultiply(cumulative, start);
+            gestureRotation = qCheck(GLKQuaternionMultiply(cumulative, start));
             [geodesicView setGestureRotation:gestureRotation];
         }
     }
@@ -560,11 +569,30 @@
     
     // Pan swiping to reveal the menu
     //    [self.navigationController.navigationBar addGestureRecognizer:revealController.panGestureRecognizer];
-    UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
-    [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
-    [revealButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithCustomView:revealButton];
-    [self.navigationItem setLeftBarButtonItem:revealBarButton];
+//    UIButton *revealButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22*3/2, 17*3/2)];
+//	[revealButton setImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
+//    [revealButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon"] forState:UIControlStateNormal];
+//    [revealButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//	UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+//    UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithCustomView:revealButton];
+//    [self.navigationItem setLeftBarButtonItem:revealBarButton];
+	
+	UIImage *myImage = [UIImage imageNamed:@"reveal-icon"];
+	UIButton *myButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[myButton setImage:myImage forState:UIControlStateNormal];
+	myButton.showsTouchWhenHighlighted = YES;
+	myButton.frame = CGRectMake(0.0, 3.0, 22*3/2, 17*3/2);
+	[myButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+	UIView *customView = [[UIView alloc] init];
+	customView.frame = CGRectMake(0, 0, 70, 30);
+	[customView addSubview:myButton];
+	UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:customView];
+	self.navigationItem.leftBarButtonItem = leftButton;
+
+	
+//	UIBarButtonItem *revealBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+//	[self.navigationItem setLeftBarButtonItem:revealBarButton];
+
 }
 
 -(void) iOSKeyboardHide{
