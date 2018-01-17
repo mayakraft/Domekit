@@ -24,7 +24,8 @@
     glPushMatrix(); // begin device orientation
 
         // setup polar coordinate frame looking into the origin
-        glTranslatef(0, 0, -.4);
+		glTranslatef(0, _yOffset, 0);
+		glTranslatef(0, 0, -.4);
         glTranslatef(0, 0, -_cameraRadius);
         glTranslatef(0, 0, -_cameraRadiusFix);
         glMultMatrixf(_attitudeMatrix.m);
@@ -60,6 +61,12 @@
     [self rebuildProjectionMatrix];
     _attitudeMatrix = GLKMatrix4Identity;
     [self customGL];
+	
+	// Iphone X Fix
+	_yOffset = 0.0;
+	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
+		_yOffset = 0.2;
+	}
 }
 -(void)rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);
@@ -118,6 +125,7 @@
 //    } else{
 //        return [self initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)];
 //    }
+
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
 }
 - (id)initWithFrame:(CGRect)frame{

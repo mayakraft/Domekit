@@ -42,4 +42,6 @@ typedef enum{
 
 @property (nonatomic, weak) GeodesicModel *geodesicModel;
 
+@property float yOffset; // using y translation to fix for iPhone X
+
 @end

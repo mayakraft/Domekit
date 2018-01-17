@@ -115,8 +115,13 @@ GLKQuaternion qCheck(GLKQuaternion input){
 
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
-    
-    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 44) context:context];
+	
+	CGRect geodesicViewFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 44);
+	// Iphone X Fix
+//	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
+//		geodesicViewFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - 120);
+//	}
+    geodesicView = [[GeodesicView alloc] initWithFrame:geodesicViewFrame context:context];
     [self setView:geodesicView];
 //    geodesicView = [[GeodesicView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, w, (h + NAVBAR_HEIGHT * .5) - h*.25 - EXT_NAVBAR_HEIGHT) context:context];
 //    [self.view addSubview:geodesicView];
@@ -137,6 +142,12 @@ GLKQuaternion qCheck(GLKQuaternion input){
 
     // BOTTOM CONTROLS
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
+	CGRect scaleControllerFrame = CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3);
+	// Iphone X Fix
+	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
+		controllerFrame = CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.25);
+		scaleControllerFrame = CGRectMake(0, h*.63 + NAVBAR_HEIGHT * .5, w, h*.3);
+	}
     frequencyControlView = [[FrequencyControlView alloc] initWithFrame:controllerFrame];
     [frequencyControlView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:frequencyControlView];
@@ -145,7 +156,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
     [sliceControlView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:sliceControlView];
     [[sliceControlView slider] addTarget:self action:@selector(sliceControlChange:) forControlEvents:UIControlEventValueChanged];
-    scaleControlView = [[ScaleControlView alloc] initWithFrame:CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3)];
+    scaleControlView = [[ScaleControlView alloc] initWithFrame:scaleControllerFrame];
     [scaleControlView setBackgroundColor:[UIColor clearColor]];
     [scaleControlView setViewController:self];
     [self.view addSubview:scaleControlView];
@@ -154,7 +165,11 @@ GLKQuaternion qCheck(GLKQuaternion input){
     
     
     // HUMAN CAT FIGURE
-    CGPoint sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.5);
+	CGPoint sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.5);
+	// Iphone X Fix
+	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
+		sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.43);
+	}
     CGFloat sphereRadius = geodesicView.frame.size.width * .4;
     scaleFigureView = [[ScaleFigureView alloc] initWithFrame:CGRectMake(sphereCenter.x - sphereRadius, sphereCenter.y - sphereRadius, sphereRadius*2, sphereRadius*2)];
     [self.view addSubview:scaleFigureView];
