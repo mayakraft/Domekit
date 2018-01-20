@@ -133,6 +133,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
     UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Make" style:UIBarButtonItemStylePlain target:self action:@selector(makeDiagram)];
+	makeButton.accessibilityLabel = @"Make Diagram";
     self.navigationItem.rightBarButtonItem = makeButton;
     ExtendedNavBarView *extendedNavBar = [[ExtendedNavBarView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, EXT_NAVBAR_HEIGHT)];
     [[extendedNavBar segmentedControl] addTarget:self action:@selector(topMenuChange:) forControlEvents:UIControlEventValueChanged];
@@ -598,6 +599,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
 	myButton.showsTouchWhenHighlighted = YES;
 	myButton.frame = CGRectMake(0.0, 3.0, 22*3/2, 17*3/2);
 	[myButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+	myButton.accessibilityLabel = @"menu";
 	UIView *customView = [[UIView alloc] init];
 	customView.frame = CGRectMake(0, 0, 70, 30);
 	[customView addSubview:myButton];

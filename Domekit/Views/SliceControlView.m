@@ -46,6 +46,7 @@
         [_slider setFrame:CGRectMake(frame.size.width*.1, frame.size.height*.5, frame.size.width*.8, frame.size.height*.33)];
     }
     [_slider setValue:1.0];
+	_slider.accessibilityLabel = @"adjust slice";
     [self addSubview:_slider];
 }
 

@@ -50,6 +50,10 @@
         [_segmentedControl setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:30]} forState:UIControlStateNormal];
     }
     [_segmentedControl setSelectedSegmentIndex:0];
+	// accessibility labels
+	for(int i = 0; i < _segmentedControl.subviews.count; i++){
+		_segmentedControl.subviews[i].accessibilityLabel = [NSString stringWithFormat:@"frequency %d", i+1];
+	}
     [self addSubview:_segmentedControl];
 }
 

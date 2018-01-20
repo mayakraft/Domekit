@@ -1,15 +1,16 @@
-when cloning, `git clone --recursive`, this repo contains a submodule located at [geodesic](https://github.com/robbykraft/Geodesic)
-
 # Domekit
 
-mobile geodesic dome calculator for parametric design and construction
+geodesic dome calculator app for design and generating construction plans
 
-[download from the app store](https://itunes.apple.com/us/app/domekit/id617768136?mt=8)
+[available on the iOS app store](https://itunes.apple.com/us/app/domekit/id617768136?mt=8)
 
-# features
+# Features
 
-* generate icosahedra or octahedra geodesics from platonic solids
-* smart dome slicing latitude locations
-* multiple ways to input and set scale for construction
-* machine-level precision, feet or meters
-* on-screen construction diagram, or share via PDF
+* domes from an icosahedron or octahedron
+* smart latitude detection for slicing
+* feet or meters, machine-level precision
+* construction diagram on-screen or as a PDF
+
+# Installation
+
+to clone this repository: `git clone --recursive`, this uses [geodesic](https://github.com/robbykraft/Geodesic) as a submodule

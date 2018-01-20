@@ -94,6 +94,10 @@
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
+	
+	UIEdgeInsets lm = self.tableView.layoutMargins;
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, lm.left, 0, lm.right);
+
 //    [self.tableView setBackgroundColor:[UIColor clearColor]];
     
     shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonPressed)];
@@ -164,18 +168,21 @@
         return nil;
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, 4, tableView.frame.size.width, 20)];
+	UIEdgeInsets lm = tableView.layoutMargins;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lm.left, 4, tableView.frame.size.width-lm.left-lm.right, 20)];
     [label setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17]];
     [label setTextColor:[UIColor blackColor]];
     [view addSubview:label];
-
-    if(section == 0)
+	if(section == 0){
         [label setText:@"Struts"];
+	}
     else {
-        if(section == 1)
+		if(section == 1){
             [label setText:@"Joints"];
-        else if(section == 2)
+		}
+		else if(section == 2){
             [label setText:@"Statistics"];
+		}
         return view;
     }
     
@@ -210,8 +217,10 @@
             float length = [[lines objectAtIndex:indexPath.row] floatValue] * _scale;
             
             [[cell textLabel] setText:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) unitifyNumber:length]];
-            
-            UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(10, 18, 64, 8)];
+			
+			UIEdgeInsets lm = tableView.layoutMargins;
+//			UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(10, 18, 64, 8)];
+			UIView *colorBar = [[UIView alloc] initWithFrame:CGRectMake(lm.left, 18, 64, 8)];
             if(indexPath.row < [colorTable count])
                 [colorBar setBackgroundColor:[colorTable objectAtIndex:indexPath.row]];
             else

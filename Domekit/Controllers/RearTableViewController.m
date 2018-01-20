@@ -122,6 +122,7 @@
     if(section == 1){
         UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(88, 12, 100, 28)];
         [editButton setTitle:@"EDIT" forState:UIControlStateNormal];
+		editButton.accessibilityLabel = @"edit saved domes";
         [editButton addTarget:self action:@selector(editSavedDomes:) forControlEvents:UIControlEventTouchUpInside];
         [editButton setTitleColor:BLUE_COLOR forState:UIControlStateNormal];
         [editButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
@@ -160,6 +161,7 @@
     else if(indexPath.section == 1){
         if(indexPath.row == 0){
             [cell.textLabel setText:@"+  Save Current Dome"];
+			cell.accessibilityLabel = @"Save Current Dome";
             [cell.textLabel setTextColor:[UIColor colorWithRed:0 green:0.48 blue:1 alpha:1]];
         }
         else{

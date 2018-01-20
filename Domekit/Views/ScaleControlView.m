@@ -128,6 +128,7 @@
 
     _slider = [[UISlider alloc] initWithFrame:CGRectMake(frame.size.width*.1, frame.size.height*.6, frame.size.width*.8, frame.size.height*.4)];
     [_slider setValue:.5];
+	_slider.accessibilityLabel = @"adjust size";
     [self addSubview:_slider];
     
     _heightTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.15, frame.size.width*.425, frame.size.height*.15)];
@@ -135,6 +136,8 @@
     [_heightTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_heightTextField setText:@""];
     [_heightTextField setDelegate:self];
+	_heightTextField.accessibilityLabel = @"dome height";
+	_heightTextField.accessibilityTraits = UIAccessibilityTraitAdjustable;
     [self addSubview:_heightTextField];
 
     _floorDiameterTextField = [[UITextField alloc] initWithFrame:CGRectMake(frame.size.width*.5, frame.size.height*.3, frame.size.width*.425, frame.size.height*.15)];
@@ -142,6 +145,8 @@
     [_floorDiameterTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_floorDiameterTextField setText:@""];
     [_floorDiameterTextField setDelegate:self];
+	_floorDiameterTextField.accessibilityLabel = @"floor diameter";
+	_floorDiameterTextField.accessibilityTraits = UIAccessibilityTraitAdjustable;
     [self addSubview:_floorDiameterTextField];
 
     
@@ -150,6 +155,8 @@
     [_strutTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [_strutTextField setText:@""];
     [_strutTextField setDelegate:self];
+	_strutTextField.accessibilityLabel = @"longest strut";
+	_strutTextField.accessibilityTraits = UIAccessibilityTraitAdjustable;
     [self addSubview:_strutTextField];
 
     
