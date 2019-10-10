@@ -12,7 +12,11 @@
 
 #define MARGIN 10
 
-@interface ScaleControlView ()
+@interface ScaleControlView () {
+    UIColor *foregroundColor;
+    UIColor *backgroundColor;
+    UIColor *disabledColor;
+}
 @property CGRect frame0;
 @property UILabel *heightLabel;
 @property UILabel *floorLabel;
@@ -70,18 +74,18 @@
 }
 
 -(void) enableControls{
-    [_heightTextField setTextColor:[UIColor blackColor]];
-    [_floorDiameterTextField setTextColor:[UIColor blackColor]];
-    [_strutTextField setTextColor:[UIColor blackColor]];
+    [_heightTextField setTextColor:foregroundColor];
+    [_floorDiameterTextField setTextColor:foregroundColor];
+    [_strutTextField setTextColor:foregroundColor];
     [_slider setEnabled:YES];
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [_slider setEnabled:NO];
 
-    [_heightTextField setTextColor:[UIColor lightGrayColor]];
-    [_floorDiameterTextField setTextColor:[UIColor lightGrayColor]];
-    [_strutTextField setTextColor:[UIColor lightGrayColor]];
-    [textField setTextColor:[UIColor blackColor]];
+    [_heightTextField setTextColor:disabledColor];
+    [_floorDiameterTextField setTextColor:disabledColor];
+    [_strutTextField setTextColor:disabledColor];
+    [textField setTextColor:foregroundColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     return YES;
@@ -120,9 +124,23 @@
 }
 
 -(void) initUI:(CGRect)frame{
-    
+    if (@available(iOS 12.0, *)) {
+        if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            foregroundColor = [UIColor whiteColor];
+            backgroundColor = [UIColor blackColor];
+            disabledColor = [UIColor darkGrayColor];
+        } else {
+            foregroundColor = [UIColor blackColor];
+            backgroundColor = [UIColor whiteColor];
+            disabledColor = [UIColor lightGrayColor];
+        }
+    } else {
+        foregroundColor = [UIColor blackColor];
+        backgroundColor = [UIColor whiteColor];
+        disabledColor = [UIColor lightGrayColor];
+    }
     _whiteOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, -self.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-    [_whiteOverlay setBackgroundColor:[UIColor whiteColor]];
+    [_whiteOverlay setBackgroundColor:backgroundColor];
     [_whiteOverlay setAlpha:0.0];
     [self addSubview:_whiteOverlay];
 
@@ -187,6 +205,17 @@
     [_strutLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18]];
     [_strutLabel setTextAlignment:NSTextAlignmentRight];
     [self addSubview:_strutLabel];
+    
+    // additional style incorporating dark mode
+    _heightTextField.backgroundColor = backgroundColor;
+    _strutTextField.backgroundColor = backgroundColor;
+    _floorDiameterTextField.backgroundColor = backgroundColor;
+    _heightLabel.textColor = foregroundColor;
+    _floorLabel.textColor = foregroundColor;
+    _strutLabel.textColor = foregroundColor;
+    [_heightLabel setFont:[UIFont systemFontOfSize:18]];
+    [_floorLabel setFont:[UIFont systemFontOfSize:18]];
+    [_strutLabel setFont:[UIFont systemFontOfSize:18]];
 }
 
 -(void) resizeForIpad:(CGRect)frame{

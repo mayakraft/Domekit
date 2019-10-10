@@ -69,7 +69,6 @@
     
     CGSize size = [[UIScreen mainScreen] bounds].size;
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
     
 #define ZOOM 4
     
@@ -77,7 +76,17 @@
     [equidistantAzimuthView setColorTable:colorTable];
     [equidistantAzimuthView setGeodesic:_geodesicModel];
     [equidistantAzimuthView setBackgroundColor:[UIColor whiteColor]];
-    
+
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    if (@available(iOS 12.0, *)) {
+        if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            [self.view setBackgroundColor:[UIColor blackColor]];
+            [equidistantAzimuthView setBackgroundColor:[UIColor blackColor]];
+        } else {
+        }
+    } else {
+    }
+
     UIScrollView *diagramScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.width + EXT_NAVBAR_HEIGHT)];
     [diagramScrollview setContentSize:CGSizeMake(size.width * ZOOM, (size.width + EXT_NAVBAR_HEIGHT) * ZOOM)];
 //    [diagramScrollview setZoomScale:.5];
@@ -93,7 +102,7 @@
     [self.view addSubview:self.tableView];
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
-    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+//    [self.tableView setBackgroundColor:[UIColor whiteColor]];
 	
 	UIEdgeInsets lm = self.tableView.layoutMargins;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, lm.left, 0, lm.right);
@@ -105,9 +114,6 @@
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
     self.navigationItem.leftBarButtonItem = backButton;
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    
     
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, EXT_NAVBAR_HEIGHT, [[UIScreen mainScreen] bounds].size.width, self.tableView.frame.size.height + 44)];
     [scrollView setDelegate:self];
@@ -164,14 +170,27 @@
 }
 
 -(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(section == 1)
+    if(section == 1) {
         return nil;
+    }
+    UIColor *foregroundColor = [UIColor blackColor];
+    UIColor *backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    if (@available(iOS 12.0, *)) {
+        if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+            foregroundColor = [UIColor colorWithWhite:0.87 alpha:1.0];
+        } else {
+        }
+    } else {
+    }
+    
+
     UIView *view = [[UIView alloc] init];
-    [view setBackgroundColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
+    [view setBackgroundColor:backgroundColor];
 	UIEdgeInsets lm = tableView.layoutMargins;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lm.left, 4, tableView.frame.size.width-lm.left-lm.right, 20)];
     [label setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17]];
-    [label setTextColor:[UIColor blackColor]];
+    [label setTextColor:foregroundColor];
     [view addSubview:label];
 	if(section == 0){
         [label setText:@"Struts"];
@@ -192,7 +211,7 @@
     [[up titleLabel] setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17]];
     [up setTitle:@"▲" forState:UIControlStateNormal];
     [[up layer] setAnchorPoint:CGPointMake(0.5, 0.5)];
-    [up setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [up setTitleColor:foregroundColor forState:UIControlStateNormal];
     [view addSubview:up];
     arrowButton = up;
 

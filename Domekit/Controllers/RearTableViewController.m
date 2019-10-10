@@ -49,6 +49,9 @@
     
 //    selectionView = [[UIView alloc] init];
 //    [selectionView setBackgroundColor:[UIColor blueColor]];
+    
+    // style, avoiding dark mode for now
+//    [self.tableView setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -153,8 +156,7 @@
     else
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-    cell.backgroundColor = [UIColor whiteColor];
-//    cell.selectedBackgroundView = selectionView;
+//    cell.backgroundColor = [UIColor whiteColor];
 
     if(indexPath.section == 0){
     }
@@ -210,6 +212,10 @@
 //        if(indexPath.row == 1)
 //            [cell.textLabel setText:@"About Domes"];
     }
+    
+    // avoid dark mode for now
+//    [cell.textLabel setTextColor:[UIColor blackColor]];
+
     return cell;
 }
 

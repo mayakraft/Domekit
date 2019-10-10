@@ -18,7 +18,19 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    // dark mode
+    float bgColor[3] = {1.0f, 1.0f, 1.0f};
+    
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            bgColor[0] = 0.0f;
+            bgColor[1] = 0.0f;
+            bgColor[2] = 0.0f;
+        } else {
+        }
+    } else {
+    }
+    glClearColor(bgColor[0], bgColor[1], bgColor[2], 1.0f);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glPushMatrix(); // begin device orientation
@@ -64,9 +76,13 @@
 	
 	// Iphone X Fix
 	_yOffset = 0.0;
-	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
-		_yOffset = 0.2;
-	}
+    if (@available(iOS 11.0, *)) {
+        UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
+        if (mainWindow.safeAreaInsets.top > 24.0) {
+            _yOffset = 0.2;
+        }
+    }
+
 }
 -(void)rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);

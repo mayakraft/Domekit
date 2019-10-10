@@ -21,9 +21,18 @@
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
     self.navigationItem.leftBarButtonItem = backButton;
 
-    [[[self navigationController] navigationBar] setBarTintColor:[UIColor whiteColor]];
     [[[self navigationController] navigationBar] setBarStyle:UIBarStyleDefault];
+    [[[self navigationController] navigationBar] setBarTintColor:[UIColor whiteColor]];
     [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            [[[self navigationController] navigationBar] setBarStyle:UIBarStyleBlackOpaque];
+            [[[self navigationController] navigationBar] setBarTintColor:[UIColor blackColor]];
+            [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+        } else {
+        }
+    } else {
+    }
 
     [self.tableView setScrollEnabled:NO];
 }

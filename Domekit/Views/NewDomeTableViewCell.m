@@ -15,6 +15,20 @@
 @implementation NewDomeTableViewCell
 
 -(void) setupButtons{
+    NSString *icoFileName = @"icosahedron.png";
+    NSString *octaFileName = @"octahedron.png";
+    UIColor *textColor = [UIColor blackColor];
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            icoFileName = @"icosahedron-dark.png";
+            octaFileName = @"octahedron-dark.png";
+            textColor = [UIColor whiteColor];
+        } else {
+        }
+    } else {
+    }
+
+    
     _leftButton = [[UIButton alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, revealWidth * .5-MARGIN*2, cellHeight-MARGIN*2)];
     _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(revealWidth * .5+MARGIN, MARGIN, revealWidth * .5 - MARGIN*2, cellHeight - MARGIN*2)];
     [_leftButton setTitle:@"Icosahedron" forState:UIControlStateNormal];
@@ -24,12 +38,12 @@
     CGFloat imgSize = cellHeight * .66;
     UIImageView *ico = [[UIImageView alloc] initWithFrame:CGRectMake(center1.x - imgSize*.5, center1.y-imgSize*.5 - MARGIN*2, imgSize, imgSize)];
     UIImageView *oct = [[UIImageView alloc] initWithFrame:CGRectMake(center2.x - imgSize*.5, center2.y-imgSize*.5 - MARGIN*2, imgSize, imgSize)];
-    [ico setImage:[UIImage imageNamed:@"icosahedron.png"]];
-    [oct setImage:[UIImage imageNamed:@"octahedron.png"]];
+    [ico setImage:[UIImage imageNamed:icoFileName]];
+    [oct setImage:[UIImage imageNamed:octaFileName]];
     [self addSubview:ico];
     [self addSubview:oct];
-    [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_leftButton setTitleColor:textColor forState:UIControlStateNormal];
+    [_rightButton setTitleColor:textColor forState:UIControlStateNormal];
     [_rightButton setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
     [_leftButton setContentVerticalAlignment:UIControlContentVerticalAlignmentBottom];
     [self addSubview:_leftButton];
@@ -77,6 +91,16 @@
     [_leftButton setFrame:CGRectMake(MARGIN, MARGIN, revealWidth * .5-MARGIN*2, cellHeight-MARGIN*2)];
     [_rightButton setFrame:CGRectMake(revealWidth * .5+MARGIN, MARGIN, revealWidth * .5 - MARGIN*2, cellHeight - MARGIN*2)];
     [separatorLine setFrame:CGRectMake(revealWidth*.5, MARGIN, 1, cellHeight-MARGIN*2)];
+    
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            [self setBackgroundColor:[UIColor blackColor]];
+        } else {
+            [self setBackgroundColor:[UIColor whiteColor]];
+        }
+    } else {
+        [self setBackgroundColor:[UIColor whiteColor]];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

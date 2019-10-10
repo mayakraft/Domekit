@@ -56,6 +56,9 @@ GLKQuaternion qCheck(GLKQuaternion input){
     // rotation and touch handling
     GLKQuaternion gestureRotation;
     RotationGestureRecognizer *touchRotationGesture;
+    
+    // fix for scale slider
+    float _baseScale;
 }
 
 @property (weak) UISegmentedControl *topMenu;
@@ -101,6 +104,13 @@ GLKQuaternion qCheck(GLKQuaternion input){
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+        }
+    } else {
+        // todo
+    }
+
     [self initRevealController];
     
     BOOL gyro = [[[NSUserDefaults standardUserDefaults] objectForKey:@"gyro"] boolValue];
@@ -108,6 +118,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
 
     // for logarithmic purposes, 1 bigger than 10
     _sessionScale = 11.0;
+    _baseScale = _sessionScale;
     [self updateUI];
 
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
@@ -129,9 +140,20 @@ GLKQuaternion qCheck(GLKQuaternion input){
 
     
     // NAVIGATION BAR
+    [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+    NSString *backgroundPixelColorImage = @"Pixel";
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            backgroundPixelColorImage = @"Pixel-dark";
+            [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+        } else {
+        }
+    } else {
+    }
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"TransparentPixel"]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Pixel"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:backgroundPixelColorImage] forBarMetrics:UIBarMetricsDefault];
     UIBarButtonItem *makeButton = [[UIBarButtonItem alloc] initWithTitle:@"Make" style:UIBarButtonItemStylePlain target:self action:@selector(makeDiagram)];
 	makeButton.accessibilityLabel = @"Make Diagram";
     self.navigationItem.rightBarButtonItem = makeButton;
@@ -145,9 +167,17 @@ GLKQuaternion qCheck(GLKQuaternion input){
     CGRect controllerFrame = CGRectMake(0, h*.75 + NAVBAR_HEIGHT * .5, w, h*.25);
 	CGRect scaleControllerFrame = CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.3);
 	// Iphone X Fix
-	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
-		controllerFrame = CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.25);
-		scaleControllerFrame = CGRectMake(0, h*.63 + NAVBAR_HEIGHT * .5, w, h*.3);
+    BOOL iPhoneX = NO;
+    if (@available(iOS 11.0, *)) {
+        UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
+        if (mainWindow.safeAreaInsets.top > 24.0) {
+            iPhoneX = YES;
+        }
+    }
+    
+    if (iPhoneX){
+        controllerFrame = CGRectMake(0, h*.7 + NAVBAR_HEIGHT * .5, w, h*.25);
+        scaleControllerFrame = CGRectMake(0, h*.63 + NAVBAR_HEIGHT * .5, w, h*.3);
 	}
     frequencyControlView = [[FrequencyControlView alloc] initWithFrame:controllerFrame];
     [frequencyControlView setBackgroundColor:[UIColor clearColor]];
@@ -163,14 +193,16 @@ GLKQuaternion qCheck(GLKQuaternion input){
     [self.view addSubview:scaleControlView];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChange:) forControlEvents:UIControlEventValueChanged];
     [[scaleControlView slider] addTarget:self action:@selector(scaleControlChangeEnd:) forControlEvents:UIControlEventTouchUpInside];
+    [[scaleControlView slider] addTarget:self action:@selector(scaleControlTouchDown:) forControlEvents:UIControlEventTouchDown];
     
     
     // HUMAN CAT FIGURE
 	CGPoint sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.5);
 	// Iphone X Fix
-	if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436){
-		sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.43);
-	}
+    if (iPhoneX) {
+        sphereCenter = CGPointMake(geodesicView.frame.size.width*.5, geodesicView.frame.size.height*.43);
+    }
+    
     CGFloat sphereRadius = geodesicView.frame.size.width * .4;
     scaleFigureView = [[ScaleFigureView alloc] initWithFrame:CGRectMake(sphereCenter.x - sphereRadius, sphereCenter.y - sphereRadius, sphereRadius*2, sphereRadius*2)];
     [self.view addSubview:scaleFigureView];
@@ -426,19 +458,25 @@ GLKQuaternion qCheck(GLKQuaternion input){
     [geodesicModel setFrequencyNumerator:unit+1];
     [self updateUI];
 }
--(void) scaleControlChange:(UISlider*)sender{
+// for iOS 13 and later
+-(void) scaleControlTouchDown:(UISlider*)sender {
     // the value preserved from last time
-    static float baseScale;
+    _baseScale = _sessionScale;
+}
+-(void) scaleControlChange:(UISlider*)sender{
     // sensitivity in the affected change to scale
-    float SENSITIVITY = 0.3f;
-    if([sender state] == 0)  // touches begin
-        baseScale = _sessionScale;
-    else{
-        // .5 is HOME, okay this is some hacky stuff
-        _sessionScale = baseScale * pow(baseScale,(sender.value - .5) * SENSITIVITY);
+    float SENSITIVITY = 1.0f;
+    // for pre-iOS 13
+    if([sender state] == 0){  // touches begin
+        _baseScale = _sessionScale;
     }
-    if(_sessionScale > 1000000.0)
+    else{
+        _sessionScale = _baseScale * pow(_baseScale,(0.5 - sender.value) * SENSITIVITY);
+    }
+
+    if(_sessionScale > 1000000.0){
         _sessionScale = 1000000.0;
+    }
     [self updateUI];
 }
 -(void) scaleControlChangeEnd:(UISlider*)sender{
@@ -515,7 +553,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
     geodesicModel = [[GeodesicModel alloc] initWithFrequency:[[dome objectForKey:@"frequency"] intValue]
                                                        Solid:[[dome objectForKey:@"solid"] intValue]
                                                         Crop:[[dome objectForKey:@"numerator"] intValue]];
-    _solidType = geodesicModel.solid;
+    _solidType = (unsigned int)geodesicModel.solid;
     _sessionScale = [[dome objectForKey:@"scale"] floatValue];
     [geodesicModel calculateLongestStrutLength];
     [geodesicView setGeodesicModel:geodesicModel];
@@ -554,7 +592,7 @@ GLKQuaternion qCheck(GLKQuaternion input){
 
 -(void) updateUI{
     // update NavBar Title
-    [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+//    [[[self navigationController] navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     if([geodesicModel frequencyNumerator] == [geodesicModel frequencyDenominator]){
         if(_solidType == 0)
             [self setTitle:[NSString stringWithFormat:@"%dV ICO SPHERE",[geodesicModel frequency] ]];

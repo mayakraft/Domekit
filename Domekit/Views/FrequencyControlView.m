@@ -55,6 +55,34 @@
 		_segmentedControl.subviews[i].accessibilityLabel = [NSString stringWithFormat:@"frequency %d", i+1];
 	}
     [self addSubview:_segmentedControl];
+    
+    // style
+    NSDictionary *attributes = @{
+        NSForegroundColorAttributeName: [UIColor blackColor]
+    };
+    NSDictionary *highlightedAttributes = @{
+        NSForegroundColorAttributeName: [UIColor whiteColor]
+    };
+    if (@available(iOS 12.0, *)) {
+        if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+            attributes = @{
+                NSForegroundColorAttributeName: [UIColor whiteColor]
+            };
+            highlightedAttributes = @{
+                NSForegroundColorAttributeName: [UIColor whiteColor]
+            };
+        } else {
+        }
+    } else {
+    }
+    [_segmentedControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [_segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateSelected];
+
+    if (@available(iOS 13.0, *)) {
+        [_segmentedControl setSelectedSegmentTintColor:[UIColor systemBlueColor]];
+    } else {
+        // Fallback on earlier versions
+    }
 }
 
 @end

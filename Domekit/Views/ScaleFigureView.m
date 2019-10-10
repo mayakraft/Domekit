@@ -31,12 +31,23 @@
 }
 
 -(void) initUI{
+    NSString *imageManPath = @"voyagerman.png";
+    NSString *imageCatPath = @"voyagercat.png";
+    if (@available(iOS 12.0, *)) {
+        if(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+            imageManPath = @"voyagerman-dark.png";
+            imageCatPath = @"voyagercat-dark.png";
+        } else {
+        }
+    } else {
+    }
+
     float humanCatRatio = .3; //.25;  // approximate the height of a person : height of a cat
     // but really it's the heigh of these images to each other, so it's not scientific
     
 //    float startRatio = .6; // domes begin at 10 units, person is 6 ft tall.
-    _humanImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagerman.png"]];
-    _catImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"voyagercat.png"]];
+    _humanImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageManPath]];
+    _catImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageCatPath]];
     CGFloat aspectHuman = _humanImageView.frame.size.width / _humanImageView.frame.size.height;
     CGFloat aspectCat = _catImageView.frame.size.width / _catImageView.frame.size.height;
     [_humanImageView setFrame:CGRectMake(0, 0, self.frame.size.height * aspectHuman, self.frame.size.height)];

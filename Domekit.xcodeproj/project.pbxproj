@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D50C400B234EE2F8005BBA71 /* octahedron-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = D50C400A234EE2F8005BBA71 /* octahedron-dark.png */; };
+		D50C400D234EE300005BBA71 /* icosahedron-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = D50C400C234EE300005BBA71 /* icosahedron-dark.png */; };
+		D50C400F234EE523005BBA71 /* Pixel-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = D50C400E234EE523005BBA71 /* Pixel-dark.png */; };
+		D50C4012234EE829005BBA71 /* voyagercat-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = D50C4010234EE829005BBA71 /* voyagercat-dark.png */; };
+		D50C4013234EE829005BBA71 /* voyagerman-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = D50C4011234EE829005BBA71 /* voyagerman-dark.png */; };
 		D510EB241B250ACB00723C7D /* voyagercat.png in Resources */ = {isa = PBXBuildFile; fileRef = D510EB221B250ACB00723C7D /* voyagercat.png */; };
 		D510EB251B250ACB00723C7D /* voyagerman.png in Resources */ = {isa = PBXBuildFile; fileRef = D510EB231B250ACB00723C7D /* voyagerman.png */; };
 		D510EB281B252AB500723C7D /* ScaleFigureView.m in Sources */ = {isa = PBXBuildFile; fileRef = D510EB271B252AB500723C7D /* ScaleFigureView.m */; };
@@ -50,6 +55,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D50C400A234EE2F8005BBA71 /* octahedron-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "octahedron-dark.png"; sourceTree = "<group>"; };
+		D50C400C234EE300005BBA71 /* icosahedron-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icosahedron-dark.png"; sourceTree = "<group>"; };
+		D50C400E234EE523005BBA71 /* Pixel-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pixel-dark.png"; sourceTree = "<group>"; };
+		D50C4010234EE829005BBA71 /* voyagercat-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voyagercat-dark.png"; sourceTree = "<group>"; };
+		D50C4011234EE829005BBA71 /* voyagerman-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voyagerman-dark.png"; sourceTree = "<group>"; };
 		D510EB221B250ACB00723C7D /* voyagercat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagercat.png; sourceTree = "<group>"; };
 		D510EB231B250ACB00723C7D /* voyagerman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voyagerman.png; sourceTree = "<group>"; };
 		D510EB261B252AB500723C7D /* ScaleFigureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleFigureView.h; sourceTree = "<group>"; };
@@ -244,13 +254,18 @@
 			children = (
 				D5C1F4A61C182BB300AE589B /* Default-568h@2x.png */,
 				D5C1F4A71C182BB300AE589B /* Default@2x.png */,
+				D50C400C234EE300005BBA71 /* icosahedron-dark.png */,
 				D5EFDC291B128645002ADD28 /* icosahedron.png */,
 				D5EFDC281B128645002ADD28 /* octahedron.png */,
+				D50C400A234EE2F8005BBA71 /* octahedron-dark.png */,
+				D50C400E234EE523005BBA71 /* Pixel-dark.png */,
 				D5DBB4731AFA64E4002D2EB0 /* Pixel.png */,
 				D5DBB4771AFA6500002D2EB0 /* reveal-icon.png */,
 				D5DBB4751AFA64EA002D2EB0 /* TransparentPixel.png */,
 				D510EB221B250ACB00723C7D /* voyagercat.png */,
 				D510EB231B250ACB00723C7D /* voyagerman.png */,
+				D50C4010234EE829005BBA71 /* voyagercat-dark.png */,
+				D50C4011234EE829005BBA71 /* voyagerman-dark.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -358,7 +373,7 @@
 		D5B360B41AF67B58006F33B9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Robby;
 				TargetAttributes = {
 					D5B360BB1AF67B58006F33B9 = {
@@ -369,7 +384,7 @@
 			};
 			buildConfigurationList = D5B360B71AF67B58006F33B9 /* Build configuration list for PBXProject "Domekit" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -392,11 +407,16 @@
 			files = (
 				D5B360D01AF67B58006F33B9 /* LaunchScreen.xib in Resources */,
 				D5B360CD1AF67B58006F33B9 /* Images.xcassets in Resources */,
+				D50C400F234EE523005BBA71 /* Pixel-dark.png in Resources */,
+				D50C4013234EE829005BBA71 /* voyagerman-dark.png in Resources */,
+				D50C400B234EE2F8005BBA71 /* octahedron-dark.png in Resources */,
 				D5DBB4761AFA64EA002D2EB0 /* TransparentPixel.png in Resources */,
 				D5C1F4A81C182BB300AE589B /* Default-568h@2x.png in Resources */,
 				D5DBB4741AFA64E4002D2EB0 /* Pixel.png in Resources */,
 				D5C1F4A91C182BB300AE589B /* Default@2x.png in Resources */,
+				D50C400D234EE300005BBA71 /* icosahedron-dark.png in Resources */,
 				D5EFDC2A1B128645002ADD28 /* octahedron.png in Resources */,
+				D50C4012234EE829005BBA71 /* voyagercat-dark.png in Resources */,
 				D538D1F51C4C6AC800FABCF9 /* OpenGL in Resources */,
 				D5EFDC2B1B128645002ADD28 /* icosahedron.png in Resources */,
 				D510EB251B250ACB00723C7D /* voyagerman.png in Resources */,
@@ -456,6 +476,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -464,12 +485,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -509,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -517,12 +541,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -557,6 +583,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 78C98TD784;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -565,6 +592,7 @@
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.robbykraft.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -577,6 +605,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 78C98TD784;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -585,6 +614,7 @@
 				INFOPLIST_FILE = Domekit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.robbykraft.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
